@@ -1,0 +1,209 @@
+---
+layout: layouts/base.vto
+title: false
+description: El cuaderno digital de Juanjo. Apuntes, ideas, garabatos, artilugios y retrofuturismo.
+---
+
+{{ set posts = search.pages("type=post", "date=desc") }}
+{{ set gridLimit = 9 }}
+{{ set tailLimit = 9 }}
+{{ set hero = posts[0] }}
+{{ set bentoPosts = posts.slice(1, 8) }}
+{{ set featuredAPost = posts[8] }}
+{{ set featuredBPost = posts[9] }}
+{{ set gridPosts = posts.slice(10, 10 + gridLimit) }}
+{{ set tailPosts = posts.slice(10 + gridLimit, 10 + gridLimit + tailLimit) }}
+{{ set hasArchive = posts.length >= 4 }}
+
+{{# Top 6 etiquetas por nº de entradas, normalizadas como en /etiquetas/ #}}
+{{ set allTagInstances = posts.flatMap(p => (p.tags || []).filter(t => t !== 'post')) }}
+{{ set tagGroups = allTagInstances.reduce((acc, tag) => {
+  const tagSlug = slug(tag);
+  if (!tagSlug) return acc;
+  const group = acc.get(tagSlug) || { variants: new Map(), count: 0 };
+  group.variants.set(tag, (group.variants.get(tag) || 0) + 1);
+  group.count++;
+  acc.set(tagSlug, group);
+  return acc;
+}, new Map()) }}
+{{ set canonicalTags = [...tagGroups.entries()].map(([tagSlug, group]) => ({
+  slug: tagSlug,
+  name: [...group.variants.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'es'))[0][0],
+  count: group.count,
+})).sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, 'es')) }}
+{{ set topTags = canonicalTags.slice(0, 6) }}
+
+<div class="container">
+  <div class="home">
+
+    {{# === HERO === #}}
+    {{ if hero }}
+      {{ set heroTags = (hero.tags || []).filter(t => t !== 'post') }}
+      <article class="home-hero">
+        <a class="home-hero-cover" href="{{ hero.url }}" tabindex="-1" aria-hidden="true">
+          <img src="{{ hero.image }}" alt="" loading="eager">
+        </a>
+        <div class="home-hero-meta">
+          {{ if heroTags.length }}
+            <div class="home-hero-eyebrow">
+              {{ for i, tag of heroTags }}<a href="/etiqueta/{{ tag |> slug }}/">{{ tag }}</a>{{ if i < heroTags.length - 1 }}<span class="sep">·</span>{{ /if }}{{ /for }}
+            </div>
+          {{ /if }}
+          <h2 class="home-hero-title">
+            <a href="{{ hero.url }}">{{ hero.title }}</a>
+          </h2>
+          {{ if hero.excerpt }}
+            <p class="home-hero-excerpt">{{ hero.excerpt }}</p>
+          {{ /if }}
+          <a href="{{ hero.url }}" class="home-hero-readmore">
+            Leer la entrada<span class="arrow">→</span>
+          </a>
+        </div>
+      </article>
+    {{ /if }}
+
+    {{# === BENTO (Más recientes) === #}}
+    {{ if bentoPosts.length }}
+      <section aria-label="Más recientes">
+        <span class="home-bento-eyebrow">Más recientes</span>
+        <ol class="home-bento">
+          {{ for post of bentoPosts }}
+            {{ include "partials/post-card.vto" { post } }}
+          {{ /for }}
+        </ol>
+      </section>
+    {{ /if }}
+
+    {{# === ABOUT INTERLUDE === #}}
+    <aside class="home-about">
+      <span class="home-about-eyebrow">Sobre el proyecto</span>
+      <div class="home-about-content">
+        <h2 class="home-about-title">Un cuaderno digital sin pretensiones.</h2>
+        <p class="home-about-text">
+          PAIGAR es el sitio donde van a parar las cosas que no encajan en ningún otro sitio: apuntes, ideas a medio cocinar, capturas con un comentario al lado, pequeños cacharros web, ramalazos hacia ese internet de antes que imaginaba un futuro distinto al que llegó.
+        </p>
+        <a href="/que-es-esto/" class="home-about-link">Leer la presentación →</a>
+      </div>
+    </aside>
+
+    {{# === FEATURED A: split horizontal (texto izquierda · imagen derecha) === #}}
+    {{ if featuredAPost }}
+      {{ set featATags = (featuredAPost.tags || []).filter(t => t !== 'post') }}
+      <article class="home-feature-split">
+        <div class="home-feature-split-content">
+          {{ if featATags.length }}
+            <div class="home-feature-split-eyebrow">
+              {{ for i, tag of featATags }}<a href="/etiqueta/{{ tag |> slug }}/">{{ tag }}</a>{{ if i < featATags.length - 1 }}<span class="sep">·</span>{{ /if }}{{ /for }}
+            </div>
+          {{ /if }}
+          <h2 class="home-feature-split-title">
+            <a href="{{ featuredAPost.url }}">{{ featuredAPost.title }}</a>
+          </h2>
+          {{ if featuredAPost.excerpt }}
+            <p class="home-feature-split-excerpt">{{ featuredAPost.excerpt }}</p>
+          {{ /if }}
+          <a href="{{ featuredAPost.url }}" class="home-feature-split-readmore">
+            Leer la entrada<span class="arrow">→</span>
+          </a>
+        </div>
+        <a href="{{ featuredAPost.url }}" class="home-feature-split-cover" tabindex="-1" aria-hidden="true">
+          <img src="{{ featuredAPost.image }}" alt="" loading="lazy">
+        </a>
+      </article>
+    {{ /if }}
+
+    {{# === FEATURED B: full-bleed con overlay === #}}
+    {{ if featuredBPost }}
+      {{ set featBTags = (featuredBPost.tags || []).filter(t => t !== 'post') }}
+      <article class="home-featured">
+        <a href="{{ featuredBPost.url }}" class="home-featured-link">
+          <img src="{{ featuredBPost.image }}" alt="" loading="lazy">
+          <div class="home-featured-overlay">
+            {{ if featBTags.length }}
+              <div class="home-featured-eyebrow">{{ featBTags.join(' · ') }}</div>
+            {{ /if }}
+            <h2 class="home-featured-title">{{ featuredBPost.title }}</h2>
+            {{ if featuredBPost.excerpt }}
+              <p class="home-featured-excerpt">{{ featuredBPost.excerpt }}</p>
+            {{ /if }}
+          </div>
+        </a>
+      </article>
+    {{ /if }}
+
+    {{# === GRID (Más del archivo) === #}}
+    {{ if gridPosts.length }}
+      <section aria-label="Resto del archivo">
+        <span class="home-grid-eyebrow">Más del archivo</span>
+        <ol class="home-grid-cards">
+          {{ for post of gridPosts }}
+            {{ include "partials/post-card.vto" { post } }}
+          {{ /for }}
+        </ol>
+      </section>
+    {{ /if }}
+
+    {{# === MANIFIESTO / CITA — al cierre como voice-statement === #}}
+    <aside class="home-manifesto" aria-label="Cita de cierre">
+      <blockquote class="home-manifesto-quote">
+        <p>Yo… he visto cosas que vosotros no creeríais: diseñar páginas web usando Frontpage. He visto GIFs animados colonizar sitios completos más allá de los dominios de Geocities.</p>
+        <p>Todos esos momentos se perderán… en el tiempo… como cookies en la red.</p>
+        <p>Es hora de innovar.</p>
+      </blockquote>
+      <div class="home-manifesto-links">
+        <a href="/blade-runner-frontpage-geocities/">Disección del monólogo<span class="arrow">→</span></a>
+        <a href="/sobre-mi/">Quién escribe<span class="arrow">→</span></a>
+      </div>
+    </aside>
+
+    {{# === SEGUNDO GRID: cola del archivo (si hay material para 1 fila) === #}}
+    {{ if tailPosts.length >= 3 }}
+      <section class="home-grid-tail" aria-label="Aún más entradas">
+        <span class="home-grid-eyebrow">Aún más entradas</span>
+        <ol class="home-grid-cards">
+          {{ for post of tailPosts }}
+            {{ include "partials/post-card.vto" { post } }}
+          {{ /for }}
+        </ol>
+      </section>
+    {{ /if }}
+
+    {{# === POR TEMAS (top tags como tiles) === #}}
+    {{ if topTags.length }}
+      <section class="home-tags" aria-label="Por etiquetas">
+        <div class="home-tags-head">
+          <span class="home-tags-eyebrow">Por temas</span>
+          <a href="/etiquetas/" class="home-tags-all">
+            Ver todas las etiquetas<span class="arrow">→</span>
+          </a>
+        </div>
+        <ol class="home-tags-grid">
+          {{ for tag of topTags }}
+            <li class="home-tags-cell">
+              <a href="/etiqueta/{{ tag.slug }}/">
+                <span class="home-tag-name">{{ tag.name }}</span>
+                <span class="home-tag-count">{{ tag.count + (tag.count === 1 ? ' entrada' : ' entradas') }}</span>
+              </a>
+            </li>
+          {{ /for }}
+        </ol>
+      </section>
+    {{ /if }}
+
+    {{# === BANNER ARCHIVO COMPLETO === #}}
+    {{ if hasArchive }}
+      <aside class="archive-banner" aria-label="Archivo completo">
+        <div class="archive-banner-text">
+          <span class="archive-banner-eyebrow">El archivo</span>
+          <h2 class="archive-banner-title">Todo lo publicado, año por año.</h2>
+          <p class="archive-banner-sub">{{ posts.length }} entradas en orden cronológico inverso, sin algoritmo, sin filtros, sin paginación infinita. Tal y como se publicaron.</p>
+        </div>
+        <a href="/archivo/" class="archive-banner-link">
+          Ver el archivo completo
+          <span class="arrow">→</span>
+        </a>
+      </aside>
+    {{ /if }}
+
+  </div>
+</div>

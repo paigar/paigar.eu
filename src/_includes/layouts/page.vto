@@ -1,0 +1,25 @@
+---
+layout: layouts/base.vto
+---
+
+<div class="container">
+
+  <article class="page">
+
+    <header class="page-header">
+      {{ if section_mark }}
+        <div class="page-eyebrow">{{ section_mark }}</div>
+      {{ /if }}
+      <h1 class="page-title">{{ title }}</h1>
+      {{ if subtitle }}
+        <p class="page-subtitle">{{ subtitle }}</p>
+      {{ /if }}
+    </header>
+
+    <div class="page-body">
+      {{ content }}
+    </div>
+
+  </article>
+
+</div>

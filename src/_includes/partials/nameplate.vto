@@ -1,0 +1,42 @@
+<header class="site-header" role="banner">
+  <div class="site-header-inner">
+    <a href="/" class="site-header-mark" aria-label="Inicio · PAIGAR · {{ site.subtitle }}">
+      <span class="site-header-mark-name">PAIGAR</span>
+      <span class="site-header-mark-tagline">{{ site.subtitle }}</span>
+    </a>
+    <button type="button" class="site-header-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Abrir menú">
+      <span class="site-header-toggle-bar"></span>
+      <span class="site-header-toggle-bar"></span>
+      <span class="site-header-toggle-bar"></span>
+    </button>
+    <nav id="site-nav" class="site-header-nav" aria-label="Navegación principal">
+      <a href="/"{{ if url === '/' }} class="is-current"{{ /if }}>Bitácora</a>
+      <a href="/que-es-esto/"{{ if url === '/que-es-esto/' }} class="is-current"{{ /if }}>Qué es esto</a>
+      <a href="/sobre-mi/"{{ if url === '/sobre-mi/' }} class="is-current"{{ /if }}>Sobre mí</a>
+      <a href="/contacto/"{{ if url === '/contacto/' }} class="is-current"{{ /if }}>Contacto</a>
+    </nav>
+  </div>
+  <script>
+    (function () {
+      var btn = document.querySelector('.site-header-toggle');
+      var nav = document.getElementById('site-nav');
+      if (!btn || !nav) return;
+      function setOpen(open) {
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        btn.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+      }
+      btn.addEventListener('click', function () {
+        setOpen(btn.getAttribute('aria-expanded') !== 'true');
+      });
+      nav.addEventListener('click', function (e) {
+        if (e.target.tagName === 'A') setOpen(false);
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') {
+          setOpen(false);
+          btn.focus();
+        }
+      });
+    })();
+  </script>
+</header>

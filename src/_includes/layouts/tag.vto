@@ -1,0 +1,29 @@
+---
+layout: layouts/base.vto
+---
+
+<div class="container">
+
+  <section class="tag-page">
+
+    <header class="page-header">
+      <div class="page-eyebrow"><a href="/etiquetas/">Etiquetas</a></div>
+      <h1 class="page-title">{{ tag }}</h1>
+      <p class="page-subtitle">
+        {{ posts.length }} {{ posts.length === 1 ? 'entrada etiquetada' : 'entradas etiquetadas' }} con #{{ tag }}.
+      </p>
+    </header>
+
+    <ol class="home-grid-cards" style="padding-top: 3rem;">
+      {{ for post of posts }}
+        {{ include "partials/post-card.vto" { post } }}
+      {{ /for }}
+    </ol>
+
+    <p class="tag-page-back-wrap">
+      <a href="/" class="tag-page-back">Volver al feed completo</a>
+    </p>
+
+  </section>
+
+</div>

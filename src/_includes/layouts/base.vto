@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="{{ site.lang }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#F2F2F0">
+
+  <title>{{ if title }}{{ title }} · {{ /if }}{{ site.title }}</title>
+  <meta name="description" content="{{ description || excerpt || site.description }}">
+
+  <meta property="og:site_name" content="{{ site.title }}">
+  <meta property="og:title" content="{{ if title }}{{ title }} · {{ /if }}{{ site.title }}">
+  <meta property="og:description" content="{{ description || excerpt || site.description }}">
+  <meta property="og:type" content="{{ if type === 'post' }}article{{ else }}website{{ /if }}">
+  <meta property="og:url" content="{{ site.url }}{{ url }}">
+  <meta property="og:locale" content="es_ES">
+  {{ if image }}
+    <meta property="og:image" content="{{ site.url }}{{ image }}">
+  {{ /if }}
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ if title }}{{ title }} · {{ /if }}{{ site.title }}">
+  <meta name="twitter:description" content="{{ description || excerpt || site.description }}">
+
+  <link rel="canonical" href="{{ site.url }}{{ url }}">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS · {{ site.title }}" href="/feed.xml">
+  <link rel="alternate" type="application/feed+json" title="JSON Feed · {{ site.title }}" href="/feed.json">
+
+  {{# Preload de los .woff2 latin críticos (titulares + cuerpo + mono) para
+      reducir el FOUT inicial. El crossorigin es obligatorio aunque sean
+      same-origin, por una particularidad del CORS de fuentes. #}}
+  <link rel="preload" href="/fonts/newsreader-normal-300-700-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/major-mono-display-normal-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/dm-mono-normal-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+
+  <link rel="stylesheet" href="/styles/fonts.css">
+  <link rel="stylesheet" href="/styles/main.css">
+
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+
+  <a href="#main" class="skip-link">Saltar al contenido</a>
+
+  {{ include "partials/nameplate.vto" }}
+
+  <main id="main">
+    {{ content }}
+  </main>
+
+  {{ include "partials/colophon.vto" }}
+
+</body>
+</html>

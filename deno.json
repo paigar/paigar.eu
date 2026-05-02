@@ -1,0 +1,16 @@
+{
+  "tasks": {
+    "lume": "deno run --unstable-temporal -A cli.ts",
+    "build": "deno task lume",
+    "serve": "deno task lume -s",
+    "fonts": "deno run --allow-net --allow-read --allow-write scripts/fetch-fonts.ts"
+  },
+  "imports": {
+    "lume/": "https://deno.land/x/lume@v3.2.4/"
+  },
+  "compilerOptions": {
+    "types": [
+      "lume/types.ts"
+    ]
+  }
+}

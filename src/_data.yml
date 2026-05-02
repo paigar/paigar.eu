@@ -1,0 +1,22 @@
+site:
+  title: PAIGAR
+  subtitle: Portal de Apuntes, Ideas, Garabatos, Artilugios y Retrofuturismo
+  short_subtitle: Cuaderno digital
+  description: El cuaderno digital de Juanjo. Apuntes sueltos, ideas a medio cocinar, capturas con un comentario al lado, pequeños cacharros web, ramalazos retrofuturistas.
+  url: https://paigar.eu
+  lang: es
+  author:
+    name: Juanjo
+    url: https://paigar.eu
+  email: hola@paigar.eu
+
+nav:
+  - { url: /, label: Feed }
+  - { url: /que-es-esto/, label: Qué es esto }
+
+colofon:
+  - { url: /que-es-esto/, label: Qué es esto }
+  - { url: /legal/aviso-legal/, label: Aviso legal }
+  - { url: /legal/privacidad/, label: Privacidad }
+  - { url: /legal/cookies/, label: Cookies }
+  - { url: /feed.xml, label: RSS, external: true }

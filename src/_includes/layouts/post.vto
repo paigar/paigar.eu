@@ -1,0 +1,140 @@
+---
+layout: layouts/base.vto
+---
+
+{{ set allPostsDesc = search.pages("type=post", "date=desc") }}
+{{ set descIndex = allPostsDesc.findIndex(p => p.url === url) }}
+{{ set prevPost = allPostsDesc[descIndex + 1] || null }}
+{{ set nextPost = allPostsDesc[descIndex - 1] || null }}
+
+{{ set visibleTags = (tags || []).filter(t => t !== 'post') }}
+
+{{# Relacionados: hasta 3 posts ordenados por (etiquetas compartidas, fecha desc).
+    Excluye el actual y los inmediatos prev/next para no repetir lo que ya
+    se muestra en post-nav. Si no hay match por etiquetas, el sort por fecha
+    actúa como fallback natural (los 3 más recientes). #}}
+{{ set excludeUrls = [url, prevPost?.url, nextPost?.url].filter(u => u) }}
+{{ set related = allPostsDesc
+  .filter(p => !excludeUrls.includes(p.url))
+  .map(p => {
+    const otherTags = (p.tags || []).filter(t => t !== 'post');
+    const shared = otherTags.filter(t => visibleTags.includes(t)).length;
+    return { post: p, score: shared };
+  })
+  .sort((a, b) => b.score - a.score || new Date(b.post.date) - new Date(a.post.date))
+  .slice(0, 3)
+  .map(c => c.post) }}
+
+{{ set totalPosts = allPostsDesc.length }}
+
+<article class="post">
+
+  <div class="container">
+    <header class="post-hero">
+      {{ if visibleTags.length }}
+        <div class="post-eyebrow">
+          <span class="tags">{{ visibleTags.join(' · ') }}</span>
+        </div>
+      {{ /if }}
+      <h1 class="post-title">{{ title }}</h1>
+      {{ if excerpt }}
+        <p class="post-deck">{{ excerpt }}</p>
+      {{ /if }}
+    </header>
+  </div>
+
+  {{ if image }}
+    <div class="post-cover{{ if image_contain }} post-cover--contain{{ /if }}">
+      <img src="{{ image }}" alt="{{ image_alt || title }}" loading="eager">
+    </div>
+  {{ else }}
+    <div class="post-poster" aria-hidden="true">
+      <h2 class="post-poster-title">{{ title }}</h2>
+    </div>
+  {{ /if }}
+
+  <div class="container">
+
+    <div class="post-body-wrap">
+
+      <aside class="post-aside" aria-label="Información de la entrada">
+
+        <div class="post-aside-date">
+          <span class="day">{{ date |> date('d') }}</span>
+          <span class="month">{{ date |> date('MMM') }}</span>
+          <span class="year">{{ date |> date('yyyy') }}</span>
+        </div>
+
+        {{ if visibleTags.length }}
+          <div class="post-aside-tags-wrap">
+            <span class="post-aside-label">Etiquetas</span>
+            <nav class="post-aside-tags">
+              {{ for tag of visibleTags }}<a href="/etiqueta/{{ tag |> slug }}/">{{ tag }}</a>{{ /for }}
+            </nav>
+          </div>
+        {{ /if }}
+
+      </aside>
+
+      <div class="post-body">
+        {{ content }}
+      </div>
+
+    </div>
+
+    <div class="ornament">···</div>
+
+    <footer class="post-foot">
+      <nav class="post-nav" aria-label="Navegación entre entradas">
+        {{ if nextPost }}
+          <a href="{{ nextPost.url }}" class="post-nav-item post-nav-item--prev" rel="next">
+            <span class="post-nav-label">← Anterior</span>
+            <span class="post-nav-title">{{ nextPost.title }}</span>
+          </a>
+        {{ else }}
+          <div class="post-nav-item post-nav-item--prev post-nav-empty">
+            <span class="post-nav-label">— Última entrada</span>
+          </div>
+        {{ /if }}
+
+        {{ if prevPost }}
+          <a href="{{ prevPost.url }}" class="post-nav-item post-nav-item--next" rel="prev">
+            <span class="post-nav-label">Siguiente →</span>
+            <span class="post-nav-title">{{ prevPost.title }}</span>
+          </a>
+        {{ else }}
+          <div class="post-nav-item post-nav-item--next post-nav-empty">
+            <span class="post-nav-label">Primera entrada —</span>
+          </div>
+        {{ /if }}
+      </nav>
+    </footer>
+
+    {{# === SUGERIDOS: 3 entradas relacionadas por etiquetas === #}}
+    {{ if related.length }}
+      <section class="post-related" aria-label="Otras entradas relacionadas">
+        <span class="post-related-eyebrow">Otras entradas</span>
+        <ol class="post-related-grid">
+          {{ for post of related }}
+            {{ include "partials/post-card.vto" { post } }}
+          {{ /for }}
+        </ol>
+      </section>
+    {{ /if }}
+
+    {{# === BANNER ARCHIVO COMPLETO === #}}
+    <aside class="archive-banner" aria-label="Archivo completo">
+      <div class="archive-banner-text">
+        <span class="archive-banner-eyebrow">El archivo</span>
+        <h2 class="archive-banner-title">Todo lo publicado, año por año.</h2>
+        <p class="archive-banner-sub">{{ totalPosts }} entradas en orden cronológico inverso, sin algoritmo, sin filtros, sin paginación infinita. Tal y como se publicaron.</p>
+      </div>
+      <a href="/archivo/" class="archive-banner-link">
+        Ver el archivo completo
+        <span class="arrow">→</span>
+      </a>
+    </aside>
+
+  </div>
+
+</article>

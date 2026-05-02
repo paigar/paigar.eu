@@ -1,0 +1,21 @@
+# Lume build output
+_site/
+_cache/
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# IDEs
+.vscode/
+.idea/
+
+# Node (no debería aparecer con Deno, pero por si acaso)
+node_modules/
+
+# Variables de entorno / secretos (defensivo)
+.env
+.env.*

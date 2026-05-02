@@ -1,0 +1,37 @@
+---
+layout: layouts/page.vto
+type: page
+title: Etiquetas
+section_mark: Índice
+subtitle: "Las cinco del acrónimo —apuntes, ideas, garabatos, artilugios, retrofuturismo— conviven aquí con cualquier otra etiqueta que haya cuajado a fuerza de entradas. Ninguna manda más que las demás: cada una vale lo que valen los posts que la llevan, ni más ni menos."
+url: /etiquetas/
+description: Índice completo de etiquetas usadas en paigar.eu.
+---
+
+{{ set posts = search.pages("type=post") }}
+{{ set allTagInstances = posts.flatMap(p => (p.tags || []).filter(t => t !== 'post')) }}
+
+{{ set tagGroups = allTagInstances.reduce((acc, tag) => {
+  const tagSlug = slug(tag);
+  if (!tagSlug) return acc;
+  const group = acc.get(tagSlug) || { variants: new Map(), count: 0 };
+  group.variants.set(tag, (group.variants.get(tag) || 0) + 1);
+  group.count++;
+  acc.set(tagSlug, group);
+  return acc;
+}, new Map()) }}
+
+{{ set canonicalTags = [...tagGroups.entries()].map(([tagSlug, group]) => ({
+  slug: tagSlug,
+  name: [...group.variants.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'es'))[0][0],
+  count: group.count,
+})).sort((a, b) => a.name.localeCompare(b.name, 'es')) }}
+
+<div class="tags-index">
+  {{ for tag of canonicalTags }}
+    <a href="/etiqueta/{{ tag.slug }}/" class="tags-index-tag">
+      <span class="tags-index-tag-name">{{ tag.name }}</span>
+      <span class="tags-index-tag-count">{{ tag.count }}</span>
+    </a>
+  {{ /for }}
+</div>

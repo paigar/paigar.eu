@@ -1,0 +1,1265 @@
+---
+title: "Volver a programar el juego que programé a los dieciséis"
+date: 2025-12-23
+excerpt: "Después de recuperar el listado de mi juego de 1989, una pregunta loca: ¿se podría hacer correr en un navegador? Con los píxeles originales, sin emulador. Spoiler: sí, juega bastante decente y al final está aquí abajo para que lo pruebes."
+tags: [artilugios, retrofuturismo, msx, javascript, canvas]
+image: /img/gasoil-web-header.png
+image_alt: "Pantalla de un ordenador moderno mostrando un juego de píxeles retro con tres niveles de plataformas, sprites blancos y rojos sobre fondo negro y un marco amarillo punteado, fotografía con luz natural"
+---
+
+Hace una semana terminé de transcribir el listado de mi juego **Gasoil** desde la revista MSX-Club número 64, conseguí ejecutarlo en un emulador del navegador y dejé escrito por aquí [un post bastante sentimental sobre todo el proceso](/articulo-gasoil/). Era un buen final. Tenía cierre, tenía moraleja, tenía hasta una frase seca de despedida. Pero la cabeza no se quedó tranquila. La cabeza siguió dándole vueltas a una pregunta tonta: ¿y si en lugar de pasarlo por un emulador del MSX, lo programara otra vez **desde cero** en HTML y JavaScript? Sin BASIC, sin VPOKE, sin chip de sonido PSG. En el navegador, con canvas, en un solo archivo. Pero usando los gráficos exactos del original. Los píxeles que yo dibujé en cuadrícula de papel milimetrado a los dieciséis años, renderizados otra vez treinta y cinco años después.
+
+Es lo que se llama una idea inútil, en el mejor sentido de la expresión. No tiene utilidad práctica, no la va a jugar nadie, no me va a generar tráfico, no resuelve ningún problema del mundo real. Pero me apetecía. Y resulta que dos tardes después tengo el juego corriendo al final de este post, así que algo se ha hecho.
+
+## el dilema de los gráficos
+
+La primera decisión técnica era la única que importaba. Cuando reprogramas algo viejo tienes dos caminos. El primero es **rehacerlo bonito**: aprovechas que ahora tienes 16 millones de colores, sprites de 256×256 píxeles, animaciones suaves, y construyes una versión moderna del juego que mantiene el espíritu pero se ve actual. El segundo es **respetar lo que había**: mantener los píxeles originales, los colores limitados de la paleta MSX, la baja resolución, y que el resultado sea reconociblemente el mismo juego que el de 1989.
+
+Elegí el segundo camino sin dudar. La gracia no era tener un juego de plataformas más, hay miles. La gracia era que el héroe en pantalla fuera **literalmente** el héroe que dibujé en mi cuaderno hace treinta y cinco años. Que cada píxel del pez, del gusano, de los contenedores de gasolina, fuera exactamente el que está codificado en las líneas DATA del listado de la revista. Sin retoques, sin upgrades, sin reinterpretación. Lo que vieras en el navegador tenía que ser una continuación pura del original, no un homenaje.
+
+## cómo se renderiza un sprite del MSX en 2026
+
+Aquí llega la parte mecánica y deliciosa del proyecto. Un sprite del MSX1 es una matriz de 16×16 píxeles monocromos, codificada en 32 bytes. Los primeros 16 bytes son las 16 filas del cuadrante izquierdo (cada byte = una fila de 8 píxeles, bit más significativo a la izquierda). Los siguientes 16 bytes son las 16 filas del cuadrante derecho. Esto era estándar en 1989 y por supuesto sigue siendo estándar en 2026, porque el formato no caduca, no necesita actualizaciones de seguridad, no depende de ningún framework. Es solo una forma de organizar bytes.
+
+En el listado original de Gasoil hay dieciséis sprites así, ocupando dieciséis líneas de DATA del 1040 al 1190. Cada línea de DATA es un sprite. Los identifiqué uno a uno mirando las llamadas `PUT SPRITE` del código: el sprite 0 es el héroe parado, los sprites 5 y 6 son los dos cuadros de animación de andar a la izquierda, los 8 y 9 son los de andar a la derecha, el 10 es el héroe saltando con los brazos arriba. Hay también dos cuadros de animación del pez, dos del gusano, los contenedores de gasolina cerrados y abiertos, las gotas de gasoil cayendo y el icono de vida.
+
+Para llevarlos al navegador hace falta un decodificador trivial: catorce líneas de JavaScript que recorren los 32 bytes y construyen una matriz de unos y ceros. Después, en el bucle de pintado, cada píxel "encendido" del sprite se pinta sobre el canvas con el color que toque. Como el MSX original aplicaba el color al sprite entero, también se hace así en mi versión. El resultado es bonito y honestamente fiel.
+
+Aquí va el corazón del decodificador. No tiene mérito ninguno y precisamente por eso me hace gracia:
+
+```javascript
+const SPRITES = SPRITE_DATA.map((bytes32) => {
+	const grid = [];
+	for (let y = 0; y < 16; y++) {
+		const row = new Uint8Array(16);
+		const bL = bytes32[y],
+			bR = bytes32[y + 16];
+		for (let x = 0; x < 8; x++) {
+			if (bL & (0x80 >> x)) row[x] = 1;
+			if (bR & (0x80 >> x)) row[x + 8] = 1;
+		}
+		grid.push(row);
+	}
+	return grid;
+});
+```
+
+Trece líneas que conectan 1989 con 2026. Los `bytes32` son los `DATA` originales. La salida es una matriz que el canvas sabe pintar. Entre medias no pasa nada que requiera ninguna librería, ningún SDK, ningún build step. Si esto sigue siendo legible para alguien dentro de otros treinta y cinco años, podrá rehacer su versión partiendo del mismo punto.
+
+## la lógica del juego, que es lo que costó
+
+Donde sí me llevé un disgusto al principio fue al diseñar el bucle de juego. Tenía la cabeza acelerada con los sprites, escribí la primera versión en una sentada y monté un mapa de niveles **completamente equivocado**. Recordaba mal el original. Pensé que las plataformas estaban escalonadas en zigzag y que el héroe saltaba de unas a otras como en los plataformas clásicos. Cargué el resultado, le di al `RUN` mental y me bastaron diez segundos para darme cuenta: aquello no era Gasoil. Era _un juego de plataformas_, sin más. Mi juego de plataformas. Pero no el mío.
+
+Volví a abrir el listado y a leerlo de verdad, no por encima. **Gasoil es un juego de cascada de gasoil**, no de saltar plataformas. La estructura real es bastante más bonita: tres niveles horizontales conectados por dos escaleras al centro de la pantalla, dos columnas verticales de tanques en los extremos (una a la izquierda, una a la derecha, con un tanque en cada uno de los tres niveles), y junto a cada tanque su palanca correspondiente. El gasoil entra por el techo y va goteando a los tanques superiores. La misión es ir accionando palancas en cada nivel para que el gasoil fluya hacia abajo en cascada por la misma columna: del tanque superior al del medio, del medio al del fondo, y del fondo desaparece y suma puntos. Como cada tanque solo aguanta tres bloques, el ritmo lo marca la urgencia: si tardas, el de arriba se desborda y pierdes vida.
+
+Mientras tanto, en el nivel medio patrulla un gusano que te quita una vida si te toca, y en el charco central del nivel inferior salta un pez al que también hay que esquivar. Las escaleras conectan los tres niveles pero te dejan expuesto en el medio. La habilidad consiste en mantener el flujo: subir, abrir, bajar, abrir, sin que ningún tanque se sobrecargue, sin morir por el camino y sin que la puntuación llegue a cero por el goteo constante.
+
+Es un diseño bonito, ahora que lo veo desde fuera con ojos de adulto. Tiene tensión por capas, no es solo un juego de plataformas. Y es del todo coherente con lo que se podía hacer en BASIC con los sprites del MSX: tres niveles, dos escaleras, dos columnas, un héroe, dos enemigos. Lo justo. Curioso volver a apreciar a aquel chaval de dieciséis años que diseñó esto sin haber leído ni un manual de game design en su vida, simplemente probando hasta que la mecánica funcionara.
+
+Esa es la estructura que finalmente programé en JavaScript. Las posiciones, las velocidades, los colores, las distancias entre niveles, la capacidad de los tanques, todo está sacado del listado original. Pero la lógica detrás (la máquina de estados del héroe, el sistema de bloques en tránsito con animación de caída, la detección de palancas y enemigos) es nueva. Es una traducción del comportamiento, no una emulación del código.
+
+## las tres pantallas de bienvenida
+
+Lo que sí mantuve casi literal son las **tres pantallas de instrucciones** del original. El BASIC de Gasoil tenía una secuencia de bienvenida bastante elaborada para un juego de aficionado de los noventa: una pantalla con el título, otra explicando el objetivo, otra los mandos, otra los puntos, y solo entonces arrancaba el juego. En 2026 nadie necesita ya esa secuencia. Cualquier juego web te suelta directamente al gameplay, como mucho con un pequeño tutorial flotante. Pero esas tres pantallas eran parte del recuerdo. Cuando uno juega a Gasoil de 1989, se encuentra primero con esos textos. Quitarlas hubiera sido, no sé cómo decirlo, una falta de respeto al original. Las dejé.
+
+## sobre el bucle del salto, otra vez
+
+Mencioné en el artículo anterior la rutina del salto del original. Aquí ha pasado algo curioso: al rescatar los sprites uno a uno y ponerlos en pantalla, me he reencontrado con un detalle que tenía completamente olvidado. El sprite del héroe en posición de salto (el patrón número 10, en la línea DATA 1140 del listado) tiene en la parte de abajo del cuerpo una serie de pinceladas curvadas que sugieren claramente una hélice. Mi yo de dieciséis años no lo dibujó como un personaje saltando con los pies estirados, lo dibujó como un personaje **volando con una hélice debajo**. Como si el héroe llevara incorporado un mecanismo propio para cubrir distancia en el aire. Lo había olvidado por completo.
+
+En la primera versión del juego web ignoré ese detalle y monté un salto puramente vertical, corto, prácticamente inútil para esquivar al gusano. Cuando volví a mirar el sprite con calma me di cuenta de que el salto **tenía que ser largo**, con alcance horizontal generoso, porque el propio dibujo del personaje lo está pidiendo. Así que reescribí la trayectoria: ahora el héroe sale despedido en arco hacia delante, en la dirección a la que mira, recorre como un cuarto del ancho de la pantalla por el aire, y aterriza limpiamente al otro lado del enemigo. Es exactamente el comportamiento que el sprite estaba sugiriendo.
+
+Lo divertido del asunto es que el código de la trayectoria no tiene nada de especial: una función `Math.sin(t * Math.PI) * 28` para la altura, una interpolación lineal para la X. Treinta segundos de adulto. La parte interesante no es el código, es la lectura de los píxeles del original. Treinta y cinco años después de dibujar ese sprite, descubro que mi yo adolescente había dejado escondida una pista sobre cómo debía comportarse el personaje, y esa pista solo se puede leer mirando los píxeles uno por uno. El código fuente del juego no la documenta. Está toda en los bytes del sprite.
+
+## qué se ha perdido
+
+Bastantes cosas, para ser honesto. El juego web no tiene scroll de tabla de récords ni rachas tipo arcade. No suena como un MSX porque la Web Audio API genera ondas cuadradas perfectas, no esa textura tan particular del chip PSG. La interfaz no se ve dentro del marco de un televisor de tubo, así que se pierde el efecto cromático tan especial que daba la pantalla rebotada de un Sony Trinitron de la época. La pantalla ocupa 256×192 píxeles, igual que el original, pero escalada sobre un monitor de cuatro mil cosas, lo cual es a la vez nostálgico y un poco surrealista.
+
+Lo que sí queda, lo que sostiene todo el ejercicio, es que cuando le das al botón de empezar el héroe que aparece en pantalla **es el mismo héroe**. No uno parecido, no una versión moderna inspirada en él. Es exactamente él: dieciséis filas por dieciséis columnas, los píxeles que mi yo de dieciséis años decidió que formarían su contorno, codificados en los mismos treinta y dos bytes de la línea 1040 del listado. Eso para mí ya justifica todo el proyecto.
+
+## el juego
+
+Aquí abajo está. Se juega con las flechas del teclado y la barra espaciadora. El objetivo es llevar el gasoil de los tanques superiores hasta el fondo, en cascada por la misma columna: cada palanca que accionas hace caer un bloque del tanque al de inmediatamente abajo, y la palanca del tanque del fondo lo hace desaparecer y suma cincuenta puntos. Las dos escaleras del centro conectan los tres niveles, las flechas arriba y abajo te suben y te bajan por ellas. El espacio sirve para accionar la palanca cuando estás pegado a un tanque, y para saltar largo cuando no, en la dirección a la que mires. Cada cierto tiempo cae una gota desde el techo a uno de los tanques superiores y te quita diez puntos. Si llegas a cero, pierdes la partida. Si un tanque se llena por encima de tres bloques, también.
+
+Las palancas que se pueden accionar brillan en rojo, las que están vacías se ven en gris. Las que tienen "chispas" parpadeando encima son las que te están esperando: el héroe está pegado y solo hace falta pulsar espacio.
+
+No es el juego original. No está depurado al 100%. Pero la ilusión y los pixeles son los mismos que en 1989.
+
+<div id="gasoil-prototipo">
+<style>
+
+#gasoil-prototipo .gp-wrapper {
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 12px;
+margin: 24px auto;
+max-width: 540px;
+}
+#gasoil-prototipo .gp-wrapper canvas {
+image-rendering: pixelated;
+image-rendering: -moz-crisp-edges;
+image-rendering: crisp-edges;
+width: 100%;
+max-width: 100%;
+aspect-ratio: 256 / 192;
+height: auto;
+background: #000;
+display: block;
+box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+border-radius: 4px;
+cursor: pointer;
+outline: none;
+margin-bottom: 20px;
+}
+#gasoil-prototipo .gp-wrapper canvas:focus {
+box-shadow: 0 0 0 3px #ffaa00, 0 4px 20px rgba(0,0,0,0.3);
+}
+#gasoil-prototipo .gp-help {
+font-family: ui-monospace, 'SF Mono', Consolas, monospace;
+font-size: 0.85em;
+opacity: 0.7;
+text-align: center;
+line-height: 1.5;
+}
+#gasoil-prototipo .gp-help kbd {
+display: inline-block;
+padding: 1px 6px;
+background: rgba(0,0,0,0.08);
+border: 1px solid rgba(0,0,0,0.2);
+border-radius: 3px;
+font-family: inherit;
+font-size: 0.95em;
+}
+
+</style>
+
+<div class="gp-wrapper">
+  <canvas id="gp-canvas" width="256" height="192" tabindex="0" aria-label="Juego Gasoil"></canvas>
+  <div class="gp-help">
+    Haz clic sobre la pantalla para empezar &middot;
+    <kbd>←</kbd> <kbd>→</kbd> moverse &middot;
+    <kbd>↑</kbd> <kbd>↓</kbd> escaleras &middot;
+    <kbd>Espacio</kbd> saltar / accionar palanca
+  </div>
+</div>
+
+<script>
+
+(function() {
+'use strict';
+
+// ============================================================
+//  ASSETS - sprites originales del listado
+// ============================================================
+const SPRITE_DATA = [
+  [16,17,24,24,60,62,63,63,31,31,15,7,3,7,11,16,192,224,240,216,216,252,252,252,248,248,240,224,192,224,208,8],
+  [0,0,3,7,31,51,127,255,255,67,7,31,127,255,28,0,0,0,0,193,226,244,254,254,254,254,244,226,193,0,0,0],
+  [16,11,7,3,7,15,31,63,63,54,22,30,14,14,7,2,8,208,224,192,224,240,248,248,252,252,124,120,56,24,16,16],
+  [0,0,0,0,0,0,0,0,6,5,100,115,217,247,121,15,7,0,0,0,0,0,64,224,240,208,209,241,227,134,252,248],
+  [0,0,0,0,0,0,0,0,0,0,34,113,216,252,111,7,0,0,0,0,0,0,0,0,0,1,193,225,243,198,252,248],
+  [6,9,3,4,63,7,3,1,3,6,15,12,7,3,6,60,164,204,178,200,224,208,144,6,137,201,65,98,252,192,32,240],
+  [6,1,3,30,3,1,0,1,1,3,7,6,3,1,0,7,180,202,240,108,234,200,132,192,98,101,113,126,224,224,192,192],
+  [0,3,0,160,64,48,138,105,150,24,60,237,63,29,0,0,0,254,32,32,16,16,16,16,16,48,248,141,111,239,121,49],
+  [5,18,42,4,4,10,0,0,56,68,68,33,31,0,0,1,88,164,112,220,240,112,32,112,216,184,188,140,252,248,136,231],
+  [17,42,84,4,10,2,68,128,128,128,128,65,63,0,0,0,154,100,208,252,240,112,32,112,216,216,220,220,220,248,32,124],
+  [127,4,4,4,4,8,8,8,8,8,156,191,249,182,183,158,224,4,9,37,66,148,99,148,24,60,55,156,252,224,128,0],
+  [255,255,240,240,0,0,0,0,0,0,0,0,0,0,0,0,255,255,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+  [224,224,224,224,224,192,192,192,192,192,192,192,192,192,192,192,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+  [15,7,2,0,0,0,0,0,0,0,0,0,0,0,159,238,238,248,120,48,48,16,16,0,0,0,0,0,0,0,0,0],
+  [1,7,63,255,15,255,0,0,0,0,0,0,0,0,0,0,128,224,252,255,240,255,0,0,0,0,0,0,0,0,0,0],
+  [109,146,57,237,60,56,16,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+];
+
+// Paleta MSX1 (TMS9918A)
+const PAL = [
+  [0,0,0,0],[0,0,0,255],[33,200,66,255],[94,220,120,255],
+  [84,85,237,255],[125,118,252,255],[212,82,77,255],[102,204,220,255],
+  [252,85,84,255],[255,121,120,255],[212,193,84,255],[230,206,128,255],
+  [33,176,59,255],[201,91,186,255],[204,204,204,255],[255,255,255,255],
+];
+
+const SPRITES = SPRITE_DATA.map(bytes32 => {
+  const grid = [];
+  for (let y = 0; y < 16; y++) {
+    const row = new Uint8Array(16);
+    const bL = bytes32[y], bR = bytes32[y + 16];
+    for (let x = 0; x < 8; x++) {
+      if (bL & (0x80 >> x)) row[x] = 1;
+      if (bR & (0x80 >> x)) row[x + 8] = 1;
+    }
+    grid.push(row);
+  }
+  return grid;
+});
+
+// Mini fuente 5x7
+const FONT = (() => {
+  const F = {};
+  const def = (ch, rows) => { F[ch] = rows.map(r => parseInt(r, 2)); };
+  def(' ', ['00000','00000','00000','00000','00000','00000','00000']);
+  def('!', ['00100','00100','00100','00100','00000','00000','00100']);
+  def('.', ['00000','00000','00000','00000','00000','00000','00100']);
+  def(',', ['00000','00000','00000','00000','00000','00100','01000']);
+  def(':', ['00000','00100','00000','00000','00000','00100','00000']);
+  def('-', ['00000','00000','00000','01110','00000','00000','00000']);
+  def('?', ['01110','10001','00010','00100','00100','00000','00100']);
+  def('A', ['01110','10001','10001','11111','10001','10001','10001']);
+  def('B', ['11110','10001','10001','11110','10001','10001','11110']);
+  def('C', ['01110','10001','10000','10000','10000','10001','01110']);
+  def('D', ['11110','10001','10001','10001','10001','10001','11110']);
+  def('E', ['11111','10000','10000','11110','10000','10000','11111']);
+  def('F', ['11111','10000','10000','11110','10000','10000','10000']);
+  def('G', ['01110','10001','10000','10111','10001','10001','01111']);
+  def('H', ['10001','10001','10001','11111','10001','10001','10001']);
+  def('I', ['01110','00100','00100','00100','00100','00100','01110']);
+  def('J', ['00111','00010','00010','00010','00010','10010','01100']);
+  def('K', ['10001','10010','10100','11000','10100','10010','10001']);
+  def('L', ['10000','10000','10000','10000','10000','10000','11111']);
+  def('M', ['10001','11011','10101','10101','10001','10001','10001']);
+  def('N', ['10001','11001','10101','10011','10001','10001','10001']);
+  def('O', ['01110','10001','10001','10001','10001','10001','01110']);
+  def('P', ['11110','10001','10001','11110','10000','10000','10000']);
+  def('Q', ['01110','10001','10001','10001','10101','10010','01101']);
+  def('R', ['11110','10001','10001','11110','10100','10010','10001']);
+  def('S', ['01111','10000','10000','01110','00001','00001','11110']);
+  def('T', ['11111','00100','00100','00100','00100','00100','00100']);
+  def('U', ['10001','10001','10001','10001','10001','10001','01110']);
+  def('V', ['10001','10001','10001','10001','10001','01010','00100']);
+  def('W', ['10001','10001','10001','10101','10101','10101','01010']);
+  def('X', ['10001','10001','01010','00100','01010','10001','10001']);
+  def('Y', ['10001','10001','10001','01010','00100','00100','00100']);
+  def('Z', ['11111','00001','00010','00100','01000','10000','11111']);
+  def('0', ['01110','10001','10011','10101','11001','10001','01110']);
+  def('1', ['00100','01100','00100','00100','00100','00100','01110']);
+  def('2', ['01110','10001','00001','00010','00100','01000','11111']);
+  def('3', ['01110','10001','00001','00110','00001','10001','01110']);
+  def('4', ['00010','00110','01010','10010','11111','00010','00010']);
+  def('5', ['11111','10000','11110','00001','00001','10001','01110']);
+  def('6', ['00110','01000','10000','11110','10001','10001','01110']);
+  def('7', ['11111','00001','00010','00100','01000','01000','01000']);
+  def('8', ['01110','10001','10001','01111','00001','00010','01100']);
+  def('9', ['01110','10001','10001','01111','00001','00010','01100']);
+  return F;
+})();
+// Fix dígitos 8 y 9 que tenían errata
+FONT['8'] = [parseInt('01110',2),parseInt('10001',2),parseInt('10001',2),parseInt('01110',2),parseInt('10001',2),parseInt('10001',2),parseInt('01110',2)];
+FONT['9'] = [parseInt('01110',2),parseInt('10001',2),parseInt('10001',2),parseInt('01111',2),parseInt('00001',2),parseInt('00010',2),parseInt('01100',2)];
+
+// ============================================================
+//  CANVAS
+// ============================================================
+const canvas = document.getElementById('gp-canvas');
+const ctx = canvas.getContext('2d', { alpha: false });
+ctx.imageSmoothingEnabled = false;
+const screen = ctx.createImageData(256, 192);
+
+function clear(c) {
+  const [r,g,b] = PAL[c];
+  const d = screen.data;
+  for (let i = 0; i < d.length; i += 4) { d[i]=r; d[i+1]=g; d[i+2]=b; d[i+3]=255; }
+}
+function px(x, y, c) {
+  x = Math.floor(x); y = Math.floor(y);
+  if (x < 0 || x >= 256 || y < 0 || y >= 192) return;
+  const col = PAL[c];
+  if (col[3] === 0) return;
+  const i = (y * 256 + x) * 4;
+  screen.data[i]=col[0]; screen.data[i+1]=col[1]; screen.data[i+2]=col[2]; screen.data[i+3]=255;
+}
+function rect(x, y, w, h, c) {
+  for (let dy = 0; dy < h; dy++)
+    for (let dx = 0; dx < w; dx++)
+      px(x+dx, y+dy, c);
+}
+function sprite(idx, x, y, c) {
+  const sp = SPRITES[idx];
+  x = Math.floor(x); y = Math.floor(y);
+  for (let dy = 0; dy < 16; dy++)
+    for (let dx = 0; dx < 16; dx++)
+      if (sp[dy][dx]) px(x+dx, y+dy, c);
+}
+function text(s, x, y, c) {
+  s = s.toUpperCase();
+  for (let i = 0; i < s.length; i++) {
+    const g = FONT[s[i]] || FONT[' '];
+    for (let dy = 0; dy < 7; dy++)
+      for (let dx = 0; dx < 5; dx++)
+        if (g[dy] & (1 << (4 - dx))) px(x + i*6 + dx, y + dy, c);
+  }
+}
+function bigText(s, x, y, c) {
+  s = s.toUpperCase();
+  for (let i = 0; i < s.length; i++) {
+    const g = FONT[s[i]] || FONT[' '];
+    for (let dy = 0; dy < 7; dy++)
+      for (let dx = 0; dx < 5; dx++)
+        if (g[dy] & (1 << (4 - dx))) {
+          rect(x + i*12 + dx*2, y + dy*2, 2, 2, c);
+        }
+  }
+}
+function flip() { ctx.putImageData(screen, 0, 0); }
+
+function drawBorder() {
+  for (let i = 0; i < 256; i += 4) {
+    px(i, 0, 11); px(i+1, 0, 10); px(i+2, 0, 11);
+    px(i, 191, 11); px(i+1, 191, 10); px(i+2, 191, 11);
+  }
+  for (let i = 0; i < 192; i += 4) {
+    px(0, i, 11); px(0, i+1, 10); px(0, i+2, 11);
+    px(255, i, 11); px(255, i+1, 10); px(255, i+2, 11);
+  }
+}
+
+// ============================================================
+//  AUDIO
+// ============================================================
+let actx = null;
+function audio() {
+  if (!actx) try { actx = new (window.AudioContext||window.webkitAudioContext)(); } catch(e){}
+  if (actx && actx.state === 'suspended') actx.resume();
+}
+function beep(f, d, vol=0.04, type='square') {
+  if (!actx) return;
+  const t = actx.currentTime;
+  const o = actx.createOscillator();
+  const g = actx.createGain();
+  o.type = type;
+  o.frequency.value = f;
+  g.gain.setValueAtTime(vol, t);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + d);
+  o.connect(g).connect(actx.destination);
+  o.start(t); o.stop(t + d);
+}
+const sfx = {
+  step: () => beep(440 + Math.random()*60, 0.03, 0.025),
+  ladder: () => beep(330, 0.04, 0.025),
+  jump: () => { beep(660, 0.06); setTimeout(()=>beep(880, 0.06), 60); },
+  lever: () => { beep(220, 0.12); setTimeout(()=>beep(330, 0.1), 80); },
+  fall: () => beep(180, 0.2, 0.05, 'sawtooth'),
+  win: () => { beep(523, 0.08); setTimeout(()=>beep(659, 0.08), 80); setTimeout(()=>beep(784, 0.16), 160); },
+  drip: () => beep(160, 0.1),
+  die: () => {
+    if (!actx) return;
+    const t = actx.currentTime;
+    const o = actx.createOscillator(), g = actx.createGain();
+    o.type = 'sawtooth';
+    o.frequency.setValueAtTime(440, t);
+    o.frequency.exponentialRampToValueAtTime(80, t + 0.6);
+    g.gain.setValueAtTime(0.07, t);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.6);
+    o.connect(g).connect(actx.destination);
+    o.start(t); o.stop(t + 0.6);
+  },
+};
+
+// ============================================================
+//  GEOMETRÍA - tres niveles, dos columnas verticales de tanques
+// ============================================================
+// Coordenadas Y son los SUELOS de cada nivel (donde se apoyan los pies del héroe)
+const Y_TOP = 56;     // nivel superior
+const Y_MID = 112;    // nivel medio (gusano)
+const Y_BOT = 168;    // nivel inferior (pez)
+
+// Plataformas X: van de izquierda a derecha
+const X_LEFT = 16;
+const X_RIGHT = 240;
+
+// COLUMNAS VERTICALES de tanques en los extremos (mismo X en los tres niveles)
+// Esto permite que el gasoil caiga literalmente en línea recta de un tanque al de abajo
+const COL_LEFT_X = 32;        // columna de tanques de la izquierda
+const COL_RIGHT_X = 224;      // columna de tanques de la derecha
+
+// Las palancas están JUNTO a su tanque (a la derecha del tanque izquierdo,
+// y a la izquierda del tanque derecho; siempre hacia el centro), pero con
+// suficiente separación para que no se monten visualmente
+const LEVER_LEFT_X = 60;      // palanca asociada a la columna izquierda
+const LEVER_RIGHT_X = 196;    // palanca asociada a la columna derecha
+
+// ESCALERAS hacia el centro, en la zona de "balcón" (dentro del recinto del nivel)
+// pero sin tapar el charco central. Las escaleras conectan los tres niveles.
+const LADDER_LEFT_X = 88;     // escalera izquierda (entre palanca izq y charco)
+const LADDER_RIGHT_X = 168;   // escalera derecha (entre charco y palanca der)
+const LADDER_HALF_WIDTH = 6;
+
+// Charco con pez (centro del nivel inferior, entre las dos escaleras)
+const POOL_X1 = 104;
+const POOL_X2 = 152;
+const POOL_CENTER = 128;
+
+// ============================================================
+//  ESTADO
+// ============================================================
+const game = {
+  state: 'splash',
+  ticks: 0,
+  // Héroe
+  x: 128, y: Y_BOT,
+  level: 'bot',  // 'top', 'mid', 'bot'
+  facing: 'right',
+  walkFrame: 0, walkCooldown: 0,
+  // En escalera (estado especial)
+  onLadder: null,  // null, 'left', 'right'
+  ladderY: 0,      // posición Y interpolada en la escalera
+  // Salto (solo vertical, para esquivar enemigos)
+  jumping: null,   // {frame, duration, baseY, baseX, vx}
+  // Pez (sale del charco y cae)
+  fishY: Y_BOT,
+  fishVy: 0,
+  fishState: 'pool',  // 'pool' (esperando), 'jumping', 'falling'
+  fishTimer: 60,
+  // Gusano
+  wormX: 200, wormDir: -1, wormFrame: 0,
+  // Tanques: dos columnas (L=izquierda, R=derecha) por tres niveles (T=top, M=mid, B=bot)
+  // Cada tanque acumula 0..3 bloques de gasoil.
+  // El gasoil cae del techo a tankTL/tankTR. La palanca de cada tanque manda un bloque
+  // al de abajo de la misma columna. La palanca de los tanques inferiores hace
+  // desaparecer el gasoil (suma puntos).
+  tankTL: 0, tankTR: 0,
+  tankML: 0, tankMR: 0,
+  tankBL: 0, tankBR: 0,
+  // Bloques cayendo (animación visual)
+  fallingDrops: [],  // {x, y, targetY, col, type}
+  // Score
+  score: 50, record: 0, lives: 3,
+  // Goteo automático
+  dripCounter: 0,
+  // Muerte
+  dying: 0,
+  // Input
+  keys: { left: false, right: false, up: false, down: false, space: false },
+};
+
+// ============================================================
+//  INPUT
+// ============================================================
+const keyMap = {
+  'ArrowLeft':'left', 'ArrowRight':'right',
+  'ArrowUp':'up', 'ArrowDown':'down',
+  ' ':'space'
+};
+
+window.addEventListener('keydown', (e) => {
+  if (document.activeElement !== canvas) return;
+  const k = keyMap[e.key];
+  if (!k) return;
+  e.preventDefault();
+  if (game.state !== 'playing') {
+    audio();
+    advanceState();
+    return;
+  }
+  if (!game.keys[k]) {
+    game.keys[k] = true;
+    handlePress(k);
+  }
+});
+window.addEventListener('keyup', (e) => {
+  const k = keyMap[e.key];
+  if (k) { e.preventDefault(); game.keys[k] = false; }
+});
+
+canvas.addEventListener('click', () => {
+  canvas.focus();
+  audio();
+  advanceState();
+});
+
+function advanceState() {
+  if (game.state === 'splash') game.state = 'inst1';
+  else if (game.state === 'inst1') game.state = 'inst2';
+  else if (game.state === 'inst2') game.state = 'inst3';
+  else if (game.state === 'inst3') startGame();
+  else if (game.state === 'gameover') game.state = 'splash';
+}
+
+function handlePress(k) {
+  if (game.state !== 'playing' || game.dying) return;
+  
+  if (k === 'space') {
+    // ¿Está el héroe pegado a una palanca?
+    if (tryLever()) return;
+    // Si no, saltar (solo si no está en escalera y no está saltando)
+    if (!game.onLadder && !game.jumping) {
+      // Salto largo "tipo helicóptero": un buen arco hacia delante
+      // con altura suficiente para esquivar al gusano (que está a Y_MID-14, sprite 16px)
+      // El héroe avanza ~50 px en el aire
+      const dir = game.facing === 'left' ? -1 : 1;
+      game.jumping = {
+        frame: 0,
+        duration: 38,           // ~0.6s a 60fps
+        baseY: game.y,
+        baseX: game.x,
+        distance: 56 * dir,     // alcance horizontal
+        height: 28,             // altura del arco
+      };
+      sfx.jump();
+    }
+  }
+  
+  if (k === 'up') {
+    enterLadder('up');
+  }
+  if (k === 'down') {
+    enterLadder('down');
+  }
+}
+
+function enterLadder(dir) {
+  if (game.onLadder) return;
+  if (game.jumping) return;
+  // Comprueba si está sobre una escalera
+  const onLeft = Math.abs(game.x - LADDER_LEFT_X) < LADDER_HALF_WIDTH + 4;
+  const onRight = Math.abs(game.x - LADDER_RIGHT_X) < LADDER_HALF_WIDTH + 4;
+  if (!onLeft && !onRight) return;
+  
+  // Comprueba que hay un nivel destino válido
+  if (dir === 'up' && game.level === 'top') return;
+  if (dir === 'down' && game.level === 'bot') return;
+  
+  game.onLadder = onLeft ? 'left' : 'right';
+  game.x = onLeft ? LADDER_LEFT_X : LADDER_RIGHT_X;
+  game.ladderY = game.y;
+  // Configuramos el destino (un nivel arriba o abajo)
+  if (dir === 'up') {
+    if (game.level === 'bot') game.ladderTargetY = Y_MID;
+    else if (game.level === 'mid') game.ladderTargetY = Y_TOP;
+  } else {
+    if (game.level === 'top') game.ladderTargetY = Y_MID;
+    else if (game.level === 'mid') game.ladderTargetY = Y_BOT;
+  }
+  game.ladderDir = dir;
+  sfx.ladder();
+}
+
+function tryLever() {
+  const x = game.x;
+  const RANGE = 18;  // distancia máxima al centro de la palanca para accionarla
+  if (game.onLadder) return false;
+  
+  // En cada nivel hay dos palancas: una a la izquierda (LEVER_LEFT_X) que opera
+  // el tanque de la columna izquierda de ese mismo nivel, y otra a la derecha
+  // (LEVER_RIGHT_X) que opera el tanque de la columna derecha de ese mismo nivel.
+  //
+  // Lo que hace cada palanca:
+  //   - Nivel TOP/MID: pasa un bloque del tanque actual al de la columna del nivel
+  //     inferior (si éste tiene hueco). Si el de abajo está lleno, la palanca no hace nada.
+  //   - Nivel BOT: el bloque desaparece (sale del depósito) y suma 50 puntos.
+  
+  const lvl = game.level;
+  const nearLeft = Math.abs(x - LEVER_LEFT_X) < RANGE;
+  const nearRight = Math.abs(x - LEVER_RIGHT_X) < RANGE;
+  
+  // Columna izquierda
+  if (nearLeft) {
+    if (lvl === 'top' && game.tankTL > 0 && game.tankML < 3) {
+      game.tankTL--;
+      addFallingDrop(COL_LEFT_X, Y_TOP - 2, Y_MID - 4, 'L', 'top-mid');
+      sfx.lever();
+      return true;
+    }
+    if (lvl === 'mid' && game.tankML > 0 && game.tankBL < 3) {
+      game.tankML--;
+      addFallingDrop(COL_LEFT_X, Y_MID - 2, Y_BOT - 4, 'L', 'mid-bot');
+      sfx.lever();
+      return true;
+    }
+    if (lvl === 'bot' && game.tankBL > 0) {
+      game.tankBL--;
+      // Animación: el bloque desaparece bajando un poco bajo el suelo
+      addFallingDrop(COL_LEFT_X, Y_BOT - 4, Y_BOT + 12, 'L', 'bot-out');
+      game.score += 50;
+      sfx.win();
+      return true;
+    }
+  }
+  // Columna derecha
+  if (nearRight) {
+    if (lvl === 'top' && game.tankTR > 0 && game.tankMR < 3) {
+      game.tankTR--;
+      addFallingDrop(COL_RIGHT_X, Y_TOP - 2, Y_MID - 4, 'R', 'top-mid');
+      sfx.lever();
+      return true;
+    }
+    if (lvl === 'mid' && game.tankMR > 0 && game.tankBR < 3) {
+      game.tankMR--;
+      addFallingDrop(COL_RIGHT_X, Y_MID - 2, Y_BOT - 4, 'R', 'mid-bot');
+      sfx.lever();
+      return true;
+    }
+    if (lvl === 'bot' && game.tankBR > 0) {
+      game.tankBR--;
+      addFallingDrop(COL_RIGHT_X, Y_BOT - 4, Y_BOT + 12, 'R', 'bot-out');
+      game.score += 50;
+      sfx.win();
+      return true;
+    }
+  }
+  return false;
+}
+
+function addFallingDrop(x, y, targetY, col, type) {
+  game.fallingDrops.push({ x, y, targetY, col, type, vy: 1.2 });
+}
+
+// ============================================================
+//  UPDATE
+// ============================================================
+function update() {
+  game.ticks++;
+  if (game.state !== 'playing') return;
+  
+  // ---- Animaciones / mundo ----
+  
+  // Pez (salta del charco hacia arriba y vuelve a caer)
+  updateFish();
+  
+  // Gusano (patrulla nivel medio)
+  updateWorm();
+  
+  // Bloques cayendo
+  updateFallingDrops();
+  
+  // Goteo automático: cada cierto tiempo, el techo deja caer una gota a un tanque
+  game.dripCounter++;
+  if (game.dripCounter >= 360) {  // ~6 segundos
+    game.dripCounter = 0;
+    autoDrip();
+  }
+  
+  // ---- Estados especiales ----
+  if (game.dying) {
+    game.dying++;
+    if (game.dying > 30) {
+      game.dying = 0;
+      game.lives--;
+      if (game.lives < 0) {
+        if (game.score > game.record) game.record = game.score;
+        game.state = 'gameover';
+      } else {
+        respawn();
+      }
+    }
+    return;
+  }
+  
+  if (game.jumping) {
+    game.jumping.frame++;
+    if (game.jumping.frame >= game.jumping.duration) {
+      // Terminar salto: aplicar la X final
+      const j = game.jumping;
+      let finalX = j.baseX + j.distance;
+      // Aplicar límites laterales del nivel actual
+      let minX = X_LEFT + 8, maxX = X_RIGHT - 8;
+      if (game.level === 'top') {
+        if (j.baseX < (LADDER_LEFT_X + LADDER_RIGHT_X) / 2) {
+          maxX = LADDER_LEFT_X;
+        } else {
+          minX = LADDER_RIGHT_X;
+        }
+      }
+      // En nivel inferior, no se puede aterrizar en el charco
+      if (game.level === 'bot') {
+        if (finalX > POOL_X1 - 4 && finalX < POOL_X2 + 4) {
+          if (finalX < POOL_CENTER) finalX = POOL_X1 - 4;
+          else finalX = POOL_X2 + 4;
+        }
+      }
+      finalX = Math.max(minX, Math.min(maxX, finalX));
+      game.x = finalX;
+      game.jumping = null;
+    }
+    // Durante el salto seguimos comprobando colisiones (con la trayectoria interpolada)
+    checkEnemyCollision();
+    return;
+  }
+  
+  if (game.onLadder) {
+    updateLadder();
+    checkEnemyCollision();
+    return;
+  }
+  
+  // ---- Movimiento horizontal ----
+  if (game.walkCooldown > 0) game.walkCooldown--;
+  let moved = false;
+  if (game.keys.left) { game.x -= 1.3; game.facing = 'left'; moved = true; }
+  else if (game.keys.right) { game.x += 1.3; game.facing = 'right'; moved = true; }
+  
+  if (moved && game.walkCooldown === 0 && !game.jumping) {
+    game.walkFrame ^= 1;
+    game.walkCooldown = 6;
+    sfx.step();
+  }
+  
+  // Límites laterales según el nivel
+  // En nivel superior solo se puede caminar sobre los dos balcones (alrededor de cada tanque)
+  // sin poder cruzar al otro lado salvo bajando al medio.
+  let minX = X_LEFT + 8;
+  let maxX = X_RIGHT - 8;
+  if (game.level === 'top') {
+    if (game.x < (LADDER_LEFT_X + LADDER_RIGHT_X) / 2) {
+      // balcón izquierdo: del borde a la escalera izquierda
+      maxX = LADDER_LEFT_X;
+    } else {
+      // balcón derecho: de la escalera derecha al borde
+      minX = LADDER_RIGHT_X;
+    }
+  }
+  if (game.x < minX) game.x = minX;
+  if (game.x > maxX) game.x = maxX;
+  
+  checkEnemyCollision();
+  
+  // Sin puntos = fin de partida
+  if (game.score <= 0) {
+    if (game.score > game.record) game.record = game.score;
+    game.state = 'gameover';
+  }
+}
+
+function updateLadder() {
+  // El jugador puede subir o bajar la escalera mientras tenga las teclas
+  // up/down apretadas o hasta que llegue al destino
+  if (game.keys.up && game.ladderTargetY < game.ladderY) {
+    game.ladderY -= 1.0;
+    if (game.ticks % 8 === 0) sfx.ladder();
+  } else if (game.keys.down && game.ladderTargetY > game.ladderY) {
+    game.ladderY += 1.0;
+    if (game.ticks % 8 === 0) sfx.ladder();
+  } else if (!game.keys.up && !game.keys.down) {
+    // si suelta, sigue avanzando suavemente al destino más próximo
+    // pero podemos quedarnos quietos -- depende de gusto
+  }
+  
+  // Si llegó al nivel destino, sale de la escalera
+  if (game.ladderDir === 'up' && game.ladderY <= game.ladderTargetY) {
+    game.ladderY = game.ladderTargetY;
+    game.y = game.ladderTargetY;
+    if (game.ladderTargetY === Y_TOP) game.level = 'top';
+    else if (game.ladderTargetY === Y_MID) game.level = 'mid';
+    game.onLadder = null;
+  }
+  if (game.ladderDir === 'down' && game.ladderY >= game.ladderTargetY) {
+    game.ladderY = game.ladderTargetY;
+    game.y = game.ladderTargetY;
+    if (game.ladderTargetY === Y_BOT) game.level = 'bot';
+    else if (game.ladderTargetY === Y_MID) game.level = 'mid';
+    game.onLadder = null;
+  }
+  
+  // Permite cambiar de dirección sin salir
+  if (game.ladderDir === 'up' && game.keys.down) {
+    // Cambia destino a un nivel abajo
+    game.ladderDir = 'down';
+    if (game.ladderY > Y_MID && game.ladderY < Y_BOT) game.ladderTargetY = Y_BOT;
+    else if (game.ladderY > Y_TOP && game.ladderY < Y_MID) game.ladderTargetY = Y_MID;
+  }
+  if (game.ladderDir === 'down' && game.keys.up) {
+    game.ladderDir = 'up';
+    if (game.ladderY > Y_MID && game.ladderY < Y_BOT) game.ladderTargetY = Y_MID;
+    else if (game.ladderY > Y_TOP && game.ladderY < Y_MID) game.ladderTargetY = Y_TOP;
+  }
+}
+
+function updateFish() {
+  // Estados: pool (descansando), jumping (saliendo del charco), falling (volviendo)
+  switch (game.fishState) {
+    case 'pool':
+      game.fishY = Y_BOT - 4;
+      game.fishTimer--;
+      if (game.fishTimer <= 0) {
+        game.fishState = 'jumping';
+        game.fishVy = -3.5;
+        sfx.fall();
+      }
+      break;
+    case 'jumping':
+      game.fishY += game.fishVy;
+      game.fishVy += 0.15;
+      if (game.fishVy >= 0) game.fishState = 'falling';
+      break;
+    case 'falling':
+      game.fishY += game.fishVy;
+      game.fishVy += 0.15;
+      if (game.fishY >= Y_BOT - 4) {
+        game.fishY = Y_BOT - 4;
+        game.fishState = 'pool';
+        game.fishTimer = 80 + Math.random() * 60;
+      }
+      break;
+  }
+}
+
+function updateWorm() {
+  game.wormX += game.wormDir * 0.5;
+  if (game.wormX < X_LEFT + 16) { game.wormX = X_LEFT + 16; game.wormDir = 1; }
+  if (game.wormX > X_RIGHT - 16) { game.wormX = X_RIGHT - 16; game.wormDir = -1; }
+  if (game.ticks % 8 === 0) game.wormFrame ^= 1;
+}
+
+function updateFallingDrops() {
+  for (let i = game.fallingDrops.length - 1; i >= 0; i--) {
+    const d = game.fallingDrops[i];
+    d.y += d.vy;
+    d.vy += 0.08;
+    if (d.y >= d.targetY) {
+      // Llegó: aplicar efecto en el tanque destino
+      if (d.type === 'top-mid') {
+        if (d.col === 'L') game.tankML = Math.min(3, game.tankML + 1);
+        else game.tankMR = Math.min(3, game.tankMR + 1);
+      } else if (d.type === 'mid-bot') {
+        if (d.col === 'L') game.tankBL = Math.min(3, game.tankBL + 1);
+        else game.tankBR = Math.min(3, game.tankBR + 1);
+      } else if (d.type === 'sky-top') {
+        if (d.col === 'L') game.tankTL = Math.min(3, game.tankTL + 1);
+        else game.tankTR = Math.min(3, game.tankTR + 1);
+        // Comprueba si tras llenarlo el tanque queda lleno (caso de tope)
+        const fill = (d.col === 'L') ? game.tankTL : game.tankTR;
+        if (fill >= 3) {
+          // Si ya estaba a 3 y cae otra... ya se gestiona en autoDrip antes de animar
+        }
+      }
+      // 'bot-out' simplemente desaparece visualmente
+      game.fallingDrops.splice(i, 1);
+    }
+  }
+}
+
+function autoDrip() {
+  // Una gota cae del techo a uno de los dos tanques superiores
+  const col = Math.random() < 0.5 ? 'L' : 'R';
+  game.score -= 10;
+  sfx.drip();
+  
+  if (col === 'L') {
+    if (game.tankTL < 3) {
+      addFallingDrop(COL_LEFT_X, 14, Y_TOP - 4, 'L', 'sky-top');
+    } else {
+      die();  // Tanque superior lleno y aún cae más: explota
+    }
+  } else {
+    if (game.tankTR < 3) {
+      addFallingDrop(COL_RIGHT_X, 14, Y_TOP - 4, 'R', 'sky-top');
+    } else {
+      die();
+    }
+  }
+}
+
+function checkEnemyCollision() {
+  // Posición efectiva del héroe (durante salto, viaja en arco)
+  let heroX = game.x;
+  let heroY = game.y;
+  let inFlight = false;
+  if (game.jumping) {
+    const j = game.jumping;
+    const t = j.frame / j.duration;
+    heroX = j.baseX + j.distance * t;
+    heroY = j.baseY - Math.sin(t * Math.PI) * j.height;
+    // "En vuelo" cuando ya está claramente por encima del suelo
+    inFlight = (j.baseY - heroY) >= 8;
+  }
+  
+  // Pez: solo en nivel inferior
+  if (game.level === 'bot' && !game.onLadder) {
+    if (Math.abs(heroX - POOL_CENTER) < 14) {
+      if (game.fishState !== 'pool') {
+        // Si el héroe está claramente por encima del pez, lo esquiva
+        if (heroY < game.fishY - 12) {
+          // esquivado
+        } else if (Math.abs(heroY - game.fishY) < 10) {
+          die(); return;
+        }
+      }
+    }
+  }
+  
+  // Gusano: solo en nivel medio
+  if (game.level === 'mid' && !game.onLadder) {
+    if (Math.abs(heroX - game.wormX) < 12) {
+      // Esquivar si está en vuelo y suficientemente alto: la cabeza del héroe (heroY-16)
+      // debe estar por encima de la cabeza del gusano (Y_MID - 16, dado que gusano está
+      // dibujado a Y_MID-14 con altura 16)
+      if (inFlight && heroY <= Y_MID - 12) {
+        // pasando por encima, esquivado
+      } else {
+        die(); return;
+      }
+    }
+  }
+}
+
+function die() {
+  if (game.dying) return;
+  game.dying = 1;
+  sfx.die();
+}
+
+function respawn() {
+  game.x = 130;          // centro
+  game.y = Y_BOT;
+  game.level = 'bot';
+  game.facing = 'right';
+  game.onLadder = null;
+  game.jumping = null;
+}
+
+function startGame() {
+  game.state = 'playing';
+  game.x = 130;
+  game.y = Y_BOT;
+  game.level = 'bot';
+  game.facing = 'right';
+  game.onLadder = null;
+  game.jumping = null;
+  game.score = 50;
+  game.lives = 3;
+  // Empezar con un poco de gasoil en los tanques superiores para arrancar
+  game.tankTL = 1; game.tankTR = 1;
+  game.tankML = 0; game.tankMR = 0;
+  game.tankBL = 0; game.tankBR = 0;
+  game.fallingDrops = [];
+  game.dripCounter = 0;
+  game.fishState = 'pool';
+  game.fishY = Y_BOT - 4;
+  game.fishTimer = 80;
+  game.wormX = 200; game.wormDir = -1;
+  game.dying = 0;
+}
+
+// ============================================================
+//  DIBUJO
+// ============================================================
+function isHeroNearLever(leverX, requiredLevel) {
+  if (game.state !== 'playing') return false;
+  if (game.level !== requiredLevel) return false;
+  if (game.onLadder || game.jumping || game.dying) return false;
+  return Math.abs(game.x - leverX) < 16;
+}
+
+function drawScene() {
+  clear(1);
+  drawBorder();
+  
+  // ---- Techo (de donde gotea el gasoil) ----
+  rect(X_LEFT + 4, 8, X_RIGHT - X_LEFT - 8, 4, 11);
+  for (let x = X_LEFT + 4; x < X_RIGHT - 4; x += 4) {
+    px(x + 1, 9, 8);
+    px(x + 2, 10, 8);
+  }
+  // Conductos del techo a los tanques superiores: línea continua hasta el borde superior del tanque
+  // El tanque superior tiene base en Y_TOP-1 y altura 22, así que su borde superior está en Y_TOP-23
+  for (let y = 12; y <= Y_TOP - 23; y++) {
+    if (y % 3 !== 2) {  // patrón punteado
+      px(COL_LEFT_X, y, 5); px(COL_LEFT_X+1, y, 5);
+      px(COL_RIGHT_X, y, 5); px(COL_RIGHT_X+1, y, 5);
+    }
+  }
+  
+  // ---- Plataformas (los tres niveles tienen plataforma) ----
+  // Nivel superior - plataforma izquierda: desde el borde hasta justo después de la escalera
+  rect(X_LEFT + 4, Y_TOP, LADDER_LEFT_X - X_LEFT, 3, 11);
+  // Nivel superior - plataforma derecha: desde justo antes de la escalera derecha hasta el borde
+  rect(LADDER_RIGHT_X, Y_TOP, X_RIGHT - LADDER_RIGHT_X - 4, 3, 11);
+  // Nivel medio - plataforma continua
+  rect(X_LEFT + 4, Y_MID, X_RIGHT - X_LEFT - 8, 3, 11);
+  // Nivel inferior - plataforma con charco en el centro
+  rect(X_LEFT + 4, Y_BOT, POOL_X1 - X_LEFT - 4, 3, 11);
+  rect(POOL_X2, Y_BOT, X_RIGHT - POOL_X2 - 4, 3, 11);
+  rect(POOL_X1, Y_BOT, POOL_X2 - POOL_X1, 3, 4);
+  rect(POOL_X1, Y_BOT - 1, 2, 4, 5);
+  rect(POOL_X2 - 2, Y_BOT - 1, 2, 4, 5);
+  for (let x = POOL_X1 + 4; x < POOL_X2; x += 8) {
+    const phase = Math.sin(game.ticks * 0.05 + x * 0.1);
+    if (phase > 0) px(x, Y_BOT + 1, 7);
+  }
+  
+  // ---- Conductos verticales entre tanques (rastro fino conectando salidas y entradas) ----
+  // Conecta la base del tanque superior con la entrada del tanque medio, y así sucesivamente
+  // El tanque tiene base en floorY-1 y borde superior en floorY-23 (altura 22).
+  // Después del suelo del nivel hay un pequeño tramo libre antes del tanque del siguiente nivel.
+  for (let y = Y_TOP + 4; y < Y_MID - 23; y++) {
+    if (y % 3 !== 2) {
+      px(COL_LEFT_X, y, 4); px(COL_RIGHT_X, y, 4);
+    }
+  }
+  for (let y = Y_MID + 4; y < Y_BOT - 23; y++) {
+    if (y % 3 !== 2) {
+      px(COL_LEFT_X, y, 4); px(COL_RIGHT_X, y, 4);
+    }
+  }
+  
+  // ---- Tanques en las dos columnas, en los tres niveles ----
+  // El tanque "vive" inmediatamente encima del suelo del nivel correspondiente
+  drawTank(COL_LEFT_X, Y_TOP, game.tankTL);
+  drawTank(COL_RIGHT_X, Y_TOP, game.tankTR);
+  drawTank(COL_LEFT_X, Y_MID, game.tankML);
+  drawTank(COL_RIGHT_X, Y_MID, game.tankMR);
+  drawTank(COL_LEFT_X, Y_BOT, game.tankBL);
+  drawTank(COL_RIGHT_X, Y_BOT, game.tankBR);
+  
+  // ---- Escaleras hacia el centro ----
+  drawLadder(LADDER_LEFT_X);
+  drawLadder(LADDER_RIGHT_X);
+  
+  // ---- Palancas pegadas a cada tanque, en los tres niveles ----
+  // En cada nivel hay 2 palancas (una por columna).
+  // El "hasContent" depende de si el tanque tiene gasoil y si el de abajo tiene hueco
+  // (excepto en el nivel inferior, donde solo importa que el tanque tenga gasoil).
+  drawLever(LEVER_LEFT_X, Y_TOP,
+    game.tankTL > 0 && game.tankML < 3,
+    isHeroNearLever(LEVER_LEFT_X, 'top'));
+  drawLever(LEVER_RIGHT_X, Y_TOP,
+    game.tankTR > 0 && game.tankMR < 3,
+    isHeroNearLever(LEVER_RIGHT_X, 'top'));
+  drawLever(LEVER_LEFT_X, Y_MID,
+    game.tankML > 0 && game.tankBL < 3,
+    isHeroNearLever(LEVER_LEFT_X, 'mid'));
+  drawLever(LEVER_RIGHT_X, Y_MID,
+    game.tankMR > 0 && game.tankBR < 3,
+    isHeroNearLever(LEVER_RIGHT_X, 'mid'));
+  drawLever(LEVER_LEFT_X, Y_BOT,
+    game.tankBL > 0,
+    isHeroNearLever(LEVER_LEFT_X, 'bot'));
+  drawLever(LEVER_RIGHT_X, Y_BOT,
+    game.tankBR > 0,
+    isHeroNearLever(LEVER_RIGHT_X, 'bot'));
+  
+  // ---- Bloques cayendo ----
+  for (const d of game.fallingDrops) {
+    sprite(13, d.x - 8, d.y - 8, 6);
+  }
+  
+  // ---- Pez ----
+  drawFish();
+  
+  // ---- Gusano ----
+  sprite(3, game.wormX - 8, Y_MID - 14, 12);
+  
+  // ---- Héroe ----
+  drawHero();
+  
+  // ---- HUD ----
+  drawHUD();
+}
+
+function drawTank(cx, floorY, blocks) {
+  // El tanque "vive" sobre el suelo del nivel: la base del tanque queda EN floorY.
+  // cx es el centro horizontal del tanque.
+  // El tanque tiene paredes laterales abiertas por arriba (recipiente)
+  const W = 22, H = 22;
+  const x = cx - W/2;
+  const yBase = floorY - 1;
+  // Paredes laterales
+  rect(x, yBase - H, 2, H, 11);
+  rect(x + W - 2, yBase - H, 2, H, 11);
+  // Base del tanque (algo más oscuro)
+  rect(x + 2, yBase - 1, W - 4, 1, 10);
+  // "Pestañas" arriba (forma característica de tanque/embudo)
+  rect(x - 1, yBase - H, 4, 2, 10);
+  rect(x + W - 3, yBase - H, 4, 2, 10);
+  // Bloques de gasoil acumulados en el tanque
+  for (let i = 0; i < blocks; i++) {
+    rect(x + 3, yBase - 5 - i*5, W - 6, 4, 8);
+    rect(x + 5, yBase - 5 - i*5 + 1, W - 10, 1, 9);
+  }
+}
+
+function drawLadder(cx) {
+  // Postes verticales y peldaños conectando los tres niveles
+  // Las escaleras van desde justo debajo del techo hasta justo encima del suelo del nivel inferior
+  const yTopLadder = Y_TOP - 14;
+  const yBottomLadder = Y_BOT;
+  for (let y = yTopLadder; y <= yBottomLadder; y += 1) {
+    px(cx - 4, y, 11); px(cx + 4, y, 11);
+  }
+  // Peldaños cada 5 píxeles, color algo más oscuro para destacar las barras
+  for (let y = yTopLadder + 2; y < yBottomLadder; y += 5) {
+    rect(cx - 3, y, 7, 1, 10);
+  }
+}
+
+function drawLever(cx, floorY, hasContent, heroNear) {
+  // Palanca encima del suelo del nivel
+  // hasContent: hay gasoil que mover (palanca activa, en color rojo)
+  // heroNear: el héroe está pegado y puede accionarla (halo amarillo)
+  const armColor = hasContent ? 8 : 14;
+  const baseY = floorY - 1;
+  // Base oscura
+  rect(cx - 3, baseY - 4, 6, 4, 14);
+  // Brazo
+  rect(cx - 1, baseY - 10, 2, 6, armColor);
+  // Bola al final
+  rect(cx - 2, baseY - 12, 4, 3, armColor);
+  px(cx - 1, baseY - 13, armColor);
+  px(cx, baseY - 13, armColor);
+  
+  // Halo parpadeante cuando se puede accionar
+  if (heroNear && hasContent) {
+    const blink = Math.floor(game.ticks / 10) % 2;
+    if (blink) {
+      // Pequeñas chispas sobre la palanca
+      px(cx - 4, baseY - 15, 11);
+      px(cx, baseY - 16, 11);
+      px(cx + 4, baseY - 15, 11);
+    }
+  }
+}
+
+function drawFish() {
+  // El pez sale del charco, salta y vuelve a caer
+  // Cuando está en pool: se dibuja con la cabeza asomando
+  // Cuando salta/cae: dibuja el sprite completo
+  if (game.fishState === 'pool') {
+    // Solo asoma la cabeza
+    rect(POOL_CENTER - 4, Y_BOT - 2, 8, 2, 8);
+    px(POOL_CENTER - 2, Y_BOT - 1, 9);
+    px(POOL_CENTER + 1, Y_BOT - 1, 9);
+  } else {
+    // Sprite del pez según dirección
+    const fishSpr = game.fishVy < 0 ? 1 : 2;
+    sprite(fishSpr, POOL_CENTER - 8, game.fishY - 8, 8);
+  }
+}
+
+function drawHero() {
+  let x = game.x, y = game.y;
+  let sprIdx = 0;
+  let color = 15;
+  
+  if (game.dying) {
+    color = (game.dying % 2) ? 8 : 15;
+    sprIdx = 5;
+  } else if (game.onLadder) {
+    // En escalera: usar el sprite del héroe (alternando piernas para dar sensación de movimiento)
+    y = game.ladderY;
+    // Solo animar cuando se está moviendo realmente
+    const moving = game.keys.up || game.keys.down;
+    if (moving) {
+      sprIdx = game.ticks % 16 < 8 ? 8 : 9;
+    } else {
+      sprIdx = 8;
+    }
+  } else if (game.jumping) {
+    const j = game.jumping;
+    const t = j.frame / j.duration;
+    x = j.baseX + j.distance * t;
+    y = j.baseY - Math.sin(t * Math.PI) * j.height;
+    sprIdx = 10;  // sprite con la "hélice" abajo
+  } else {
+    if (game.facing === 'left') sprIdx = game.walkFrame ? 6 : 5;
+    else sprIdx = game.walkFrame ? 9 : 8;
+  }
+  
+  // Sprite anclado por los pies
+  sprite(sprIdx, x - 8, y - 16, color);
+}
+
+function drawHUD() {
+  text('SCORE', 8, 4, 15);
+  text(String(game.score).padStart(5,'0'), 40, 4, 11);
+  text('RECORD', 178, 4, 15);
+  text(String(game.record).padStart(5,'0'), 218, 4, 11);
+  // Vidas (corazones rojos)
+  for (let i = 0; i < 3; i++) {
+    if (i < game.lives) {
+      rect(112 + i*10, 184, 6, 5, 8);
+      px(114 + i*10, 184, 9);
+    }
+  }
+}
+
+function drawSplash() {
+  clear(1);
+  drawBorder();
+  bigText('GASOIL', 78, 36, 11);
+  text('JUANJO MARCOS  -  BILBAO 1989', 22, 78, 15);
+  text('PUBLICADO EN MSX-CLUB N. 64', 24, 96, 14);
+  text('JUNIO DE 1990', 80, 110, 14);
+  sprite(0, 116, 124, 15);
+  if (Math.floor(game.ticks / 30) % 2) {
+    text('CLIC O TECLA PARA EMPEZAR', 28, 158, 8);
+  }
+}
+
+function drawInstructions(page) {
+  clear(1);
+  drawBorder();
+  text('GASOIL', 100, 14, 11);
+  
+  if (page === 1) {
+    text('OBJETIVO', 96, 36, 11);
+    text('EL GASOIL CAE DEL TECHO', 22, 58, 15);
+    text('A LOS TANQUES SUPERIORES.', 22, 70, 15);
+    text('HAY UN TANQUE EN CADA NIVEL,', 22, 88, 15);
+    text('EN VERTICAL, A IZQUIERDA Y', 22, 100, 15);
+    text('DERECHA. ACCIONA SU PALANCA', 22, 112, 15);
+    text('PARA QUE BAJE AL DE ABAJO,', 22, 124, 15);
+    text('Y AL DE MAS ABAJO HASTA', 22, 136, 15);
+    text('VACIARLO POR EL FONDO.', 22, 148, 15);
+    text('CADA TANQUE: MAXIMO 3 BLOQUES!', 12, 168, 8);
+  } else if (page === 2) {
+    text('MANDOS', 105, 36, 11);
+    text('FLECHAS    MOVERSE', 36, 60, 15);
+    text('ARRIBA/ABAJO   ESCALERAS', 30, 78, 15);
+    text('ESPACIO    SALTAR LARGO', 36, 100, 15);
+    text('           PARA ESQUIVAR', 36, 112, 15);
+    text('ESPACIO    JUNTO A PALANCA:', 30, 132, 15);
+    text('           ACCIONARLA', 36, 144, 15);
+    text('LAS ESCALERAS ESTAN AL CENTRO', 12, 168, 11);
+  } else {
+    text('PUNTOS', 105, 36, 11);
+    text('EMPIEZAS CON 50 PUNTOS', 22, 58, 15);
+    text('CADA GOTA DEL TECHO    -10', 22, 80, 15);
+    text('VACIAR TANQUE DEL FONDO +50', 22, 100, 11);
+    text('SI LLEGAS A 0, FIN DE PARTIDA', 12, 130, 8);
+    text('CUIDADO CON EL PEZ Y EL GUSANO!', 8, 150, 8);
+    text('SALTA PARA ESQUIVAR', 50, 168, 14);
+  }
+  
+  if (Math.floor(game.ticks / 30) % 2) {
+    text('PULSA UNA TECLA', 80, 184, 11);
+  }
+}
+
+function drawGameOver() {
+  drawScene();
+  for (let y = 60; y < 130; y++)
+    for (let x = 30; x < 226; x++)
+      px(x, y, 1);
+  rect(30, 60, 196, 2, 8);
+  rect(30, 128, 196, 2, 8);
+  rect(30, 60, 2, 70, 8);
+  rect(224, 60, 2, 70, 8);
+  
+  text('GAME OVER', 92, 72, 8);
+  text('PUNTUACION', 50, 92, 15);
+  text(String(game.score).padStart(5,'0'), 145, 92, 11);
+  text('RECORD', 50, 104, 15);
+  text(String(game.record).padStart(5,'0'), 145, 104, 11);
+  
+  if (Math.floor(game.ticks / 30) % 2) {
+    text('CLIC PARA REINICIAR', 60, 148, 11);
+  }
+}
+
+function loop() {
+  update();
+  switch (game.state) {
+    case 'splash': drawSplash(); break;
+    case 'inst1': drawInstructions(1); break;
+    case 'inst2': drawInstructions(2); break;
+    case 'inst3': drawInstructions(3); break;
+    case 'playing': drawScene(); break;
+    case 'gameover': drawGameOver(); break;
+  }
+  flip();
+  requestAnimationFrame(loop);
+}
+
+loop();
+})();
+
+</script>
+</div>

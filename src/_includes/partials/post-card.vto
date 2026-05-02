@@ -1,0 +1,37 @@
+{{ set ebTags = (post.tags || []).filter(t => t !== 'post') }}
+
+<article class="post-card">
+
+  <a class="post-card-cover" href="{{ post.url }}" tabindex="-1" aria-hidden="true">
+    {{ if post.image }}
+      <img src="{{ post.image }}" alt="" loading="lazy">
+    {{ else }}
+      <div class="post-card-poster">
+        <span class="post-card-poster-letter">{{ post.title.charAt(0) }}.</span>
+      </div>
+    {{ /if }}
+  </a>
+
+  <div class="post-card-body">
+
+    {{ if ebTags.length }}
+      <div class="post-card-eyebrow">
+        {{ for i, tag of ebTags }}<a href="/etiqueta/{{ tag |> slug }}/">{{ tag }}</a>{{ if i < ebTags.length - 1 }}<span class="sep">·</span>{{ /if }}{{ /for }}
+      </div>
+    {{ /if }}
+
+    <h2 class="post-card-title">
+      <a href="{{ post.url }}">{{ post.title }}</a>
+    </h2>
+
+    {{ if post.excerpt }}
+      <p class="post-card-excerpt">{{ post.excerpt }}</p>
+    {{ /if }}
+
+    <a href="{{ post.url }}" class="post-card-readmore" aria-label="Leer {{ post.title }}">
+      Leer <span class="arrow">→</span>
+    </a>
+
+  </div>
+
+</article>

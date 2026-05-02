@@ -1,0 +1,41 @@
+---
+layout: layouts/page.vto
+type: page
+title: Archivo
+section_mark: Catálogo
+subtitle: Todo lo publicado, ordenado por fecha y agrupado por año. Sin curaduría, sin destacados — la lista plana, por si te apetece bucear por orden cronológico estricto.
+url: /archivo/
+description: Archivo completo de paigar.eu — todas las entradas agrupadas por año.
+---
+
+{{ set posts = search.pages("type=post", "date=desc") }}
+{{ set years = [...new Set(posts.map(p => p.date.getFullYear()))].sort((a, b) => b - a) }}
+
+<div class="archive">
+  {{ for year of years }}
+    <section class="archive-year">
+      <h2 class="archive-year-title">{{ year }}</h2>
+      <ol class="archive-list">
+        {{ for post of posts.filter(p => p.date.getFullYear() === year) }}
+          {{ set postTags = (post.tags || []).filter(t => t !== 'post') }}
+          <li class="archive-item">
+            {{ if post.image }}
+              <a class="archive-item-thumb" href="{{ post.url }}" tabindex="-1" aria-hidden="true">
+                <img src="{{ post.image }}" alt="" loading="lazy">
+              </a>
+            {{ else }}
+              <span class="archive-item-thumb archive-item-thumb--empty" aria-hidden="true"></span>
+            {{ /if }}
+            <time class="archive-item-date" datetime="{{ post.date.toISOString() }}">
+              {{ post.date |> date('d MMM') }}
+            </time>
+            {{ if postTags.length }}
+              <span class="archive-item-tags">{{ postTags.join(' · ') }}</span>
+            {{ /if }}
+            <a class="archive-item-title" href="{{ post.url }}">{{ post.title }}</a>
+          </li>
+        {{ /for }}
+      </ol>
+    </section>
+  {{ /for }}
+</div>
