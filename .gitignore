@@ -19,3 +19,6 @@ node_modules/
 # Variables de entorno / secretos (defensivo)
 .env
 .env.*
+
+# Documento de briefing inicial (se conserva en disco, fuera del repo)
+paigar_memoria_proyecto_v02.html

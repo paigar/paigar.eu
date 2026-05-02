@@ -1,0 +1,38 @@
+# Auto-detect text files. Almacenar con LF en el repo,
+# entregar al checkout con el final de línea nativo del SO.
+# Esto fija el comportamiento del repo independientemente
+# de la configuración local de cada máquina.
+* text=auto eol=lf
+
+# Explícitamente texto (por si Git auto-detecta como binario)
+*.html   text
+*.css    text
+*.js     text
+*.ts     text
+*.json   text
+*.jsonc  text
+*.md     text
+*.yml    text
+*.yaml   text
+*.vto    text
+*.svg    text
+*.txt    text
+*.xml    text
+
+# Explícitamente binario (sin diff de texto, sin normalización)
+*.png    binary
+*.jpg    binary
+*.jpeg   binary
+*.gif    binary
+*.webp   binary
+*.ico    binary
+*.woff   binary
+*.woff2  binary
+*.ttf    binary
+*.otf    binary
+*.eot    binary
+*.pdf    binary
+*.mp4    binary
+*.webm   binary
+*.zip    binary
+*.gz     binary
