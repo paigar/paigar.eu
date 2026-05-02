@@ -906,8 +906,25 @@ em.note {
 	transform: scale(1.025);
 }
 
+/* Variante reflejada: imagen a la izquierda, texto a la derecha.
+   Mantiene la misma jerarquía visual (cubierta = lado mayor, 1.2fr) pero
+   invierte el orden de lectura. Útil cuando hay dos features en la página
+   para evitar la sensación de plantilla repetida. */
+.home-feature-split--reverse {
+	grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+}
+.home-feature-split--reverse .home-feature-split-cover {
+	order: 1;
+}
+.home-feature-split--reverse .home-feature-split-content {
+	order: 2;
+}
+
 @media (max-width: 920px) {
 	.home-feature-split {
+		grid-template-columns: 1fr;
+	}
+	.home-feature-split--reverse {
 		grid-template-columns: 1fr;
 	}
 	.home-feature-split-cover {

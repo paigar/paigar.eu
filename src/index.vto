@@ -12,7 +12,9 @@ description: El cuaderno digital de Juanjo. Apuntes, ideas, garabatos, artilugio
 {{ set featuredAPost = posts[8] }}
 {{ set featuredBPost = posts[9] }}
 {{ set gridPosts = posts.slice(10, 10 + gridLimit) }}
-{{ set tailPosts = posts.slice(10 + gridLimit, 10 + gridLimit + tailLimit) }}
+{{ set featuredCPost = posts[10 + gridLimit] }}
+{{ set tailStart = 10 + gridLimit + 1 }}
+{{ set tailPosts = posts.slice(tailStart, tailStart + tailLimit) }}
 {{ set hasArchive = posts.length >= 4 }}
 
 {{# Top 6 etiquetas por nº de entradas, normalizadas como en /etiquetas/ #}}
@@ -141,6 +143,32 @@ description: El cuaderno digital de Juanjo. Apuntes, ideas, garabatos, artilugio
           {{ /for }}
         </ol>
       </section>
+    {{ /if }}
+
+    {{# === FEATURED C: split horizontal invertido (imagen izquierda · texto derecha) === #}}
+    {{ if featuredCPost }}
+      {{ set featCTags = (featuredCPost.tags || []).filter(t => t !== 'post') }}
+      <article class="home-feature-split home-feature-split--reverse">
+        <div class="home-feature-split-content">
+          {{ if featCTags.length }}
+            <div class="home-feature-split-eyebrow">
+              {{ for i, tag of featCTags }}<a href="/etiqueta/{{ tag |> slug }}/">{{ tag }}</a>{{ if i < featCTags.length - 1 }}<span class="sep">·</span>{{ /if }}{{ /for }}
+            </div>
+          {{ /if }}
+          <h2 class="home-feature-split-title">
+            <a href="{{ featuredCPost.url }}">{{ featuredCPost.title }}</a>
+          </h2>
+          {{ if featuredCPost.excerpt }}
+            <p class="home-feature-split-excerpt">{{ featuredCPost.excerpt }}</p>
+          {{ /if }}
+          <a href="{{ featuredCPost.url }}" class="home-feature-split-readmore">
+            Leer la entrada<span class="arrow">→</span>
+          </a>
+        </div>
+        <a href="{{ featuredCPost.url }}" class="home-feature-split-cover" tabindex="-1" aria-hidden="true">
+          <img src="{{ featuredCPost.image }}" alt="" loading="lazy">
+        </a>
+      </article>
     {{ /if }}
 
     {{# === MANIFIESTO / CITA — al cierre como voice-statement === #}}
