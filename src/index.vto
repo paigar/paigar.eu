@@ -6,7 +6,7 @@ description: El cuaderno digital de Juanjo. Apuntes, ideas, garabatos, artilugio
 
 {{ set posts = search.pages("type=post", "date=desc") }}
 {{ set gridLimit = 9 }}
-{{ set tailLimit = 9 }}
+{{ set tailLimit = 18 }}
 {{ set hero = posts[0] }}
 {{ set bentoPosts = posts.slice(1, 8) }}
 {{ set featuredAPost = posts[8] }}
@@ -188,9 +188,9 @@ description: El cuaderno digital de Juanjo. Apuntes, ideas, garabatos, artilugio
     {{ if tailPosts.length >= 3 }}
       <section class="home-grid-tail" aria-label="Aún más entradas">
         <span class="home-grid-eyebrow">Aún más entradas</span>
-        <ol class="home-grid-cards">
+        <ol class="home-grid-cards home-grid-cards--compact">
           {{ for post of tailPosts }}
-            {{ include "partials/post-card.vto" { post } }}
+            {{ include "partials/post-card.vto" { post, compact: true } }}
           {{ /for }}
         </ol>
       </section>

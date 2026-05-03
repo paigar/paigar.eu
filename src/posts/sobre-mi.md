@@ -1,6 +1,6 @@
 ---
 title: Sobre mí
-date: 2025-09-15
+date: 2025-06-02
 excerpt: Me llamo Juanjo Marcos, vivo en Bilbao y llevo desde 1999 haciendo cosas para internet. PAIGAR es uno de los tres sitios que mantengo. Aquí escribo cuando me apetece, sobre lo que me apetece, con la extensión que me apetece.
 description: Sobre Juanjo Marcos — desarrollador web en Bilbao desde 1999, fundador de Idenautas y autor de paigar.eu.
 url: /sobre-mi/

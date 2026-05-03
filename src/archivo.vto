@@ -11,6 +11,19 @@ description: Archivo completo de paigar.eu — todas las entradas agrupadas por 
 {{ set posts = search.pages("type=post", "date=desc") }}
 {{ set years = [...new Set(posts.map(p => p.date.getFullYear()))].sort((a, b) => b - a) }}
 
+<div class="archive-search">
+  <label class="archive-search-label" for="archive-search">Buscar en el archivo</label>
+  <input
+    id="archive-search"
+    class="archive-search-input"
+    type="search"
+    placeholder="Título o tema…"
+    autocomplete="off"
+    spellcheck="false"
+  >
+  <p class="archive-search-empty" hidden>No hay entradas que coincidan con esa búsqueda.</p>
+</div>
+
 <div class="archive">
   {{ for year of years }}
     <section class="archive-year">
@@ -18,13 +31,13 @@ description: Archivo completo de paigar.eu — todas las entradas agrupadas por 
       <ol class="archive-list">
         {{ for post of posts.filter(p => p.date.getFullYear() === year) }}
           {{ set postTags = (post.tags || []).filter(t => t !== 'post') }}
-          <li class="archive-item">
+          <li class="archive-item" data-search="{{ (post.title + ' ' + (post.excerpt || '')).toLowerCase() }}">
             {{ if post.image }}
-              <a class="archive-item-thumb" href="{{ post.url }}" tabindex="-1" aria-hidden="true">
+              <div class="archive-item-thumb">
                 <img src="{{ post.image }}" alt="" loading="lazy">
-              </a>
+              </div>
             {{ else }}
-              <span class="archive-item-thumb archive-item-thumb--empty" aria-hidden="true"></span>
+              <div class="archive-item-thumb archive-item-thumb--empty"></div>
             {{ /if }}
             <time class="archive-item-date" datetime="{{ post.date.toISOString() }}">
               {{ post.date |> date('d MMM') }}
@@ -39,3 +52,26 @@ description: Archivo completo de paigar.eu — todas las entradas agrupadas por 
     </section>
   {{ /for }}
 </div>
+
+<script>
+  (function () {
+    const input = document.getElementById('archive-search');
+    const empty = document.querySelector('.archive-search-empty');
+    const items = document.querySelectorAll('.archive-item');
+    const years = document.querySelectorAll('.archive-year');
+
+    input.addEventListener('input', function () {
+      const query = this.value.trim().toLowerCase();
+
+      items.forEach(function (item) {
+        item.classList.toggle('is-hidden', !!query && !item.dataset.search.includes(query));
+      });
+
+      years.forEach(function (year) {
+        year.classList.toggle('is-hidden', !year.querySelector('.archive-item:not(.is-hidden)'));
+      });
+
+      empty.hidden = !!document.querySelector('.archive-item:not(.is-hidden)');
+    });
+  })();
+</script>

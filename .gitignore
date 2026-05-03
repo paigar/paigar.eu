@@ -12,6 +12,7 @@ Thumbs.db
 # IDEs
 .vscode/
 .idea/
+.claude/
 
 # Node (no debería aparecer con Deno, pero por si acaso)
 node_modules/

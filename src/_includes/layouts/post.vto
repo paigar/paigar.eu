@@ -82,6 +82,18 @@ layout: layouts/base.vto
 
     </div>
 
+    {{ if prototype }}
+      {{ set proto = prototipos.find(p => p.slug === prototype) }}
+      {{ if proto }}
+        <p class="prototype-fullscreen-cta">
+          <a class="prototype-fullscreen-link" href="/{{ proto.kind }}s/{{ proto.slug }}/">
+            Probar a pantalla completa<span class="arrow">→</span>
+          </a>
+        </p>
+        {{ include `prototipos/${proto.kind}s/${proto.slug}.vto` }}
+      {{ /if }}
+    {{ /if }}
+
     <div class="ornament">···</div>
 
     <footer class="post-foot">

@@ -1,0 +1,701 @@
+---
+slug: color-harmony
+name: Armonías de color
+tagline: Introduce un color y descubre sus combinaciones armónicas según el círculo cromático. Haz clic en cualquier muestra para copiar el código hex.
+cover: /img/color-harmony-tool.png
+articleUrl: /color-harmony-article/
+---
+
+<div id="color-harmony">
+
+  <div class="ch-card">
+    <div class="ch-eyebrow">Herramienta · paigar.eu</div>
+    <h3 class="ch-title">Armonías de <em>color</em></h3>
+    <p class="ch-subtitle">Introduce un color y obtén sus combinaciones armónicas según el círculo cromático.</p>
+
+    <label class="ch-label" for="ch-colorPicker">Color base</label>
+    <div class="ch-picker-layout">
+
+      <div class="ch-wheel-wrap">
+        <canvas id="ch-wheel" width="140" height="140"></canvas>
+        <div id="ch-dots"></div>
+      </div>
+
+      <div class="ch-picker-controls">
+        <div class="ch-color-inputs">
+          <input type="color" id="ch-colorPicker" value="#3B82F6" aria-label="Selector de color">
+          <div class="ch-hex-wrap">
+            <input type="text" id="ch-hexInput" value="#3B82F6" maxlength="7" spellcheck="false" aria-label="Código hexadecimal del color" placeholder="#000000">
+            <div id="ch-hslDisplay"></div>
+          </div>
+        </div>
+
+        <div class="ch-btn-row">
+          <button id="ch-btnRandom">Color aleatorio</button>
+          <button id="ch-btnCopyAll">Copiar todos los hex</button>
+          <button class="ch-btn-ink" id="ch-btnCopyCSS">Copiar CSS</button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="ch-sep"></div>
+    <div class="ch-section-label">Paletas armónicas</div>
+    <div id="ch-harmonies"></div>
+
+    <div class="ch-sep"></div>
+    <div class="ch-section-label">Exportar como CSS custom properties</div>
+    <p class="ch-export-desc">Variables listas para pegar en tu hoja de estilos. Se actualizan con cada cambio de color.</p>
+    <textarea id="ch-cssOutput" readonly spellcheck="false" aria-label="CSS generado con custom properties"></textarea>
+    <div class="ch-btn-row" style="margin-top: 0.75rem;">
+      <button id="ch-btnCopyCSS2">Copiar CSS al portapapeles</button>
+      <button id="ch-btnDownload">Descargar como .css</button>
+    </div>
+
+    <p class="ch-footer-note">Herramienta ejecutada en el navegador · ningún dato se envía a ningún servidor</p>
+  </div>
+
+</div>
+
+<div class="ch-toast" id="ch-toast" role="status" aria-live="polite"></div>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap');
+
+#color-harmony {
+  --ch-ink: #1a1a2e;
+  --ch-paper: #f5f0e8;
+  --ch-accent: #c8321f;
+  --ch-accent-soft: #f0e0dd;
+  --ch-ok: #1a6b3c;
+  --ch-ok-soft: #d4edde;
+  --ch-mid: #6b5b3e;
+  --ch-border: #c8b89a;
+  --ch-mono: 'DM Mono', monospace;
+  --ch-serif: 'DM Serif Display', serif;
+  --ch-sans: 'DM Sans', sans-serif;
+  display: flex;
+  justify-content: center;
+  padding: 2rem 0;
+  font-family: var(--ch-sans);
+  color: var(--ch-ink);
+}
+
+#color-harmony * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+#color-harmony .ch-card {
+  background: white;
+  border: 1.5px solid var(--ch-border);
+  border-radius: 2px;
+  padding: 3rem 3.5rem;
+  width: 100%;
+  position: relative;
+  box-shadow: 6px 6px 0 var(--ch-border);
+}
+
+#color-harmony .ch-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 4px;
+  background: linear-gradient(90deg, var(--ch-accent) 0%, var(--ch-ink) 50%, var(--ch-ok) 100%);
+}
+
+#color-harmony .ch-eyebrow {
+  font-family: var(--ch-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ch-mid);
+  margin-bottom: 0.5rem;
+}
+
+#color-harmony .ch-title {
+  font-family: var(--ch-serif);
+  font-size: 2rem;
+  font-weight: 400;
+  line-height: 1.1;
+  color: var(--ch-ink);
+  margin-bottom: 0.4rem;
+}
+
+#color-harmony .ch-title em {
+  font-style: italic;
+  color: var(--ch-accent);
+}
+
+#color-harmony .ch-subtitle {
+  font-size: 0.85rem;
+  color: var(--ch-mid);
+  font-weight: 300;
+  margin-bottom: 2rem;
+}
+
+#color-harmony .ch-label {
+  display: block;
+  font-family: var(--ch-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ch-mid);
+  margin-bottom: 0.75rem;
+}
+
+#color-harmony .ch-picker-layout {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;
+}
+
+#color-harmony .ch-wheel-wrap {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  flex-shrink: 0;
+}
+
+#color-harmony #ch-wheel {
+  border-radius: 50%;
+  display: block;
+  border: 1px solid var(--ch-border);
+}
+
+#color-harmony .ch-dot {
+  position: absolute;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  border: 2px solid white;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.3);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  transition: left 0.25s ease, top 0.25s ease;
+}
+
+#color-harmony .ch-picker-controls {
+  flex: 1;
+  min-width: 200px;
+}
+
+#color-harmony .ch-color-inputs {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+
+#color-harmony input[type="color"] {
+  width: 48px;
+  height: 48px;
+  border: 1.5px solid var(--ch-border);
+  border-radius: 2px;
+  cursor: pointer;
+  padding: 2px;
+  background: var(--ch-paper);
+  flex-shrink: 0;
+}
+
+#color-harmony .ch-hex-wrap {
+  flex: 1;
+}
+
+#color-harmony #ch-hexInput {
+  font-family: var(--ch-mono);
+  font-size: 1.1rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--ch-ink);
+  background: var(--ch-paper);
+  border: 1.5px solid var(--ch-border);
+  border-radius: 2px;
+  padding: 0.55rem 0.75rem;
+  width: 100%;
+  text-transform: uppercase;
+  transition: border-color 0.2s, background 0.2s;
+  outline: none;
+}
+
+#color-harmony #ch-hexInput:focus {
+  border-color: var(--ch-ink);
+  background: white;
+}
+
+#color-harmony #ch-hexInput.invalid {
+  border-color: var(--ch-accent);
+  color: var(--ch-accent);
+}
+
+#color-harmony #ch-hslDisplay {
+  font-family: var(--ch-mono);
+  font-size: 0.72rem;
+  color: var(--ch-mid);
+  margin-top: 0.3rem;
+}
+
+#color-harmony .ch-btn-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+#color-harmony button {
+  font-family: var(--ch-sans);
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--ch-mid);
+  background: var(--ch-paper);
+  border: 1.5px solid var(--ch-border);
+  border-radius: 2px;
+  padding: 0.4rem 0.85rem;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+
+#color-harmony button:hover {
+  background: var(--ch-ink);
+  color: var(--ch-paper);
+  border-color: var(--ch-ink);
+}
+
+#color-harmony button:active { opacity: 0.85; }
+
+#color-harmony button.ch-btn-ink {
+  background: var(--ch-ink);
+  color: var(--ch-paper);
+  border-color: var(--ch-ink);
+}
+
+#color-harmony button.ch-btn-ink:hover {
+  opacity: 0.85;
+}
+
+#color-harmony .ch-sep {
+  height: 1px;
+  background: var(--ch-border);
+  margin: 2rem 0 1.5rem;
+}
+
+#color-harmony .ch-section-label {
+  font-family: var(--ch-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ch-mid);
+  margin-bottom: 1.25rem;
+}
+
+#color-harmony .ch-harmony-block {
+  margin-bottom: 1.75rem;
+}
+
+#color-harmony .ch-harmony-block:last-child {
+  margin-bottom: 0;
+}
+
+#color-harmony .ch-harmony-header {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  margin-bottom: 0.75rem;
+}
+
+#color-harmony .ch-harmony-name {
+  font-family: var(--ch-mono);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--ch-ink);
+}
+
+#color-harmony .ch-harmony-hint {
+  font-size: 0.75rem;
+  color: var(--ch-mid);
+}
+
+#color-harmony .ch-swatches {
+  display: grid;
+  gap: 8px;
+}
+
+#color-harmony .ch-swatch-item {
+  display: flex;
+  flex-direction: column;
+}
+
+#color-harmony .ch-swatch-box {
+  height: 64px;
+  border-radius: 2px;
+  border: 1px solid rgba(0,0,0,0.08);
+  cursor: pointer;
+  transition: transform 0.12s, box-shadow 0.12s;
+  position: relative;
+  overflow: hidden;
+}
+
+#color-harmony .ch-swatch-box:hover {
+  transform: translateY(-2px);
+  box-shadow: 3px 3px 0 var(--ch-border);
+}
+
+#color-harmony .ch-swatch-box::after {
+  content: 'Copiar';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--ch-mono);
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0;
+  transition: opacity 0.15s;
+  background: rgba(0,0,0,0.18);
+  color: #fff;
+}
+
+#color-harmony .ch-swatch-box:hover::after { opacity: 1; }
+
+#color-harmony .ch-swatch-hex {
+  font-family: var(--ch-mono);
+  font-size: 0.68rem;
+  color: var(--ch-mid);
+  text-align: center;
+  margin-top: 5px;
+}
+
+#color-harmony .ch-swatch-angle {
+  font-family: var(--ch-mono);
+  font-size: 0.62rem;
+  color: var(--ch-border);
+  text-align: center;
+  margin-top: 2px;
+}
+
+#color-harmony .ch-export-desc {
+  font-size: 0.82rem;
+  color: var(--ch-mid);
+  font-weight: 300;
+  margin-bottom: 0.75rem;
+  line-height: 1.5;
+}
+
+#color-harmony #ch-cssOutput {
+  font-family: var(--ch-mono);
+  font-size: 0.75rem;
+  color: var(--ch-ink);
+  background: var(--ch-paper);
+  border: 1.5px solid var(--ch-border);
+  border-radius: 2px;
+  padding: 1rem;
+  width: 100%;
+  resize: vertical;
+  min-height: 160px;
+  outline: none;
+  line-height: 1.7;
+}
+
+#color-harmony #ch-cssOutput:focus {
+  border-color: var(--ch-ink);
+}
+
+#color-harmony .ch-footer-note {
+  margin-top: 1.5rem;
+  font-size: 0.72rem;
+  color: var(--ch-mid);
+  font-style: italic;
+  text-align: right;
+}
+
+.ch-toast {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  background: var(--ch-ink, #1a1a2e);
+  color: var(--ch-paper, #f5f0e8);
+  padding: 0.4rem 1.1rem;
+  border-radius: 2px;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s, transform 0.2s;
+  white-space: nowrap;
+  z-index: 1000;
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.15);
+}
+
+.ch-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+@media (max-width: 540px) {
+  #color-harmony .ch-card { padding: 2rem 1.5rem; }
+  #color-harmony .ch-title { font-size: 1.6rem; }
+  #color-harmony .ch-picker-layout { gap: 1.25rem; }
+  #color-harmony .ch-wheel-wrap { width: 110px; height: 110px; }
+}
+</style>
+
+<script>
+(function () {
+  var colorPicker = document.getElementById('ch-colorPicker');
+  var hexInput    = document.getElementById('ch-hexInput');
+  var hslDisplay  = document.getElementById('ch-hslDisplay');
+  var harmoniesEl = document.getElementById('ch-harmonies');
+  var cssOutput   = document.getElementById('ch-cssOutput');
+  var toast       = document.getElementById('ch-toast');
+  var toastTimer;
+
+  var HARMONIES = [
+    { key: 'comp',      name: 'Complementario',          hint: '180° opuesto en el círculo',        offsets: [0, 180],          cols: 2 },
+    { key: 'split',     name: 'Complementario dividido', hint: '±150° del complementario',           offsets: [0, 150, 210],     cols: 3 },
+    { key: 'triadic',   name: 'Triádica',                hint: 'Tres colores a 120° entre sí',       offsets: [0, 120, 240],     cols: 3 },
+    { key: 'analogous', name: 'Análoga',                 hint: 'Vecinos inmediatos ±30°',            offsets: [-30, 0, 30],      cols: 3 },
+    { key: 'tetradic',  name: 'Tetrádica (cuadrada)',    hint: 'Cuatro colores a 90° entre sí',      offsets: [0, 90, 180, 270], cols: 4 },
+  ];
+
+  function hexToHsl(hex) {
+    var r = parseInt(hex.slice(1,3),16)/255;
+    var g = parseInt(hex.slice(3,5),16)/255;
+    var b = parseInt(hex.slice(5,7),16)/255;
+    var max = Math.max(r,g,b), min = Math.min(r,g,b);
+    var l = (max+min)/2;
+    var h=0, s=0;
+    if (max !== min) {
+      var d = max-min;
+      s = l > 0.5 ? d/(2-max-min) : d/(max+min);
+      if (max===r)      h = ((g-b)/d + (g<b?6:0)) / 6;
+      else if (max===g) h = ((b-r)/d + 2) / 6;
+      else              h = ((r-g)/d + 4) / 6;
+    }
+    return [Math.round(h*360), Math.round(s*100), Math.round(l*100)];
+  }
+
+  function hslToHex(h,s,l) {
+    h = ((h%360)+360)%360;
+    s /= 100; l /= 100;
+    var a = s * Math.min(l, 1-l);
+    function f(n) {
+      var k = (n + h/30) % 12;
+      var c = l - a * Math.max(-1, Math.min(k-3, 9-k, 1));
+      return Math.round(255*c).toString(16).padStart(2,'0');
+    }
+    return '#' + f(0) + f(8) + f(4);
+  }
+
+  function isValidHex(v) { return /^#[0-9a-fA-F]{6}$/.test(v); }
+
+  function updateFromHex(hex) {
+    if (!isValidHex(hex)) return;
+    hex = hex.toUpperCase();
+    colorPicker.value = hex;
+    hexInput.value = hex;
+    hexInput.classList.remove('invalid');
+    renderAll(hex);
+  }
+
+  function renderAll(hex) {
+    var hsl = hexToHsl(hex);
+    var h = hsl[0], s = hsl[1], l = hsl[2];
+    hslDisplay.textContent = 'HSL(' + h + '°, ' + s + '%, ' + l + '%)';
+    renderHarmonies(h, s, l);
+    updateWheelDots(h, s, l);
+    generateCSS();
+  }
+
+  function renderHarmonies(h, s, l) {
+    harmoniesEl.innerHTML = HARMONIES.map(function (harm) {
+      var colors = harm.offsets.map(function (off) { return hslToHex(h+off, s, l); });
+      var swatches = colors.map(function (c, i) {
+        var angle = harm.offsets[i];
+        var label = angle === 0 ? 'Base' : (angle > 0 ? '+' + angle + '°' : angle + '°');
+        return '<div class="ch-swatch-item">'
+          + '<div class="ch-swatch-box" style="background:' + c + '" role="button" aria-label="Copiar ' + c + '" tabindex="0" data-hex="' + c + '"></div>'
+          + '<div class="ch-swatch-hex">' + c.toUpperCase() + '</div>'
+          + '<div class="ch-swatch-angle">' + label + '</div>'
+          + '</div>';
+      }).join('');
+      return '<div class="ch-harmony-block">'
+        + '<div class="ch-harmony-header">'
+        + '<span class="ch-harmony-name">' + harm.name + '</span>'
+        + '<span class="ch-harmony-hint">' + harm.hint + '</span>'
+        + '</div>'
+        + '<div class="ch-swatches" style="grid-template-columns:repeat(' + harm.cols + ',1fr)">' + swatches + '</div>'
+        + '</div>';
+    }).join('');
+
+    harmoniesEl.querySelectorAll('[data-hex]').forEach(function (el) {
+      el.addEventListener('click', function () { copyHex(el.dataset.hex); });
+      el.addEventListener('keydown', function (e) { if (e.key === 'Enter') copyHex(el.dataset.hex); });
+    });
+  }
+
+  function generateCSS() {
+    var hex = colorPicker.value.toUpperCase();
+    if (!isValidHex(hex)) return;
+    var hsl = hexToHsl(hex);
+    var h = hsl[0], s = hsl[1], l = hsl[2];
+    var lines = [':root {', '  /* Color base */', '  --color-base: ' + hex + ';'];
+    HARMONIES.forEach(function (harm) {
+      lines.push('\n  /* ' + harm.name + ' */');
+      harm.offsets.forEach(function (off, i) {
+        var c = hslToHex(h+off, s, l).toUpperCase();
+        var angle = off === 0 ? 'base' : (off > 0 ? 'plus-' + off : 'minus-' + Math.abs(off));
+        lines.push('  --color-' + harm.key + '-' + (i+1) + ': ' + c + ';  /* ' + (angle === 'base' ? 'Base' : angle + '°') + ' */');
+      });
+    });
+    lines.push('}');
+    cssOutput.value = lines.join('\n');
+  }
+
+  function copyHex(hex) {
+    navigator.clipboard.writeText(hex.toUpperCase()).catch(function () {
+      var ta = document.createElement('textarea');
+      ta.value = hex.toUpperCase();
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+    });
+    showToast(hex.toUpperCase() + ' copiado');
+  }
+
+  function copyAllHex() {
+    var hex = colorPicker.value;
+    var hsl = hexToHsl(hex);
+    var h = hsl[0], s = hsl[1], l = hsl[2];
+    var all = [];
+    HARMONIES.forEach(function (harm) {
+      harm.offsets.forEach(function (off) { all.push(hslToHex(h+off,s,l).toUpperCase()); });
+    });
+    all = all.filter(function (v, i, a) { return a.indexOf(v) === i; });
+    navigator.clipboard.writeText(all.join('\n')).catch(function () {});
+    showToast(all.length + ' colores copiados');
+  }
+
+  function downloadCSS() {
+    var blob = new Blob([cssOutput.value], { type: 'text/css' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'color-harmony.css';
+    a.click();
+    URL.revokeObjectURL(a.href);
+    showToast('Archivo descargado');
+  }
+
+  function setRandom() {
+    var h = Math.floor(Math.random()*360);
+    var s = 45 + Math.floor(Math.random()*35);
+    var l = 38 + Math.floor(Math.random()*22);
+    var hex = hslToHex(h,s,l).toUpperCase();
+    hexInput.value = hex;
+    updateFromHex(hex);
+  }
+
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 2200);
+  }
+
+  function drawWheel() {
+    var canvas = document.getElementById('ch-wheel');
+    var size = canvas.width;
+    var ctx = canvas.getContext('2d');
+    var cx = size/2, cy = size/2, r = size/2 - 1;
+    for (var angle = 0; angle < 360; angle++) {
+      var rad = angle * Math.PI / 180;
+      var g = ctx.createRadialGradient(cx,cy,0, cx,cy,r);
+      g.addColorStop(0, '#ffffff');
+      g.addColorStop(0.5, 'hsl(' + angle + ',100%,65%)');
+      g.addColorStop(1, 'hsl(' + angle + ',100%,35%)');
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.arc(cx, cy, r, rad, (angle+1.8)*Math.PI/180);
+      ctx.fillStyle = g;
+      ctx.fill();
+    }
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, 2*Math.PI);
+    ctx.strokeStyle = 'rgba(0,0,0,0.08)';
+    ctx.lineWidth = 0.5;
+    ctx.stroke();
+  }
+
+  function updateWheelDots(h, s, l) {
+    var dotsEl = document.getElementById('ch-dots');
+    var canvas = document.getElementById('ch-wheel');
+    var cx = canvas.width/2, cy = canvas.height/2, r = cx * 0.85;
+    dotsEl.innerHTML = [0, 180].map(function (off) {
+      var angle = ((h + off - 90) * Math.PI / 180);
+      var dist = (Math.min(s, 90) / 100) * r;
+      var x = cx + Math.cos(angle) * dist;
+      var y = cy + Math.sin(angle) * dist;
+      var color = hslToHex(h+off, s, l);
+      return '<div class="ch-dot" style="left:' + x + 'px;top:' + y + 'px;background:' + color + '"></div>';
+    }).join('');
+  }
+
+  document.getElementById('ch-btnRandom').addEventListener('click', setRandom);
+  document.getElementById('ch-btnCopyAll').addEventListener('click', copyAllHex);
+  document.getElementById('ch-btnCopyCSS').addEventListener('click', function () {
+    generateCSS();
+    cssOutput.select();
+    document.execCommand('copy');
+    showToast('CSS copiado al portapapeles');
+  });
+  document.getElementById('ch-btnCopyCSS2').addEventListener('click', function () {
+    cssOutput.select();
+    document.execCommand('copy');
+    showToast('CSS copiado al portapapeles');
+  });
+  document.getElementById('ch-btnDownload').addEventListener('click', downloadCSS);
+
+  colorPicker.addEventListener('input', function (e) {
+    var hex = e.target.value.toUpperCase();
+    hexInput.value = hex;
+    hexInput.classList.remove('invalid');
+    renderAll(hex);
+  });
+
+  hexInput.addEventListener('input', function (e) {
+    var val = e.target.value.trim();
+    if (!val.startsWith('#')) val = '#' + val;
+    hexInput.value = val;
+    if (isValidHex(val)) {
+      hexInput.classList.remove('invalid');
+      updateFromHex(val);
+    } else {
+      hexInput.classList.add('invalid');
+    }
+  });
+
+  hexInput.addEventListener('blur', function (e) {
+    var val = e.target.value.trim().toUpperCase();
+    if (!val.startsWith('#')) val = '#' + val;
+    if (isValidHex(val)) {
+      hexInput.value = val;
+      hexInput.classList.remove('invalid');
+    } else {
+      hexInput.value = colorPicker.value.toUpperCase();
+      hexInput.classList.remove('invalid');
+    }
+  });
+
+  drawWheel();
+  renderAll(colorPicker.value);
+}());
+</script>

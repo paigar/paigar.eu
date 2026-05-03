@@ -1,6 +1,6 @@
 ---
 title: "La pequeña estafa cotidiana del pago con tarjeta"
-date: 2026-04-15
+date: 2026-02-23
 excerpt: "Hemos normalizado pagar todo con tarjeta porque es cómodo, rápido y limpio. Pero hay un detalle del que casi nadie habla y que conviene mirar con calma: cada transacción deja un trozo del dinero en el banco, y al final del recorrido la cuenta sale rara."
 tags: [ideas, economía digital, banca]
 image: "/img/pago-con-tarjeta-comisiones.png"

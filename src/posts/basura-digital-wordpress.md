@@ -1,6 +1,6 @@
 ---
 title: "45 plugins, 12 GB y una web que pedía socorro"
-date: 2025-09-30
+date: 2025-07-28
 excerpt: "Un caso real de WordPress con 45 plugins instalados, 12 GB de hosting ocupados y un cliente quejándose de lentitud sirve de excusa para hablar de basura digital, optimización web, page builders y la huella energética que nadie ve."
 tags: [ideas, desarrollo web, sostenibilidad]
 image: "/img/basura-digital-wordpress.png"

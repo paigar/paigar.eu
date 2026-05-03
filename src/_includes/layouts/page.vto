@@ -2,10 +2,9 @@
 layout: layouts/base.vto
 ---
 
-<div class="container">
+<article class="page">
 
-  <article class="page">
-
+  <div class="container">
     <header class="page-header">
       {{ if section_mark }}
         <div class="page-eyebrow">{{ section_mark }}</div>
@@ -15,11 +14,18 @@ layout: layouts/base.vto
         <p class="page-subtitle">{{ subtitle }}</p>
       {{ /if }}
     </header>
+  </div>
 
+  {{ if image }}
+    <div class="post-cover">
+      <img src="{{ image }}" alt="{{ image_alt || title }}" loading="eager">
+    </div>
+  {{ /if }}
+
+  <div class="container">
     <div class="page-body">
       {{ content }}
     </div>
+  </div>
 
-  </article>
-
-</div>
+</article>

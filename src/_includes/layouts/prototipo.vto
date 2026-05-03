@@ -1,0 +1,38 @@
+---
+layout: layouts/base.vto
+---
+
+{{# Layout standalone para páginas /juegos/{slug}/ y /herramientas/{slug}/.
+    Hereda de base.vto (no de page.vto) para tener control total del ancho:
+    algunos canvas necesitan más espacio que el container típico de páginas. #}}
+
+<article class="prototipo-page">
+
+  <div class="container">
+    <header class="prototipo-header">
+      <span class="prototipo-eyebrow">{{ kind === 'juego' ? 'Juego' : 'Herramienta' }}</span>
+      <h1 class="prototipo-title">{{ name }}</h1>
+      {{ if tagline }}
+        <p class="prototipo-tagline">{{ tagline }}</p>
+      {{ /if }}
+    </header>
+  </div>
+
+  <div class="prototipo-stage">
+    {{ include `prototipos/${kind}s/${prototype}.vto` }}
+  </div>
+
+  <div class="container">
+    <footer class="prototipo-foot">
+      <a href="/{{ kind }}s/" class="prototipo-foot-link prototipo-foot-link--back">
+        <span class="arrow">←</span> Volver a {{ kind === 'juego' ? 'juegos' : 'herramientas' }}
+      </a>
+      {{ if articleUrl }}
+        <a href="{{ articleUrl }}" class="prototipo-foot-link">
+          Cómo se hizo <span class="arrow">→</span>
+        </a>
+      {{ /if }}
+    </footer>
+  </div>
+
+</article>

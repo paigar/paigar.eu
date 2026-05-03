@@ -1,11 +1,10 @@
 ---
 title: Por qué este blog se llama Paigar
-date: 2025-09-15
+date: 2025-06-09
 excerpt: La historia de un nombre que arrastro desde la infancia, una película de 1968 que no se tomaba en serio a sí misma y un ángel semidesnudo con alas blancas que se me quedó dentro para siempre.
 tags: [presentación, retrofuturismo]
 image: /img/el-angel-ciego.png
 image_alt: Ángel masculino de grandes alas blancas reclinado en una escenografía retrofuturista, evocación visual de Pygar.
-url: /que-es-esto/
 ---
 
 ## El nombre que llevo puesto desde los trece años

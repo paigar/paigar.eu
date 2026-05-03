@@ -1,0 +1,35 @@
+---
+layout: layouts/base.vto
+type: page
+title: Herramientas
+section_mark: Caja
+subtitle: "Pequeñas utilidades web de un solo propósito, escritas por necesidad o por no depender de terceros para algo que se puede resolver en navegador. Pulsa Usar y entras directamente a la herramienta — sin esperas, sin instalación y sin que la información que escribas salga de tu navegador."
+url: /herramientas/
+description: Pequeñas utilidades web autocontenidas. Sin enviar nada a ningún servidor.
+---
+
+<div class="container">
+
+  <section class="prototypes-page">
+
+    <header class="page-header">
+      {{ if section_mark }}
+        <div class="page-eyebrow">{{ section_mark }}</div>
+      {{ /if }}
+      <h1 class="page-title">{{ title }}</h1>
+      {{ if subtitle }}
+        <p class="page-subtitle">{{ subtitle }}</p>
+      {{ /if }}
+    </header>
+
+    {{ set herramientas = prototipos.filter(p => p.kind === 'herramienta') }}
+
+    <ol class="home-grid-cards" style="padding-top: 3rem;">
+      {{ for prototipo of herramientas }}
+        {{ include "partials/prototype-card.vto" { prototipo } }}
+      {{ /for }}
+    </ol>
+
+  </section>
+
+</div>

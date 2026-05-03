@@ -1,6 +1,6 @@
 ---
 title: "Cómo envejecer en un oficio que nunca había envejecido"
-date: 2026-03-30
+date: 2026-02-02
 excerpt: "Los desarrolladores que empezamos a finales de los noventa somos la primera generación de la historia que está envejeciendo en este oficio. No hay manual, no hay tradición, no hay abuelos que nos cuenten cómo se hace. Y lo cierto es que estamos disfrutándolo bastante."
 tags: [ideas, oficio, desarrollo web]
 image: "/img/envejecer-en-la-web.png"

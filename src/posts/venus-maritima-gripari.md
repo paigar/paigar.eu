@@ -1,6 +1,6 @@
 ---
 title: "Venus Marítima, el relato que me voló la cabeza"
-date: 2026-01-12
+date: 2026-03-24
 excerpt: "Un cuento corto de ciencia ficción publicado en 1972 que mezcla venusianos, una distopía socialista mundial y una bahía francesa donde sucede algo que nadie nombra durante quince años. Lo leí hace tiempo, lo he releído ahora y sigue funcionando."
 tags: [ideas, lecturas, ciencia ficción]
 image: "/img/venus-maritima-gripari.png"

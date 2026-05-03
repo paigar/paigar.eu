@@ -1,6 +1,6 @@
 ---
 title: "Mi peor logo, quince años después"
-date: 2025-10-30
+date: 2025-08-25
 excerpt: "En 2008 firmé este logo para una agencia madrileña de personal filipino. No lo cobré: lo regalé a cambio de que me contrataran la web —que ya costaba una miseria—. Doce meses después la marca se renombraba pero seguían usando el mismo logo. Quince años más tarde, los mismos clientes volvieron a llamarme para una segunda vuelta y me dieron la oportunidad de no volver a equivocarme."
 tags: [garabatos, diseño]
 image: /img/mi-peor-logo-cover.png

@@ -14,7 +14,7 @@
 
   <div class="post-card-body">
 
-    {{ if ebTags.length }}
+    {{ if ebTags.length && !compact }}
       <div class="post-card-eyebrow">
         {{ for i, tag of ebTags }}<a href="/etiqueta/{{ tag |> slug }}/">{{ tag }}</a>{{ if i < ebTags.length - 1 }}<span class="sep">·</span>{{ /if }}{{ /for }}
       </div>
@@ -24,13 +24,15 @@
       <a href="{{ post.url }}">{{ post.title }}</a>
     </h2>
 
-    {{ if post.excerpt }}
+    {{ if post.excerpt && !compact }}
       <p class="post-card-excerpt">{{ post.excerpt }}</p>
     {{ /if }}
 
-    <a href="{{ post.url }}" class="post-card-readmore" aria-label="Leer {{ post.title }}">
-      Leer <span class="arrow">→</span>
-    </a>
+    {{ if !compact }}
+      <a href="{{ post.url }}" class="post-card-readmore" aria-label="Leer {{ post.title }}">
+        Leer <span class="arrow">→</span>
+      </a>
+    {{ /if }}
 
   </div>
 

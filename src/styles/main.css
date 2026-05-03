@@ -787,6 +787,18 @@ em.note {
 	grid-template-columns: repeat(3, minmax(0, 1fr));
 	gap: 56px 40px;
 }
+.home-grid-cards--compact {
+	gap: 20px 40px;
+}
+.home-grid-cards--compact .post-card-cover {
+	margin-bottom: 10px;
+	aspect-ratio: 14 / 9;
+}
+.home-grid-cards--compact .post-card-title {
+	font-family: var(--font-body);
+	font-weight: 500;
+	text-align: center;
+}
 
 /* ---- FEATURED A: split horizontal (texto izquierda · imagen derecha) ----
    Patrón apetogentleman: 50/50 split contenido en gray bg + cover. Distinto
@@ -1437,6 +1449,14 @@ em.note {
 	hyphens: none;
 }
 
+.post-body hr {
+	border: none;
+	height: 1.5px;
+	background: var(--rule);
+	width: 80px;
+	margin: 3rem auto;
+}
+
 /* Drop cap */
 .post-body > p:first-of-type::first-letter {
 	font-family: var(--font-display);
@@ -1976,6 +1996,51 @@ em.note {
 /* =========================================================
    ARCHIVO COMPLETO (/archivo/) — listado por años
    ========================================================= */
+.archive-search {
+	max-width: var(--container-reading);
+	margin-bottom: 56px;
+}
+.archive-search-label {
+	display: block;
+	font-family: var(--font-mono);
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--ink-faint);
+	margin-bottom: 10px;
+}
+.archive-search-input {
+	width: 100%;
+	background: transparent;
+	border: none;
+	border-bottom: 2px solid var(--ink-faint);
+	padding: 8px 0;
+	font-family: var(--font-body);
+	font-size: clamp(20px, 2vw, 26px);
+	color: var(--ink);
+	outline: none;
+	transition: border-color 0.2s;
+}
+.archive-search-input::placeholder {
+	color: var(--ink-faint);
+}
+.archive-search-input:focus {
+	border-bottom-color: var(--accent);
+}
+.archive-search-empty {
+	margin-top: 16px;
+	font-family: var(--font-body);
+	font-style: italic;
+	color: var(--ink-faint);
+}
+.archive-item.is-hidden {
+	display: none !important;
+}
+.archive-year.is-hidden {
+	display: none;
+}
+
 .archive {
 	max-width: var(--container-reading);
 }
@@ -2029,6 +2094,7 @@ ol.archive-list .archive-item {
 	align-items: start;
 	padding: 16px 4px;
 	border-bottom: 1px solid var(--rule);
+	position: relative;
 	transition:
 		padding-left 0.2s ease,
 		background 0.2s ease;
@@ -2049,6 +2115,7 @@ ol.archive-list .archive-item:hover {
 	border: 1px solid var(--rule);
 	overflow: hidden;
 	align-self: stretch;
+	position: relative;
 }
 .archive-item-thumb img {
 	width: 100%;
@@ -2056,6 +2123,8 @@ ol.archive-list .archive-item:hover {
 	object-fit: cover;
 	display: block;
 	transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+	position: absolute;
+	inset: 0;
 }
 .archive-item:hover .archive-item-thumb img {
 	transform: scale(1.04);
@@ -2097,18 +2166,20 @@ ol.archive-list .archive-item:hover {
 	color: var(--ink);
 	text-wrap: balance;
 	font-variation-settings: "opsz" 19;
-	border-bottom: 1px solid transparent;
-	transition:
-		color 0.2s ease,
-		border-color 0.2s ease;
+	transition: color 0.2s ease;
 	align-self: end;
 	margin-top: 4px;
+	border-bottom: none;
 }
-.page-body .archive-item-title:hover,
-.archive-item-title:hover {
+.page-body .archive-item-title::after,
+.archive-item-title::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+}
+.page-body ol.archive-list .archive-item:hover .archive-item-title,
+ol.archive-list .archive-item:hover .archive-item-title {
 	color: var(--accent);
-	border-bottom-color: var(--accent);
-	background: transparent;
 }
 
 @media (max-width: 600px) {
@@ -2990,4 +3061,134 @@ ol.archive-list .archive-item:hover {
 			opacity: 1;
 		}
 	}
+}
+
+/* =========================================================
+   PROTOTIPO standalone — /juegos/{slug}/ y /herramientas/{slug}/
+   Layout minimal: header + escenario para el partial + footer con
+   un único enlace al artículo de fondo.
+   ========================================================= */
+.prototipo-page {
+	padding-top: clamp(40px, 6vw, 80px);
+	padding-bottom: clamp(60px, 8vw, 120px);
+}
+
+.prototipo-header {
+	text-align: center;
+	margin: 0 auto 56px;
+	max-width: 800px;
+}
+.prototipo-eyebrow {
+	font-family: var(--font-mono);
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.32em;
+	text-transform: uppercase;
+	color: var(--accent);
+	display: block;
+	margin-bottom: 20px;
+}
+.prototipo-title {
+	font-family: var(--font-display);
+	font-weight: 400;
+	font-size: clamp(36px, 5vw, 64px);
+	line-height: 1;
+	letter-spacing: 0;
+	color: var(--ink);
+	margin: 0 0 20px;
+	text-wrap: balance;
+}
+.prototipo-tagline {
+	font-family: var(--font-body);
+	font-style: italic;
+	font-size: clamp(17px, 1.4vw, 21px);
+	line-height: 1.5;
+	color: var(--ink-soft);
+	margin: 0 auto;
+	max-width: 60ch;
+	font-variation-settings: "opsz" 18;
+	text-wrap: pretty;
+}
+
+/* El partial vive aquí. Ancho generoso para que canvas y formularios
+   tengan sitio sin chocar con el reading container. */
+.prototipo-stage {
+	margin: 0 auto 64px;
+	max-width: 1100px;
+	padding: 0 clamp(20px, 4vw, 40px);
+}
+
+.prototipo-foot {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 16px 32px;
+	padding-top: 40px;
+	border-top: 1px solid var(--rule);
+}
+.prototipo-foot-link {
+	font-family: var(--font-mono);
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.26em;
+	text-transform: uppercase;
+	color: var(--accent);
+	display: inline-flex;
+	align-items: center;
+	gap: 12px;
+	border-bottom: 1px solid currentColor;
+	padding-bottom: 4px;
+	transition: color 0.2s;
+}
+.prototipo-foot-link .arrow {
+	transition: transform 0.2s;
+	display: inline-block;
+}
+.prototipo-foot-link:hover {
+	color: var(--accent-deep);
+}
+.prototipo-foot-link:hover .arrow {
+	transform: translateX(4px);
+}
+.prototipo-foot-link--back:hover .arrow {
+	transform: translateX(-4px);
+}
+
+/* Los índices de /juegos/ y /herramientas/ reutilizan .home-grid-cards
+   (3-col) con un partial prototype-card.vto que mimetiza post-card sin
+   eyebrow. Cero CSS adicional para los grids; coherencia visual exacta
+   con tag pages y con "Más del archivo" de la home. */
+
+/* =========================================================
+   CTA "Probar a pantalla completa" — dentro de cada artículo
+   con prototype, justo encima del embed.
+   ========================================================= */
+.prototype-fullscreen-cta {
+	margin: 32px 0 16px;
+	padding: 0;
+	text-align: center;
+}
+.prototype-fullscreen-link {
+	display: inline-flex;
+	align-items: center;
+	gap: 12px;
+	font-family: var(--font-mono);
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.24em;
+	text-transform: uppercase;
+	color: var(--accent);
+	border-bottom: 1px solid currentColor;
+	padding-bottom: 4px;
+	transition: color 0.2s;
+}
+.prototype-fullscreen-link .arrow {
+	transition: transform 0.2s;
+}
+.prototype-fullscreen-link:hover {
+	color: var(--accent-deep);
+}
+.prototype-fullscreen-link:hover .arrow {
+	transform: translateX(4px);
 }

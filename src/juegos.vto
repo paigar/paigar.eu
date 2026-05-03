@@ -1,0 +1,35 @@
+---
+layout: layouts/base.vto
+type: page
+title: Juegos
+section_mark: Sala
+subtitle: "Prototipos jugables escritos por aprender, por nostalgia o por hacer correr una vieja idea sobre canvas. Pulsa Jugar y entras directamente al juego — sin esperar, sin instalar nada y sin que se mande nada a ningún sitio."
+url: /juegos/
+description: Juegos web jugables al instante — clásicos del arcade y del navegador.
+---
+
+<div class="container">
+
+  <section class="prototypes-page">
+
+    <header class="page-header">
+      {{ if section_mark }}
+        <div class="page-eyebrow">{{ section_mark }}</div>
+      {{ /if }}
+      <h1 class="page-title">{{ title }}</h1>
+      {{ if subtitle }}
+        <p class="page-subtitle">{{ subtitle }}</p>
+      {{ /if }}
+    </header>
+
+    {{ set juegos = prototipos.filter(p => p.kind === 'juego') }}
+
+    <ol class="home-grid-cards" style="padding-top: 3rem;">
+      {{ for prototipo of juegos }}
+        {{ include "partials/prototype-card.vto" { prototipo } }}
+      {{ /for }}
+    </ol>
+
+  </section>
+
+</div>

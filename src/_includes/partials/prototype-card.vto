@@ -1,0 +1,39 @@
+{{# Card de prototipo para los grids de /juegos/ y /herramientas/.
+    Mimética a post-card.vto (mismas clases, mismo CSS) pero:
+    - Sin eyebrow: en un listado de "solo juegos" o "solo herramientas",
+      la etiqueta de tipo es ruido redundante.
+    - Apunta a la página standalone, no al artículo. El "leer artículo"
+      vive dentro de la standalone. #}}
+
+{{ set protoUrl = `/${prototipo.kind}s/${prototipo.slug}/` }}
+{{ set actionLabel = prototipo.kind === 'juego' ? 'Jugar' : 'Usar' }}
+
+<article class="post-card">
+
+  <a class="post-card-cover" href="{{ protoUrl }}" tabindex="-1" aria-hidden="true">
+    {{ if prototipo.cover }}
+      <img src="{{ prototipo.cover }}" alt="" loading="lazy">
+    {{ else }}
+      <div class="post-card-poster">
+        <span class="post-card-poster-letter">{{ prototipo.name.charAt(0) }}.</span>
+      </div>
+    {{ /if }}
+  </a>
+
+  <div class="post-card-body">
+
+    <h2 class="post-card-title">
+      <a href="{{ protoUrl }}">{{ prototipo.name }}</a>
+    </h2>
+
+    {{ if prototipo.tagline }}
+      <p class="post-card-excerpt">{{ prototipo.tagline }}</p>
+    {{ /if }}
+
+    <a href="{{ protoUrl }}" class="post-card-readmore" aria-label="{{ actionLabel }} {{ prototipo.name }}">
+      {{ actionLabel }} <span class="arrow">→</span>
+    </a>
+
+  </div>
+
+</article>

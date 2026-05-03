@@ -1,0 +1,462 @@
+---
+slug: iban
+name: Validar IBAN
+tagline: Comprueba si un IBAN europeo es correcto, con desglose por país y BBAN.
+cover: /img/validar-iban-formulario.png
+articleUrl: /validar-iban-formulario/
+---
+
+<div id="iban-prototipo">
+  <div class="ib-card">
+    <div class="ib-eyebrow">Herramienta · paigar.eu</div>
+    <h3 class="ib-title">Valida tu <em>IBAN</em></h3>
+    <p class="ib-subtitle">Introduce el número de cuenta y comprueba si es válido al instante.</p>
+
+    <label class="ib-label" for="ib-input">Código IBAN</label>
+    <div class="ib-input-row">
+      <input id="ib-input" type="text" maxlength="42" placeholder="ES91 2100 0418 4502 0005 1332" autocomplete="off" spellcheck="false">
+      <button class="ib-clear-btn" id="ib-clearBtn">Limpiar</button>
+    </div>
+
+    <div class="ib-result-card" id="ib-resultCard">
+      <div class="ib-result-dot"></div>
+      <div class="ib-result-body">
+        <div class="ib-result-tipo" id="ib-resultTipo">—</div>
+        <div class="ib-result-msg" id="ib-resultMsg">Escribe un IBAN para validarlo</div>
+      </div>
+    </div>
+
+    <div class="ib-desglose" id="ib-desglose">
+      <div class="ib-desglose-title">Desglose</div>
+      <div class="ib-desglose-row"><div class="ib-desglose-key">País</div><div class="ib-desglose-val" id="ib-dPais">—</div></div>
+      <div class="ib-desglose-row"><div class="ib-desglose-key">Dígitos de control</div><div class="ib-desglose-val" id="ib-dControl">—</div></div>
+      <div class="ib-desglose-row"><div class="ib-desglose-key">BBAN</div><div class="ib-desglose-val" id="ib-dBBAN">—</div></div>
+      <div class="ib-desglose-row"><div class="ib-desglose-key">Longitud</div><div class="ib-desglose-val" id="ib-dLongitud">—</div></div>
+      <div class="ib-desglose-row"><div class="ib-desglose-key">Módulo 97</div><div class="ib-desglose-val" id="ib-dMod">—</div></div>
+    </div>
+
+    <div class="ib-sep"></div>
+
+    <div class="ib-examples-label">Ejemplos</div>
+    <div class="ib-chips">
+      <div class="ib-chip ib-ok" data-value="ES9121000418450200051332"><span class="ib-chip-label">ES</span>ES9121000418450200051332</div>
+      <div class="ib-chip ib-ok" data-value="DE89370400440532013000"><span class="ib-chip-label">DE</span>DE89370400440532013000</div>
+      <div class="ib-chip ib-ok" data-value="GB29NWBK60161331926819"><span class="ib-chip-label">GB</span>GB29NWBK60161331926819</div>
+      <div class="ib-chip ib-ok" data-value="FR7630006000011234567890189"><span class="ib-chip-label">FR</span>FR7630006000011234567890189</div>
+      <div class="ib-chip ib-ko" data-value="ES0021000418450200051332"><span class="ib-chip-label">inválido</span>ES0021000418450200051332</div>
+      <div class="ib-chip ib-ko" data-value="ES9121000418450200051333"><span class="ib-chip-label">inválido</span>ES9121000418450200051333</div>
+    </div>
+
+    <p class="ib-footer-note">Validación realizada en el navegador · ningún dato se envía a ningún servidor</p>
+  </div>
+</div>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap');
+
+#iban-prototipo {
+  --ib-ink: #1a1a2e;
+  --ib-paper: #f5f0e8;
+  --ib-accent: #c8321f;
+  --ib-accent-soft: #f0e0dd;
+  --ib-ok: #1a6b3c;
+  --ib-ok-soft: #d4edde;
+  --ib-mid: #6b5b3e;
+  --ib-border: #c8b89a;
+  --ib-mono: 'DM Mono', monospace;
+  --ib-serif: 'DM Serif Display', serif;
+  --ib-sans: 'DM Sans', sans-serif;
+  display: flex;
+  justify-content: center;
+  padding: 2rem 0;
+  font-family: var(--ib-sans);
+  color: var(--ib-ink);
+}
+
+#iban-prototipo * {
+  box-sizing: border-box;
+}
+
+#iban-prototipo .ib-card {
+  background: white;
+  border: 1.5px solid var(--ib-border);
+  border-radius: 2px;
+  padding: 3rem 3.5rem;
+  width: 100%;
+  position: relative;
+  box-shadow: 6px 6px 0 var(--ib-border);
+}
+
+#iban-prototipo .ib-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 4px;
+  background: linear-gradient(90deg, var(--ib-accent) 0%, var(--ib-ink) 50%, var(--ib-ok) 100%);
+}
+
+#iban-prototipo .ib-eyebrow {
+  font-family: var(--ib-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.15em;
+  color: var(--ib-mid);
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+#iban-prototipo .ib-title {
+  font-family: var(--ib-serif);
+  font-size: 2rem;
+  font-weight: 400;
+  line-height: 1.1;
+  color: var(--ib-ink);
+  margin-bottom: 0.4rem;
+}
+
+#iban-prototipo .ib-title em {
+  font-style: italic;
+  color: var(--ib-accent);
+}
+
+#iban-prototipo .ib-subtitle {
+  font-size: 0.85rem;
+  color: var(--ib-mid);
+  margin-bottom: 2.5rem;
+  font-weight: 300;
+}
+
+#iban-prototipo .ib-label {
+  display: block;
+  font-family: var(--ib-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ib-mid);
+  margin-bottom: 0.5rem;
+}
+
+#iban-prototipo .ib-input-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 1rem;
+}
+
+#iban-prototipo input {
+  flex: 1;
+  font-family: var(--ib-mono);
+  font-size: 1.1rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.8rem 1rem;
+  border: 1.5px solid var(--ib-border);
+  border-radius: 2px;
+  background: var(--ib-paper);
+  color: var(--ib-ink);
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+#iban-prototipo input:focus {
+  border-color: var(--ib-ink);
+  background: white;
+}
+
+#iban-prototipo .ib-clear-btn {
+  padding: 0.8rem 1rem;
+  font-size: 0.8rem;
+  font-family: var(--ib-sans);
+  border: 1.5px solid var(--ib-border);
+  border-radius: 2px;
+  background: var(--ib-paper);
+  color: var(--ib-mid);
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+#iban-prototipo .ib-clear-btn:hover {
+  border-color: var(--ib-ink);
+  background: var(--ib-ink);
+  color: var(--ib-paper);
+}
+
+#iban-prototipo .ib-result-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border-radius: 2px;
+  border: 1.5px solid var(--ib-border);
+  margin-bottom: 1.5rem;
+  transition: all 0.25s;
+  background: #f8f6f2;
+}
+
+#iban-prototipo .ib-result-card.valid {
+  background: var(--ib-ok-soft);
+  border-color: var(--ib-ok);
+}
+
+#iban-prototipo .ib-result-card.invalid {
+  background: var(--ib-accent-soft);
+  border-color: var(--ib-accent);
+}
+
+#iban-prototipo .ib-result-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--ib-mid);
+  flex-shrink: 0;
+  margin-top: 5px;
+  transition: background 0.2s;
+}
+
+#iban-prototipo .ib-result-card.valid .ib-result-dot { background: var(--ib-ok); }
+#iban-prototipo .ib-result-card.invalid .ib-result-dot { background: var(--ib-accent); }
+
+#iban-prototipo .ib-result-body { flex: 1; }
+
+#iban-prototipo .ib-result-tipo {
+  font-family: var(--ib-mono);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ib-mid);
+  margin-bottom: 0.2rem;
+}
+
+#iban-prototipo .ib-result-card.valid .ib-result-tipo { color: var(--ib-ok); }
+#iban-prototipo .ib-result-card.invalid .ib-result-tipo { color: var(--ib-accent); }
+
+#iban-prototipo .ib-result-msg {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--ib-ink);
+}
+
+#iban-prototipo .ib-result-card.valid .ib-result-msg { color: var(--ib-ok); }
+#iban-prototipo .ib-result-card.invalid .ib-result-msg { color: var(--ib-accent); }
+
+#iban-prototipo .ib-desglose {
+  display: none;
+  margin-bottom: 1.5rem;
+  border: 1.5px solid var(--ib-border);
+  border-radius: 2px;
+  overflow: hidden;
+  background: white;
+}
+
+#iban-prototipo .ib-desglose.visible { display: block; }
+
+#iban-prototipo .ib-desglose-title {
+  font-family: var(--ib-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ib-mid);
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid var(--ib-border);
+  background: var(--ib-paper);
+}
+
+#iban-prototipo .ib-desglose-row {
+  display: flex;
+  padding: 0.5rem 1rem;
+  gap: 1rem;
+  border-bottom: 1px solid var(--ib-border);
+}
+
+#iban-prototipo .ib-desglose-row:last-child { border-bottom: none; }
+
+#iban-prototipo .ib-desglose-key {
+  font-size: 0.75rem;
+  color: var(--ib-mid);
+  min-width: 140px;
+}
+
+#iban-prototipo .ib-desglose-val {
+  font-family: var(--ib-mono);
+  font-size: 0.8rem;
+  color: var(--ib-ink);
+  font-weight: 500;
+  word-break: break-all;
+}
+
+#iban-prototipo .ib-sep {
+  height: 1px;
+  background: var(--ib-border);
+  margin-bottom: 1.5rem;
+}
+
+#iban-prototipo .ib-examples-label {
+  font-family: var(--ib-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ib-mid);
+  margin-bottom: 0.6rem;
+}
+
+#iban-prototipo .ib-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0;
+}
+
+#iban-prototipo .ib-chip {
+  font-family: var(--ib-mono);
+  font-size: 0.72rem;
+  padding: 0.3rem 0.7rem;
+  border: 1px solid var(--ib-border);
+  border-radius: 1px;
+  cursor: pointer;
+  background: var(--ib-paper);
+  color: var(--ib-ink);
+  transition: all 0.15s;
+  letter-spacing: 0.04em;
+}
+
+#iban-prototipo .ib-chip:hover {
+  border-color: var(--ib-ink);
+  background: var(--ib-ink);
+  color: var(--ib-paper);
+}
+
+#iban-prototipo .ib-chip-label {
+  font-family: var(--ib-sans);
+  font-size: 0.6rem;
+  color: var(--ib-mid);
+  margin-right: 4px;
+}
+
+#iban-prototipo .ib-chip:hover .ib-chip-label { color: var(--ib-paper); opacity: 0.7; }
+
+#iban-prototipo .ib-chip.ib-ok { border-color: var(--ib-ok); color: var(--ib-ok); background: var(--ib-ok-soft); }
+#iban-prototipo .ib-chip.ib-ok:hover { background: var(--ib-ok); color: white; }
+#iban-prototipo .ib-chip.ib-ko { border-color: var(--ib-accent); color: var(--ib-accent); background: var(--ib-accent-soft); }
+#iban-prototipo .ib-chip.ib-ko:hover { background: var(--ib-accent); color: white; }
+
+#iban-prototipo .ib-footer-note {
+  margin-top: 1.5rem;
+  font-size: 0.72rem;
+  color: var(--ib-mid);
+  font-style: italic;
+  text-align: right;
+}
+
+@media (max-width: 540px) {
+  #iban-prototipo .ib-card { padding: 2rem 1.5rem; }
+  #iban-prototipo .ib-title { font-size: 1.6rem; }
+  #iban-prototipo input { font-size: 0.95rem; }
+  #iban-prototipo .ib-desglose-key { min-width: 100px; }
+}
+</style>
+
+<script>
+(function () {
+  'use strict';
+
+  const LONGITUDES = {
+    AL:28,AD:24,AT:20,AZ:28,BH:22,BE:16,BA:20,BR:29,BG:22,CR:22,HR:21,CY:28,CZ:24,
+    DK:18,DO:28,EE:20,FI:18,FR:27,GE:22,DE:22,GI:23,GR:27,GT:28,HU:28,IS:26,IE:22,
+    IL:23,IT:27,KZ:20,KW:30,LV:21,LB:28,LI:21,LT:20,LU:20,MT:31,MR:27,MU:30,MC:27,
+    MD:24,ME:22,NL:18,MK:19,NO:15,PK:24,PL:28,PT:25,RO:24,SM:27,SA:24,RS:22,SK:24,
+    SI:19,ES:24,SE:24,CH:21,TN:24,TR:26,AE:23,GB:22,VG:24
+  };
+
+  const PAISES = {
+    ES:'España', DE:'Alemania', GB:'Reino Unido', FR:'Francia', IT:'Italia',
+    PT:'Portugal', NL:'Países Bajos', BE:'Bélgica', AT:'Austria', CH:'Suiza',
+    PL:'Polonia', SE:'Suecia', NO:'Noruega', DK:'Dinamarca', FI:'Finlandia',
+    IE:'Irlanda', GR:'Grecia'
+  };
+
+  function mod97(numStr) {
+    let r = 0;
+    for (const c of numStr) r = (r * 10 + parseInt(c)) % 97;
+    return r;
+  }
+
+  function validarIBAN(raw) {
+    const iban = raw.trim().toUpperCase().replace(/[\s\-]/g, '');
+    if (!/^[A-Z]{2}\d{2}[A-Z0-9]{4,}$/.test(iban)) return { ok: false, error: 'formato', iban };
+    const pais = iban.substring(0, 2);
+    const longEsperada = LONGITUDES[pais];
+    if (longEsperada && iban.length !== longEsperada) return { ok: false, error: 'longitud', pais, iban, longEsperada };
+    const reord = iban.substring(4) + iban.substring(0, 4);
+    const numStr = reord.replace(/[A-Z]/g, function (c) { return (c.charCodeAt(0) - 55).toString(); });
+    const resto = mod97(numStr);
+    return { ok: resto === 1, pais, iban, control: iban.substring(2, 4), bban: iban.substring(4), longitud: iban.length, mod: resto };
+  }
+
+  const input   = document.getElementById('ib-input');
+  const card    = document.getElementById('ib-resultCard');
+  const tipoEl  = document.getElementById('ib-resultTipo');
+  const msgEl   = document.getElementById('ib-resultMsg');
+  const desglose = document.getElementById('ib-desglose');
+
+  function render(raw) {
+    card.className = 'ib-result-card';
+    desglose.className = 'ib-desglose';
+
+    if (!raw.trim()) {
+      tipoEl.textContent = '—';
+      msgEl.textContent = 'Escribe un IBAN para validarlo';
+      return;
+    }
+
+    const res = validarIBAN(raw);
+
+    if (res.error === 'formato') {
+      tipoEl.textContent = 'Formato no reconocido';
+      msgEl.textContent = 'No parece un IBAN válido (debe empezar por 2 letras de país y 2 dígitos de control)';
+      return;
+    }
+
+    const nombrePais = PAISES[res.pais] ? PAISES[res.pais] + ' (' + res.pais + ')' : res.pais;
+
+    if (res.error === 'longitud') {
+      card.classList.add('invalid');
+      tipoEl.textContent = 'IBAN ' + nombrePais;
+      msgEl.textContent = 'Longitud incorrecta: tiene ' + res.iban.length + ' caracteres, debería tener ' + res.longEsperada;
+      return;
+    }
+
+    if (res.ok) {
+      card.classList.add('valid');
+      tipoEl.textContent = 'IBAN ' + nombrePais;
+      msgEl.textContent = 'IBAN válido — módulo 97 = 1';
+    } else {
+      card.classList.add('invalid');
+      tipoEl.textContent = 'IBAN ' + nombrePais;
+      msgEl.textContent = 'IBAN inválido — módulo 97 = ' + res.mod + ' (debería ser 1)';
+    }
+
+    desglose.classList.add('visible');
+    document.getElementById('ib-dPais').textContent = nombrePais;
+    document.getElementById('ib-dControl').textContent = res.control;
+    document.getElementById('ib-dBBAN').textContent = res.bban;
+    document.getElementById('ib-dLongitud').textContent = res.longitud + ' caracteres';
+    document.getElementById('ib-dMod').textContent = res.mod + ' ' + (res.ok ? '✓' : '≠ 1');
+  }
+
+  input.addEventListener('input', function (e) { render(e.target.value); });
+
+  document.getElementById('ib-clearBtn').addEventListener('click', function () {
+    input.value = '';
+    render('');
+    input.focus();
+  });
+
+  document.querySelectorAll('#iban-prototipo .ib-chip').forEach(function (c) {
+    c.addEventListener('click', function () {
+      input.value = c.dataset.value;
+      render(c.dataset.value);
+      input.focus();
+    });
+  });
+}());
+</script>

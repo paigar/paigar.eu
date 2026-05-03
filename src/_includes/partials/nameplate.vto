@@ -11,9 +11,9 @@
     </button>
     <nav id="site-nav" class="site-header-nav" aria-label="Navegación principal">
       <a href="/"{{ if url === '/' }} class="is-current"{{ /if }}>Bitácora</a>
+      <a href="/juegos/"{{ if url && url.startsWith('/juegos/') }} class="is-current"{{ /if }}>Juegos</a>
+      <a href="/herramientas/"{{ if url && url.startsWith('/herramientas/') }} class="is-current"{{ /if }}>Herramientas</a>
       <a href="/que-es-esto/"{{ if url === '/que-es-esto/' }} class="is-current"{{ /if }}>Qué es esto</a>
-      <a href="/sobre-mi/"{{ if url === '/sobre-mi/' }} class="is-current"{{ /if }}>Sobre mí</a>
-      <a href="/contacto/"{{ if url === '/contacto/' }} class="is-current"{{ /if }}>Contacto</a>
     </nav>
   </div>
   <script>

@@ -1,0 +1,541 @@
+---
+slug: nif
+name: Validar NIF y CIF
+tagline: Valida NIF, NIE y CIF español, identificando además el tipo de entidad jurídica.
+cover: /img/validar-nif-cif-formulario.png
+articleUrl: /validar-nif-cif-formulario/
+---
+
+<div id="nif-prototipo">
+  <div class="nf-card">
+    <div class="nf-eyebrow">Herramienta · paigar.eu</div>
+    <h3 class="nf-title">Valida tu <em>NIF</em></h3>
+    <p class="nf-subtitle">DNI, NIE o CIF — detección automática con identificación de tipo de entidad.</p>
+
+    <label class="nf-label" for="nf-input">NIF — DNI · NIE · CIF</label>
+    <div class="nf-input-row">
+      <input id="nf-input" type="text" maxlength="12" placeholder="12345678Z · X1234567L · A12345674" autocomplete="off" spellcheck="false">
+      <button class="nf-clear-btn" id="nf-clearBtn">Limpiar</button>
+    </div>
+
+    <div class="nf-result-card" id="nf-resultCard">
+      <div class="nf-result-dot"></div>
+      <div class="nf-result-body">
+        <div class="nf-result-tipo" id="nf-rtype">—</div>
+        <div class="nf-result-msg" id="nf-rmsg">Introduce un NIF para validarlo</div>
+      </div>
+    </div>
+
+    <div class="nf-entity-badge" id="nf-entityBadge">
+      <span class="nf-entity-label">Tipo de entidad</span>
+      <span class="nf-entity-name" id="nf-entityName"></span>
+    </div>
+
+    <div class="nf-stats-grid nf-hidden" id="nf-statsGrid">
+      <div class="nf-stat"><div class="nf-stat-label">Documento</div><div class="nf-stat-val" id="nf-sDoc">—</div></div>
+      <div class="nf-stat"><div class="nf-stat-label">Tipo</div><div class="nf-stat-val" id="nf-sTipo">—</div></div>
+      <div class="nf-stat"><div class="nf-stat-label">Control</div><div class="nf-stat-val" id="nf-sCtrl">—</div></div>
+    </div>
+
+    <div class="nf-sep"></div>
+    <div class="nf-examples-label">Ejemplos</div>
+
+    <div class="nf-group-label">DNI (persona física española)</div>
+    <div class="nf-chips">
+      <div class="nf-chip nf-ok" data-v="12345678Z">12345678Z ✓</div>
+      <div class="nf-chip nf-ko" data-v="12345678A">12345678A ✗</div>
+    </div>
+
+    <div class="nf-group-label">NIE (residente extranjero)</div>
+    <div class="nf-chips">
+      <div class="nf-chip nf-ok" data-v="X1234567L">X1234567L ✓</div>
+      <div class="nf-chip nf-ok" data-v="Y1234567X">Y1234567X ✓</div>
+      <div class="nf-chip nf-ko" data-v="Z1234567L">Z1234567L ✗</div>
+    </div>
+
+    <div class="nf-group-label">CIF (persona jurídica)</div>
+    <div class="nf-chips">
+      <div class="nf-chip nf-ok" data-v="A12345674">A12345674 ✓ S.A.</div>
+      <div class="nf-chip nf-ok" data-v="B1234567D">B1234567D ✓ S.L.</div>
+      <div class="nf-chip nf-ok" data-v="Q1234567D">Q1234567D ✓ Org. Público</div>
+      <div class="nf-chip nf-ko" data-v="A12345670">A12345670 ✗</div>
+      <div class="nf-chip nf-ko" data-v="Q12345674">Q12345674 ✗</div>
+    </div>
+
+    <p class="nf-footer-note">Validación realizada en el navegador · ningún dato se envía a ningún servidor</p>
+  </div>
+</div>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap');
+
+#nif-prototipo {
+  --nf-ink: #1a1a2e;
+  --nf-paper: #f5f0e8;
+  --nf-accent: #c8321f;
+  --nf-accent-soft: #f0e0dd;
+  --nf-ok: #1a6b3c;
+  --nf-ok-soft: #d4edde;
+  --nf-mid: #6b5b3e;
+  --nf-border: #c8b89a;
+  --nf-info: #1a3a6b;
+  --nf-info-soft: #dde5f2;
+  --nf-info-border: #a8bedd;
+  --nf-mono: 'DM Mono', monospace;
+  --nf-serif: 'DM Serif Display', serif;
+  --nf-sans: 'DM Sans', sans-serif;
+  display: flex;
+  justify-content: center;
+  padding: 2rem 0;
+  font-family: var(--nf-sans);
+  color: var(--nf-ink);
+}
+
+#nif-prototipo * {
+  box-sizing: border-box;
+}
+
+#nif-prototipo .nf-card {
+  background: white;
+  border: 1.5px solid var(--nf-border);
+  border-radius: 2px;
+  padding: 3rem 3.5rem;
+  width: 100%;
+  position: relative;
+  box-shadow: 6px 6px 0 var(--nf-border);
+}
+
+#nif-prototipo .nf-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 4px;
+  background: linear-gradient(90deg, var(--nf-accent) 0%, var(--nf-ink) 50%, var(--nf-ok) 100%);
+}
+
+#nif-prototipo .nf-eyebrow {
+  font-family: var(--nf-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.15em;
+  color: var(--nf-mid);
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+#nif-prototipo .nf-title {
+  font-family: var(--nf-serif);
+  font-size: 2rem;
+  font-weight: 400;
+  line-height: 1.1;
+  color: var(--nf-ink);
+  margin-bottom: 0.4rem;
+}
+
+#nif-prototipo .nf-title em {
+  font-style: italic;
+  color: var(--nf-accent);
+}
+
+#nif-prototipo .nf-subtitle {
+  font-size: 0.85rem;
+  color: var(--nf-mid);
+  margin-bottom: 2.5rem;
+  font-weight: 300;
+}
+
+#nif-prototipo .nf-label {
+  display: block;
+  font-family: var(--nf-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--nf-mid);
+  margin-bottom: 0.5rem;
+}
+
+#nif-prototipo .nf-input-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 1rem;
+}
+
+#nif-prototipo input {
+  flex: 1;
+  font-family: var(--nf-mono);
+  font-size: 1.15rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.8rem 1rem;
+  border: 1.5px solid var(--nf-border);
+  border-radius: 2px;
+  background: var(--nf-paper);
+  color: var(--nf-ink);
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+#nif-prototipo input:focus {
+  border-color: var(--nf-ink);
+  background: white;
+}
+
+#nif-prototipo .nf-clear-btn {
+  padding: 0.8rem 1rem;
+  font-size: 0.8rem;
+  font-family: var(--nf-sans);
+  border: 1.5px solid var(--nf-border);
+  border-radius: 2px;
+  background: var(--nf-paper);
+  color: var(--nf-mid);
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+#nif-prototipo .nf-clear-btn:hover {
+  border-color: var(--nf-ink);
+  background: var(--nf-ink);
+  color: var(--nf-paper);
+}
+
+#nif-prototipo .nf-result-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border-radius: 2px;
+  border: 1.5px solid var(--nf-border);
+  margin-bottom: 1rem;
+  transition: all 0.25s;
+  background: #f8f6f2;
+}
+
+#nif-prototipo .nf-result-card.valid {
+  background: var(--nf-ok-soft);
+  border-color: var(--nf-ok);
+}
+
+#nif-prototipo .nf-result-card.invalid {
+  background: var(--nf-accent-soft);
+  border-color: var(--nf-accent);
+}
+
+#nif-prototipo .nf-result-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--nf-mid);
+  flex-shrink: 0;
+  margin-top: 6px;
+  transition: background 0.2s;
+}
+
+#nif-prototipo .nf-result-card.valid .nf-result-dot { background: var(--nf-ok); }
+#nif-prototipo .nf-result-card.invalid .nf-result-dot { background: var(--nf-accent); }
+
+#nif-prototipo .nf-result-body { flex: 1; }
+
+#nif-prototipo .nf-result-tipo {
+  font-family: var(--nf-mono);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--nf-mid);
+  margin-bottom: 0.2rem;
+}
+
+#nif-prototipo .nf-result-card.valid .nf-result-tipo { color: var(--nf-ok); }
+#nif-prototipo .nf-result-card.invalid .nf-result-tipo { color: var(--nf-accent); }
+
+#nif-prototipo .nf-result-msg {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--nf-ink);
+}
+
+#nif-prototipo .nf-result-card.valid .nf-result-msg { color: var(--nf-ok); }
+#nif-prototipo .nf-result-card.invalid .nf-result-msg { color: var(--nf-accent); }
+
+#nif-prototipo .nf-entity-badge {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  background: var(--nf-info-soft);
+  border: 1.5px solid var(--nf-info-border);
+  border-radius: 2px;
+  padding: 0.6rem 1rem;
+  margin-bottom: 1rem;
+}
+
+#nif-prototipo .nf-entity-badge.visible { display: flex; }
+
+#nif-prototipo .nf-entity-label {
+  font-family: var(--nf-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--nf-info);
+  flex-shrink: 0;
+}
+
+#nif-prototipo .nf-entity-name {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--nf-info);
+}
+
+#nif-prototipo .nf-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 1.5rem;
+}
+
+#nif-prototipo .nf-stats-grid.nf-hidden { display: none; }
+
+#nif-prototipo .nf-stat {
+  background: var(--nf-paper);
+  border: 1.5px solid var(--nf-border);
+  border-radius: 2px;
+  padding: 0.6rem 0.8rem;
+}
+
+#nif-prototipo .nf-stat-label {
+  font-family: var(--nf-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--nf-mid);
+  margin-bottom: 4px;
+}
+
+#nif-prototipo .nf-stat-val {
+  font-family: var(--nf-mono);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--nf-ink);
+}
+
+#nif-prototipo .nf-sep {
+  height: 1px;
+  background: var(--nf-border);
+  margin-bottom: 1rem;
+}
+
+#nif-prototipo .nf-examples-label {
+  font-family: var(--nf-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--nf-mid);
+  margin-bottom: 0.5rem;
+}
+
+#nif-prototipo .nf-group-label {
+  font-family: var(--nf-mono);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--nf-mid);
+  margin-top: 0.7rem;
+  margin-bottom: 0.4rem;
+}
+
+#nif-prototipo .nf-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+#nif-prototipo .nf-chip {
+  font-family: var(--nf-mono);
+  font-size: 0.72rem;
+  padding: 0.3rem 0.6rem;
+  border: 1px solid var(--nf-border);
+  border-radius: 1px;
+  cursor: pointer;
+  background: var(--nf-paper);
+  color: var(--nf-ink);
+  transition: all 0.15s;
+  letter-spacing: 0.04em;
+}
+
+#nif-prototipo .nf-chip:hover {
+  border-color: var(--nf-ink);
+  background: var(--nf-ink);
+  color: var(--nf-paper);
+}
+
+#nif-prototipo .nf-chip.nf-ok { border-color: var(--nf-ok); color: var(--nf-ok); background: var(--nf-ok-soft); }
+#nif-prototipo .nf-chip.nf-ok:hover { background: var(--nf-ok); color: white; }
+#nif-prototipo .nf-chip.nf-ko { border-color: var(--nf-accent); color: var(--nf-accent); background: var(--nf-accent-soft); }
+#nif-prototipo .nf-chip.nf-ko:hover { background: var(--nf-accent); color: white; }
+
+#nif-prototipo .nf-footer-note {
+  margin-top: 1.5rem;
+  font-size: 0.72rem;
+  color: var(--nf-mid);
+  font-style: italic;
+  text-align: right;
+}
+
+@media (max-width: 540px) {
+  #nif-prototipo .nf-card { padding: 2rem 1.5rem; }
+  #nif-prototipo .nf-title { font-size: 1.6rem; }
+  #nif-prototipo input { font-size: 1rem; }
+  #nif-prototipo .nf-stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+</style>
+
+<script>
+(function () {
+  'use strict';
+
+  var LETRAS_DNI = 'TRWAGMYFPDXBNJZSQVHLCKE';
+  var LETRAS_CIF = 'JABCDEFGHI';
+  var TIPOS_CIF = {
+    A:'Sociedad Anónima', B:'Sociedad de Responsabilidad Limitada',
+    C:'Sociedad Colectiva', D:'Sociedad Comanditaria',
+    E:'Comunidad de Bienes / Herencia Yacente', F:'Sociedad Cooperativa',
+    G:'Asociación / Fundación', H:'Comunidad de Propietarios',
+    J:'Sociedad Civil', N:'Entidad Extranjera', P:'Corporación Local',
+    Q:'Organismo Público', R:'Congregación o Institución Religiosa',
+    S:'Órgano de la Administración del Estado',
+    T:'Establecimiento permanente de entidad no residente',
+    U:'Unión Temporal de Empresas', V:'Otro tipo de entidad',
+    W:'Establecimiento permanente de entidad no residente en España'
+  };
+
+  function normalizar(v) {
+    return String(v || '').trim().toUpperCase().replace(/[\s\-.]/g, '');
+  }
+
+  function validateDNI(doc) {
+    var m = doc.match(/^(\d{8})([A-Z])$/);
+    if (!m) return { valid: false, type: 'DNI', error: 'formato_incorrecto' };
+    var ok = LETRAS_DNI[parseInt(m[1], 10) % 23] === m[2];
+    return { valid: ok, type: 'DNI', value: doc, control: m[2], error: ok ? null : 'letra_control_incorrecta' };
+  }
+
+  function validateNIE(doc) {
+    var m = doc.match(/^([XYZ])(\d{7})([A-Z])$/);
+    if (!m) return { valid: false, type: 'NIE', error: 'formato_incorrecto' };
+    var p = { X: '0', Y: '1', Z: '2' };
+    var ok = LETRAS_DNI[parseInt(p[m[1]] + m[2], 10) % 23] === m[3];
+    return { valid: ok, type: 'NIE', value: doc, control: m[3], error: ok ? null : 'letra_control_incorrecta' };
+  }
+
+  function calcCtrlCIF(tipo, digitos) {
+    var suma = 0;
+    for (var i = 0; i < 7; i++) {
+      var d = parseInt(digitos[i], 10);
+      if ((i + 1) % 2 !== 0) { d *= 2; if (d >= 10) d = Math.floor(d / 10) + (d % 10); }
+      suma += d;
+    }
+    var idx = (10 - (suma % 10)) % 10;
+    return { digit: String(idx), letter: LETRAS_CIF[idx] };
+  }
+
+  function validateCIF(doc) {
+    var m = doc.match(/^([ABCDEFGHJNPQRSTUVW])(\d{7})([0-9A-J])$/);
+    if (!m) return { valid: false, type: 'CIF', error: 'formato_incorrecto' };
+    var tipo = m[1], digitos = m[2], ctrl = m[3];
+    var calc = calcCtrlCIF(tipo, digitos);
+    var esDigito = /\d/.test(ctrl);
+    if ('PQSW'.indexOf(tipo) !== -1 && esDigito) {
+      return { valid: false, type: 'CIF', value: doc, control: ctrl, entityType: tipo, entityName: TIPOS_CIF[tipo] || null, error: 'control_debe_ser_letra' };
+    }
+    var ok = ctrl === calc.digit || ctrl === calc.letter;
+    return { valid: ok, type: 'CIF', value: doc, control: ctrl, entityType: tipo, entityName: TIPOS_CIF[tipo] || null, error: ok ? null : 'caracter_control_incorrecto' };
+  }
+
+  function validate(raw) {
+    var doc = normalizar(raw);
+    if (!doc) return { valid: false, type: null, error: 'vacio' };
+    if (/^\d{8}[A-Z]$/.test(doc)) return validateDNI(doc);
+    if (/^[XYZ]\d{7}[A-Z]$/.test(doc)) return validateNIE(doc);
+    if (/^[ABCDEFGHJNPQRSTUVW]\d{7}[0-9A-J]$/.test(doc)) return validateCIF(doc);
+    return { valid: false, type: null, value: doc, error: 'tipo_no_reconocido' };
+  }
+
+  var ERRORES = {
+    vacio: 'Introduce un NIF para validarlo',
+    tipo_no_reconocido: 'No coincide con ningún formato conocido (DNI, NIE o CIF)',
+    formato_incorrecto: 'El formato no es correcto para este tipo de documento',
+    letra_control_incorrecta: 'La letra de control no es correcta',
+    caracter_control_incorrecto: 'El carácter de control no es correcto',
+    control_debe_ser_letra: 'Este tipo de CIF requiere una letra como carácter de control'
+  };
+
+  var input    = document.getElementById('nf-input');
+  var card     = document.getElementById('nf-resultCard');
+  var rtypeEl  = document.getElementById('nf-rtype');
+  var rmsgEl   = document.getElementById('nf-rmsg');
+  var badge    = document.getElementById('nf-entityBadge');
+  var entityEl = document.getElementById('nf-entityName');
+  var grid     = document.getElementById('nf-statsGrid');
+
+  function render(raw) {
+    card.className = 'nf-result-card';
+    badge.className = 'nf-entity-badge';
+    grid.className = 'nf-stats-grid nf-hidden';
+
+    if (!raw.trim()) {
+      rtypeEl.textContent = '—';
+      rmsgEl.textContent = 'Introduce un NIF para validarlo';
+      return;
+    }
+
+    var res = validate(raw);
+
+    if (!res.type || res.error === 'vacio') {
+      rtypeEl.textContent = '—';
+      rmsgEl.textContent = ERRORES[res.error] || '';
+      return;
+    }
+
+    if (res.error === 'tipo_no_reconocido') {
+      rtypeEl.textContent = 'Formato no reconocido';
+      rmsgEl.textContent = ERRORES.tipo_no_reconocido;
+      return;
+    }
+
+    rtypeEl.textContent = res.type;
+
+    if (res.valid) {
+      card.classList.add('valid');
+      rmsgEl.textContent = res.type + ' válido';
+    } else {
+      card.classList.add('invalid');
+      rmsgEl.textContent = ERRORES[res.error] || res.error;
+    }
+
+    if (res.entityName) {
+      badge.classList.add('visible');
+      entityEl.textContent = res.entityType + ' — ' + res.entityName;
+    }
+
+    grid.className = 'nf-stats-grid';
+    document.getElementById('nf-sDoc').textContent = res.value || '—';
+    document.getElementById('nf-sTipo').textContent = res.type;
+    document.getElementById('nf-sCtrl').textContent = res.control || '—';
+  }
+
+  input.addEventListener('input', function (e) { render(e.target.value); });
+
+  document.getElementById('nf-clearBtn').addEventListener('click', function () {
+    input.value = '';
+    render('');
+    input.focus();
+  });
+
+  document.querySelectorAll('#nif-prototipo .nf-chip').forEach(function (c) {
+    c.addEventListener('click', function () {
+      input.value = c.dataset.v;
+      render(c.dataset.v);
+      input.focus();
+    });
+  });
+}());
+</script>

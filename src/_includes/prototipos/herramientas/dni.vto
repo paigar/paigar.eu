@@ -1,0 +1,367 @@
+---
+slug: dni
+name: Validar DNI, NIE o pasaporte
+tagline: Comprueba si un documento de identidad español es válido. Sin enviar nada a ningún servidor.
+cover: /img/validar-dni-nie-pasaporte.png
+articleUrl: /validar-dni-nie-pasaporte/
+---
+
+<div id="dni-prototipo">
+  <div class="dp-card">
+    <div class="dp-eyebrow">Herramienta · paigar.eu</div>
+    <h3 class="dp-title">Valida tu <em>DNI</em>,<br>NIE o Pasaporte</h3>
+    <p class="dp-subtitle">Introduce el documento y comprueba si es válido al instante.</p>
+
+    <label class="dp-label" for="dp-docInput">Número de documento</label>
+    <div class="dp-input-wrap">
+      <input
+        id="dp-docInput"
+        type="text"
+        maxlength="12"
+        placeholder="12345678Z · X1234567L · AAA123456"
+        autocomplete="off"
+        autocorrect="off"
+        spellcheck="false"
+      >
+      <span class="dp-input-icon" id="dp-inputIcon"></span>
+    </div>
+
+    <div class="dp-result-band" id="dp-resultBand">
+      <div class="dp-result-icon">📋</div>
+      <div class="dp-result-text">
+        <div class="dp-result-type" id="dp-resultType">—</div>
+        <div class="dp-result-message" id="dp-resultMessage">Escribe un documento para validarlo</div>
+      </div>
+    </div>
+
+    <div class="dp-examples">
+      <div class="dp-examples-label">Prueba con estos ejemplos</div>
+      <div class="dp-chips">
+        <div class="dp-chip dp-ok" data-value="12345678Z">12345678Z ✓</div>
+        <div class="dp-chip dp-ok" data-value="X1234567L">X1234567L ✓</div>
+        <div class="dp-chip dp-ok" data-value="Y1234567X">Y1234567X ✓</div>
+        <div class="dp-chip dp-ok" data-value="AAA123456">AAA123456 ✓</div>
+        <div class="dp-chip dp-ko" data-value="12345678A">12345678A ✗</div>
+        <div class="dp-chip dp-ko" data-value="X1234567A">X1234567A ✗</div>
+      </div>
+    </div>
+
+    <p class="dp-footer-note">Validación realizada en el navegador · ningún dato se envía a ningún servidor</p>
+  </div>
+</div>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap');
+
+#dni-prototipo {
+  --dp-ink: #1a1a2e;
+  --dp-paper: #f5f0e8;
+  --dp-accent: #c8321f;
+  --dp-accent-soft: #f0e0dd;
+  --dp-ok: #1a6b3c;
+  --dp-ok-soft: #d4edde;
+  --dp-mid: #6b5b3e;
+  --dp-border: #c8b89a;
+  --dp-mono: 'DM Mono', monospace;
+  --dp-serif: 'DM Serif Display', serif;
+  --dp-sans: 'DM Sans', sans-serif;
+  display: flex;
+  justify-content: center;
+  padding: 2rem 0;
+  font-family: var(--dp-sans);
+  color: var(--dp-ink);
+}
+
+#dni-prototipo * {
+  box-sizing: border-box;
+}
+
+#dni-prototipo .dp-card {
+  background: white;
+  border: 1.5px solid var(--dp-border);
+  border-radius: 2px;
+  padding: 3rem 3.5rem;
+  width: 100%;
+  position: relative;
+  box-shadow: 6px 6px 0 var(--dp-border);
+}
+
+#dni-prototipo .dp-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 4px;
+  background: linear-gradient(90deg, var(--dp-accent) 0%, var(--dp-ink) 50%, var(--dp-ok) 100%);
+}
+
+#dni-prototipo .dp-eyebrow {
+  font-family: var(--dp-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.15em;
+  color: var(--dp-mid);
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+#dni-prototipo .dp-title {
+  font-family: var(--dp-serif);
+  font-size: 2rem;
+  font-weight: 400;
+  line-height: 1.1;
+  color: var(--dp-ink);
+  margin-bottom: 0.4rem;
+}
+
+#dni-prototipo .dp-title em {
+  font-style: italic;
+  color: var(--dp-accent);
+}
+
+#dni-prototipo .dp-subtitle {
+  font-size: 0.85rem;
+  color: var(--dp-mid);
+  margin-bottom: 2.5rem;
+  font-weight: 300;
+}
+
+#dni-prototipo .dp-label {
+  display: block;
+  font-family: var(--dp-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dp-mid);
+  margin-bottom: 0.5rem;
+}
+
+#dni-prototipo .dp-input-wrap {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+#dni-prototipo input {
+  width: 100%;
+  font-family: var(--dp-mono);
+  font-size: 1.4rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.8rem 3rem 0.8rem 1rem;
+  border: 1.5px solid var(--dp-border);
+  border-radius: 2px;
+  background: var(--dp-paper);
+  color: var(--dp-ink);
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+#dni-prototipo input:focus {
+  border-color: var(--dp-ink);
+  background: white;
+}
+
+#dni-prototipo .dp-input-icon {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2rem;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+#dni-prototipo .dp-result-band {
+  min-height: 4rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border-radius: 2px;
+  border: 1.5px solid var(--dp-border);
+  margin-bottom: 2rem;
+  transition: all 0.25s;
+  background: #f8f6f2;
+}
+
+#dni-prototipo .dp-result-band.valid {
+  background: var(--dp-ok-soft);
+  border-color: var(--dp-ok);
+}
+
+#dni-prototipo .dp-result-band.invalid {
+  background: var(--dp-accent-soft);
+  border-color: var(--dp-accent);
+}
+
+#dni-prototipo .dp-result-icon {
+  font-size: 1.6rem;
+  flex-shrink: 0;
+}
+
+#dni-prototipo .dp-result-text {
+  flex: 1;
+}
+
+#dni-prototipo .dp-result-type {
+  font-family: var(--dp-mono);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  opacity: 0.6;
+  margin-bottom: 0.2rem;
+}
+
+#dni-prototipo .dp-result-message {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--dp-ink);
+}
+
+#dni-prototipo .dp-result-band.valid .dp-result-message { color: var(--dp-ok); }
+#dni-prototipo .dp-result-band.invalid .dp-result-message { color: var(--dp-accent); }
+
+#dni-prototipo .dp-examples {
+  border-top: 1px solid var(--dp-border);
+  padding-top: 1.5rem;
+}
+
+#dni-prototipo .dp-examples-label {
+  font-family: var(--dp-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--dp-mid);
+  margin-bottom: 0.8rem;
+}
+
+#dni-prototipo .dp-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+#dni-prototipo .dp-chip {
+  font-family: var(--dp-mono);
+  font-size: 0.75rem;
+  padding: 0.3rem 0.7rem;
+  border: 1px solid var(--dp-border);
+  border-radius: 1px;
+  cursor: pointer;
+  background: var(--dp-paper);
+  color: var(--dp-ink);
+  transition: all 0.15s;
+  letter-spacing: 0.06em;
+}
+
+#dni-prototipo .dp-chip:hover {
+  border-color: var(--dp-ink);
+  background: var(--dp-ink);
+  color: var(--dp-paper);
+}
+
+#dni-prototipo .dp-chip.dp-ok { border-color: var(--dp-ok); color: var(--dp-ok); }
+#dni-prototipo .dp-chip.dp-ok:hover { background: var(--dp-ok); color: white; }
+#dni-prototipo .dp-chip.dp-ko { border-color: var(--dp-accent); color: var(--dp-accent); }
+#dni-prototipo .dp-chip.dp-ko:hover { background: var(--dp-accent); color: white; }
+
+#dni-prototipo .dp-footer-note {
+  margin-top: 1.5rem;
+  font-size: 0.72rem;
+  color: var(--dp-mid);
+  font-style: italic;
+  text-align: right;
+}
+
+@media (max-width: 500px) {
+  #dni-prototipo .dp-card { padding: 2rem 1.5rem; }
+  #dni-prototipo .dp-title { font-size: 1.6rem; }
+  #dni-prototipo input { font-size: 1.1rem; }
+}
+</style>
+
+<script>
+(function () {
+  'use strict';
+
+  const LETRAS = 'TRWAGMYFPDXBNJZSQVHLCKE';
+
+  function validarDNI(doc) {
+    const m = doc.match(/^(\d{8})([A-Z])$/);
+    if (!m) return false;
+    return LETRAS[parseInt(m[1], 10) % 23] === m[2];
+  }
+
+  function validarNIE(doc) {
+    const m = doc.match(/^([XYZ])(\d{7})([A-Z])$/);
+    if (!m) return false;
+    const pref = { X: '0', Y: '1', Z: '2' };
+    return LETRAS[parseInt(pref[m[1]] + m[2], 10) % 23] === m[3];
+  }
+
+  function validarPasaporte(doc) {
+    return /^[A-Z]{2,3}\d{5,6}$/.test(doc);
+  }
+
+  function detectarYValidar(raw) {
+    const doc = raw.trim().toUpperCase().replace(/[\s\-.]/g, '');
+    if (!doc) return { type: null, valid: null, doc };
+    if (/^\d{8}[A-Z]$/.test(doc)) return { type: 'DNI', valid: validarDNI(doc), doc };
+    if (/^[XYZ]\d{7}[A-Z]$/.test(doc)) return { type: 'NIE', valid: validarNIE(doc), doc };
+    if (/^[A-Z]{2,3}\d{5,6}$/.test(doc)) return { type: 'Pasaporte', valid: validarPasaporte(doc), doc };
+    return { type: 'desconocido', valid: false, doc };
+  }
+
+  const input  = document.getElementById('dp-docInput');
+  const band   = document.getElementById('dp-resultBand');
+  const typeEl = document.getElementById('dp-resultType');
+  const msgEl  = document.getElementById('dp-resultMessage');
+  const iconEl = document.getElementById('dp-inputIcon');
+
+  function render(raw) {
+    const { type, valid } = detectarYValidar(raw);
+    band.className = 'dp-result-band';
+    iconEl.style.opacity = '0';
+
+    if (!raw.trim()) {
+      typeEl.textContent = '—';
+      msgEl.textContent = 'Escribe un documento para validarlo';
+      band.querySelector('.dp-result-icon').textContent = '📋';
+      return;
+    }
+
+    if (type === 'desconocido') {
+      typeEl.textContent = 'Formato no reconocido';
+      msgEl.textContent = 'No coincide con ningún formato conocido (DNI, NIE o Pasaporte)';
+      band.querySelector('.dp-result-icon').textContent = '🤔';
+      return;
+    }
+
+    band.querySelector('.dp-result-icon').textContent = valid ? '✅' : '❌';
+    iconEl.textContent = valid ? '✓' : '✗';
+    iconEl.style.opacity = '1';
+    iconEl.style.color = valid ? 'var(--dp-ok)' : 'var(--dp-accent)';
+    typeEl.textContent = type;
+
+    if (valid) {
+      band.classList.add('valid');
+      msgEl.textContent = type + ' válido';
+    } else {
+      band.classList.add('invalid');
+      msgEl.textContent = type === 'Pasaporte'
+        ? 'Formato de pasaporte incorrecto (ej: AAA123456)'
+        : 'La letra de control no es correcta para este ' + type;
+    }
+  }
+
+  input.addEventListener('input', function (e) { render(e.target.value); });
+
+  document.querySelectorAll('#dni-prototipo .dp-chip').forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      input.value = chip.dataset.value;
+      render(chip.dataset.value);
+      input.focus();
+    });
+  });
+}());
+</script>
