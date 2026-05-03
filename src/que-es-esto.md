@@ -22,7 +22,7 @@ Si quieres la historia completa, hay [un artículo sobre mí](/sobre-mi/) con ba
 
 Un cajón desastre. Escribo sobre lo que me apetece cuando me apetece: desarrollo web, ilustración, videojuegos, ciencia ficción, herramientas pequeñas, cosas que me han llamado la atención. Sin línea editorial, sin métricas, sin red de seguridad.
 
-El nombre tiene su propia historia. Si tienes diez minutos, [aquí está](/el-angel-ciego/).
+El nombre tiene su propia historia. Si tienes diez minutos, [aquí está](/el-origen-de-paigar/).
 
 ## Contacto
 

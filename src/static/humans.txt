@@ -1,0 +1,18 @@
+/* paigar.eu — el cuaderno digital de Juanjo Marcos */
+
+# autor
+Nombre:    Juanjo Marcos
+Sitios:    paigar.es / bilbonauta.com / idenautas.com
+Desde:     1999, dándole a HTML
+Lugar:     Bilbao
+
+# créditos
+Diseño:    Juanjo, con paciencia y mucho descarte
+Código:    Lume 3 + Vento sobre Deno, sin un solo byte de JavaScript
+           de cliente más allá del onload del LQIP.
+Fuentes:   Major Mono Display, Newsreader VF, DM Mono
+           (self-hosted desde el primer día).
+Imágenes:  Generadas con Midjourney y servidas desde imagenes.paigar.es
+
+# colofón
+Hecho en Bilbao, sin analytics, sin cookies, sin algoritmo.

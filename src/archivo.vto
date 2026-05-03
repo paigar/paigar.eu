@@ -34,7 +34,7 @@ description: Archivo completo de paigar.eu — todas las entradas agrupadas por 
           <li class="archive-item" data-search="{{ (post.title + ' ' + (post.excerpt || '')).toLowerCase() }}">
             {{ if post.image }}
               <div class="archive-item-thumb">
-                <img src="{{ post.image }}" alt="" loading="lazy">
+                {{ cardPicture(post.image, "", false, false) }}
               </div>
             {{ else }}
               <div class="archive-item-thumb archive-item-thumb--empty"></div>

@@ -83,9 +83,11 @@ async function extractUsedClasses(dir: string): Promise<Set<string>> {
       }
     }
 
-    // classList.add('foo'), classList.add("foo")
+    // classList.{add,toggle,remove,replace}('foo', ...). Captura el primer
+    // argumento (que es la clase añadida en add/toggle, eliminada en remove,
+    // sustituida en replace — todos casos donde la clase pertenece al estilo).
     const dynamic = content.matchAll(
-      /classList\.add\(\s*['"]([^'"]+)['"]\s*\)/g,
+      /classList\.(?:add|toggle|remove|replace)\(\s*['"]([^'"]+)['"]/g,
     );
     for (const m of dynamic) used.add(m[1]);
   }

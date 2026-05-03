@@ -2055,6 +2055,16 @@ ol.archive-list .archive-item:hover .archive-item-title {
 	color: var(--accent);
 }
 
+/* Filtro del buscador del archivo: el JS de archivo.vto añade .is-hidden
+   con classList.toggle a items que no matchean la query, y a años enteros
+   cuando ninguno de sus items queda visible. */
+.archive-item.is-hidden {
+	display: none !important;
+}
+.archive-year.is-hidden {
+	display: none;
+}
+
 @media (max-width: 600px) {
 	.page-body ol.archive-list .archive-item,
 	ol.archive-list .archive-item {
@@ -2358,7 +2368,9 @@ ol.archive-list .archive-item:hover .archive-item-title {
 	align-items: start;
 }
 
-.site-footer-col-list a[target="_blank"]::after {
+/* Flecha externa para enlaces que abren en nueva pestaña, en cualquier
+   parte del footer (columnas + bottom-bar vecindario). */
+.site-footer a[target="_blank"]::after {
 	content: " ↗";
 	opacity: 0.55;
 	margin-left: 2px;
@@ -2377,7 +2389,7 @@ ol.archive-list .archive-item:hover .archive-item-title {
 	font-family: var(--font-body);
 	font-style: italic;
 	font-size: 15px;
-	color: rgba(242, 242, 240, 0.7);
+	color: #fff;
 	margin: 0 0 22px;
 	font-variation-settings: "opsz" 14;
 	max-width: 38ch;
@@ -2413,7 +2425,7 @@ ol.archive-list .archive-item:hover .archive-item-title {
 	font-variation-settings: "opsz" 14;
 }
 .site-footer-col-list a {
-	color: rgba(242, 242, 240, 0.85);
+	color: #fff;
 	border-bottom: 1px solid transparent;
 	padding-bottom: 1px;
 	width: fit-content;
@@ -2422,7 +2434,6 @@ ol.archive-list .archive-item:hover .archive-item-title {
 		border-color 0.2s;
 }
 .site-footer-col-list a:hover {
-	color: var(--bg);
 	border-bottom-color: var(--accent-soft);
 }
 
@@ -2443,7 +2454,30 @@ ol.archive-list .archive-item:hover .archive-item-title {
 	font-weight: 500;
 	letter-spacing: 0.22em;
 	text-transform: uppercase;
-	color: rgba(242, 242, 240, 0.55);
+	color: #fff;
+}
+
+.site-footer-bottom a {
+	color: #fff;
+	border-bottom: 1px solid transparent;
+	padding-bottom: 1px;
+	transition:
+		color 0.2s,
+		border-color 0.2s;
+}
+.site-footer-bottom a:hover {
+	border-bottom-color: var(--accent-soft);
+}
+
+/* Vecindario inline al final del bottom-bar. Dominios en minúscula y sin
+   letter-spacing para que se lean como dominios reales en vez de mayúsculas
+   forzadas como el resto del bottom-bar. */
+.site-footer-bottom-vecindario {
+	text-transform: none;
+	letter-spacing: 0;
+	display: inline-flex;
+	gap: 8px;
+	align-items: baseline;
 }
 
 @media (max-width: 920px) {

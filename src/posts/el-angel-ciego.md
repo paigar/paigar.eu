@@ -5,6 +5,7 @@ excerpt: La historia de un nombre que arrastro desde la infancia, una película 
 tags: [presentación, retrofuturismo]
 image: el-angel-ciego.png
 image_alt: Ángel masculino de grandes alas blancas reclinado en una escenografía retrofuturista, evocación visual de Pygar.
+url: /el-origen-de-paigar/
 ---
 
 ## El nombre que llevo puesto desde los trece años
