@@ -320,7 +320,14 @@ code {
 	display: grid;
 	grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
 	gap: 0;
-	align-items: stretch;
+	/* align-items: start (en lugar del stretch implícito) desacopla la
+	   altura de la fila de la cover. Sin esto, en Chrome el aspect-ratio
+	   de .home-hero-cover combinado con align-items:stretch hace que la
+	   cover derive su width del height del meta, desbordándose hacia la
+	   columna meta y comiéndose los primeros caracteres del título.
+	   overflow:hidden es defensivo por si algo desbordara igualmente. */
+	align-items: start;
+	overflow: hidden;
 	background: var(--bg-block);
 	margin-top: 0;
 	width: 100vw;
