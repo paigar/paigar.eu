@@ -1,0 +1,377 @@
+---
+slug: tetromino
+name: Tetromino
+tagline: Siete piezas, diez columnas, cero clemencia.
+cover: juego-tetromino.png
+articleUrl: /juego-tetris-tutorial/
+---
+
+<div id="tet-prototipo">
+  <h3 class="tet-titulo">Tetromino</h3>
+  <div class="tet-marcadores">
+    <div class="tet-marcador">
+      <div class="tet-etiqueta">Puntos</div>
+      <div class="tet-valor" id="tet-puntos">0</div>
+    </div>
+    <div class="tet-marcador">
+      <div class="tet-etiqueta">Nivel</div>
+      <div class="tet-valor" id="tet-nivel">1</div>
+    </div>
+    <div class="tet-marcador">
+      <div class="tet-etiqueta">Líneas</div>
+      <div class="tet-valor" id="tet-lineas">0</div>
+    </div>
+  </div>
+  <canvas id="tet-lienzo" width="300" height="600"></canvas>
+  <p class="tet-ayuda">Flechas izquierda/derecha para mover. Flecha arriba para rotar. Flecha abajo para acelerar la caída. Espacio para soltar la pieza de golpe.</p>
+</div>
+
+<style>
+#tet-prototipo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 2rem 1rem;
+  margin: 2rem 0;
+  background: #1a1d24;
+  border-radius: 8px;
+  color: #e8e8e8;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+#tet-prototipo .tet-titulo {
+  margin: 0;
+  font-weight: 500;
+  font-size: 1.2rem;
+  letter-spacing: 0.02em;
+  color: #e8e8e8;
+}
+#tet-prototipo .tet-marcadores {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+#tet-prototipo .tet-marcador {
+  background: #2a2e36;
+  color: #e8e8e8;
+  border-radius: 4px;
+  padding: 0.5rem 0.9rem;
+  text-align: center;
+  min-width: 70px;
+}
+#tet-prototipo .tet-etiqueta {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #9aa0a6;
+}
+#tet-prototipo .tet-valor {
+  font-size: 1.2rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+#tet-prototipo canvas {
+  background: #0f1115;
+  border: 1px solid #2a2e36;
+  border-radius: 4px;
+  max-width: 100%;
+  height: auto;
+  touch-action: none;
+}
+#tet-prototipo .tet-ayuda {
+  color: #6b7280;
+  font-size: 0.85rem;
+  text-align: center;
+  max-width: 480px;
+  line-height: 1.5;
+  margin: 0;
+}
+</style>
+
+<script>
+(() => {
+  const lienzo = document.getElementById('tet-lienzo');
+  if (!lienzo) return;
+  const ctx = lienzo.getContext('2d');
+  const elemPuntos = document.getElementById('tet-puntos');
+  const elemNivel = document.getElementById('tet-nivel');
+  const elemLineas = document.getElementById('tet-lineas');
+  const contenedor = document.getElementById('tet-prototipo');
+
+  const COLUMNAS = 10;
+  const FILAS = 20;
+  const TAMANO = 30;
+  const ANCHO = COLUMNAS * TAMANO;
+  const ALTO = FILAS * TAMANO;
+
+  // Las siete piezas como matrices. Cada celda 1 = bloque, 0 = hueco.
+  const PIEZAS = {
+    I: [[1, 1, 1, 1]],
+    O: [[1, 1], [1, 1]],
+    T: [[0, 1, 0], [1, 1, 1]],
+    L: [[0, 0, 1], [1, 1, 1]],
+    J: [[1, 0, 0], [1, 1, 1]],
+    S: [[0, 1, 1], [1, 1, 0]],
+    Z: [[1, 1, 0], [0, 1, 1]],
+  };
+  const COLORES = {
+    I: '#00d4d4',
+    O: '#d4d400',
+    T: '#a040c0',
+    L: '#d48028',
+    J: '#3050d0',
+    S: '#40c440',
+    Z: '#d44040',
+  };
+  const TIPOS = Object.keys(PIEZAS);
+
+  let tablero, pieza, x, y, puntos, nivel, lineas;
+  let contadorCaida, intervaloCaida;
+  let terminado;
+
+  function inicializar() {
+    tablero = Array.from({ length: FILAS }, () => Array(COLUMNAS).fill(null));
+    puntos = 0;
+    nivel = 1;
+    lineas = 0;
+    contadorCaida = 0;
+    intervaloCaida = 800;
+    terminado = false;
+    nuevaPieza();
+    actualizarMarcadores();
+  }
+
+  function clonarMatriz(m) {
+    return m.map((fila) => [...fila]);
+  }
+
+  function nuevaPieza() {
+    const tipo = TIPOS[Math.floor(Math.random() * TIPOS.length)];
+    pieza = { tipo, forma: clonarMatriz(PIEZAS[tipo]), color: COLORES[tipo] };
+    x = Math.floor((COLUMNAS - pieza.forma[0].length) / 2);
+    y = 0;
+    if (colisiona(pieza.forma, x, y)) {
+      terminado = true;
+      setTimeout(() => {
+        alert(
+          `Fin del juego.\nPuntos: ${puntos}\nLíneas: ${lineas}\nNivel: ${nivel}`,
+        );
+        inicializar();
+      }, 100);
+    }
+  }
+
+  // Devuelve true si la forma colisionaría con un borde o con un bloque
+  // ya fijado en el tablero al estar en (px, py). Centraliza la lógica
+  // de "se puede mover/rotar/poner aquí?" en una sola función.
+  function colisiona(forma, px, py) {
+    for (let f = 0; f < forma.length; f++) {
+      for (let c = 0; c < forma[f].length; c++) {
+        if (!forma[f][c]) continue;
+        const tx = px + c;
+        const ty = py + f;
+        if (tx < 0 || tx >= COLUMNAS) return true;
+        if (ty >= FILAS) return true;
+        if (ty >= 0 && tablero[ty][tx]) return true;
+      }
+    }
+    return false;
+  }
+
+  // Rotación 90º en sentido horario. La forma rotada se construye
+  // copiando filas a columnas: rotada[c][N-1-f] = original[f][c].
+  function rotar() {
+    if (pieza.tipo === 'O') return; // El cuadrado no cambia al rotar
+    const N = pieza.forma.length;
+    const M = pieza.forma[0].length;
+    const nueva = Array.from({ length: M }, () => Array(N).fill(0));
+    for (let f = 0; f < N; f++) {
+      for (let c = 0; c < M; c++) {
+        nueva[c][N - 1 - f] = pieza.forma[f][c];
+      }
+    }
+    if (!colisiona(nueva, x, y)) pieza.forma = nueva;
+  }
+
+  function moverHorizontal(dx) {
+    if (!colisiona(pieza.forma, x + dx, y)) x += dx;
+  }
+
+  function moverAbajo() {
+    if (!colisiona(pieza.forma, x, y + 1)) {
+      y++;
+      return true;
+    }
+    fijarPieza();
+    return false;
+  }
+
+  function caidaInstantanea() {
+    while (!colisiona(pieza.forma, x, y + 1)) y++;
+    fijarPieza();
+  }
+
+  // Cuando una pieza no puede bajar más, sus celdas pasan a ser parte
+  // del tablero permanente. Después se buscan líneas completas.
+  function fijarPieza() {
+    for (let f = 0; f < pieza.forma.length; f++) {
+      for (let c = 0; c < pieza.forma[f].length; c++) {
+        if (pieza.forma[f][c]) {
+          if (y + f < 0) continue;
+          tablero[y + f][x + c] = pieza.color;
+        }
+      }
+    }
+    eliminarLineas();
+    nuevaPieza();
+  }
+
+  // Recorre el tablero de abajo arriba; cada fila completa se quita y
+  // se inserta una nueva en blanco arriba. El truco del f++ es para no
+  // saltar la fila que ahora ocupa el hueco al hacer splice.
+  function eliminarLineas() {
+    let eliminadas = 0;
+    for (let f = FILAS - 1; f >= 0; f--) {
+      if (tablero[f].every((c) => c)) {
+        tablero.splice(f, 1);
+        tablero.unshift(Array(COLUMNAS).fill(null));
+        eliminadas++;
+        f++;
+      }
+    }
+    if (eliminadas > 0) {
+      const puntosPorN = [0, 100, 300, 500, 800];
+      puntos += puntosPorN[eliminadas] * nivel;
+      lineas += eliminadas;
+      nivel = Math.floor(lineas / 10) + 1;
+      intervaloCaida = Math.max(80, 800 - (nivel - 1) * 60);
+      actualizarMarcadores();
+    }
+  }
+
+  function actualizarMarcadores() {
+    elemPuntos.textContent = puntos;
+    elemNivel.textContent = nivel;
+    elemLineas.textContent = lineas;
+  }
+
+  function dibujarCelda(cx, cy, color) {
+    ctx.fillStyle = color;
+    ctx.fillRect(cx * TAMANO, cy * TAMANO, TAMANO, TAMANO);
+    ctx.fillStyle = 'rgba(255,255,255,0.18)';
+    ctx.fillRect(cx * TAMANO, cy * TAMANO, TAMANO, 3);
+    ctx.fillStyle = 'rgba(0,0,0,0.25)';
+    ctx.fillRect(cx * TAMANO, cy * TAMANO + TAMANO - 3, TAMANO, 3);
+  }
+
+  function dibujar() {
+    ctx.fillStyle = '#0f1115';
+    ctx.fillRect(0, 0, ANCHO, ALTO);
+
+    // Rejilla tenue de fondo
+    ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+    ctx.lineWidth = 1;
+    for (let c = 1; c < COLUMNAS; c++) {
+      ctx.beginPath();
+      ctx.moveTo(c * TAMANO, 0);
+      ctx.lineTo(c * TAMANO, ALTO);
+      ctx.stroke();
+    }
+    for (let f = 1; f < FILAS; f++) {
+      ctx.beginPath();
+      ctx.moveTo(0, f * TAMANO);
+      ctx.lineTo(ANCHO, f * TAMANO);
+      ctx.stroke();
+    }
+
+    // Bloques fijados
+    for (let f = 0; f < FILAS; f++) {
+      for (let c = 0; c < COLUMNAS; c++) {
+        if (tablero[f][c]) dibujarCelda(c, f, tablero[f][c]);
+      }
+    }
+
+    // Pieza actual
+    if (!terminado) {
+      for (let f = 0; f < pieza.forma.length; f++) {
+        for (let c = 0; c < pieza.forma[f].length; c++) {
+          if (pieza.forma[f][c]) dibujarCelda(x + c, y + f, pieza.color);
+        }
+      }
+    }
+  }
+
+  let ultimoTiempo = 0;
+  function bucle(tiempo) {
+    if (!ultimoTiempo) ultimoTiempo = tiempo;
+    const delta = tiempo - ultimoTiempo;
+    ultimoTiempo = tiempo;
+
+    if (!terminado) {
+      contadorCaida += delta;
+      if (contadorCaida >= intervaloCaida) {
+        moverAbajo();
+        contadorCaida = 0;
+      }
+    }
+    dibujar();
+    requestAnimationFrame(bucle);
+  }
+
+  document.addEventListener('keydown', (e) => {
+    const enZonaJuego = contenedor.matches(':hover') ||
+      document.activeElement === document.body ||
+      contenedor.contains(document.activeElement);
+    if (!enZonaJuego || terminado) return;
+
+    if (e.key === 'ArrowLeft') {
+      moverHorizontal(-1);
+      e.preventDefault();
+    } else if (e.key === 'ArrowRight') {
+      moverHorizontal(1);
+      e.preventDefault();
+    } else if (e.key === 'ArrowDown') {
+      if (moverAbajo()) puntos += 1;
+      actualizarMarcadores();
+      contadorCaida = 0;
+      e.preventDefault();
+    } else if (e.key === 'ArrowUp') {
+      rotar();
+      e.preventDefault();
+    } else if (e.key === ' ') {
+      caidaInstantanea();
+      e.preventDefault();
+    }
+  });
+
+  // Soporte táctil simple: tap izquierda/derecha para mover, tap arriba
+  // para rotar, tap abajo para hard-drop. Suficiente para jugar en móvil
+  // sin construir gestos complicados.
+  let toqueInicio = null;
+  lienzo.addEventListener('touchstart', (e) => {
+    if (terminado) return;
+    e.preventDefault();
+    toqueInicio = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+  }, { passive: false });
+
+  lienzo.addEventListener('touchend', (e) => {
+    if (!toqueInicio || terminado) return;
+    const dx = e.changedTouches[0].clientX - toqueInicio.x;
+    const dy = e.changedTouches[0].clientY - toqueInicio.y;
+    const absDx = Math.abs(dx);
+    const absDy = Math.abs(dy);
+    if (absDx < 10 && absDy < 10) {
+      rotar(); // Tap simple = rotar
+    } else if (absDx > absDy) {
+      moverHorizontal(dx > 0 ? 1 : -1);
+    } else if (dy > 0) {
+      caidaInstantanea();
+    }
+    toqueInicio = null;
+  }, { passive: false });
+
+  inicializar();
+  requestAnimationFrame(bucle);
+})();
+</script>
