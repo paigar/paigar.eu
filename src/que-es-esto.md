@@ -6,7 +6,7 @@ section_mark: PAIGAR
 subtitle: Un cuaderno digital sin pretensiones desde Bilbao
 description: Quién escribe paigar.eu, qué es este sitio y cómo ponerse en contacto.
 url: /que-es-esto/
-image: /img/que-es-esto.png
+image: que-es-esto.png
 image_alt: "Retrato ilustrado de perfil sobre fondo oscuro con textura de cuaderno, líneas de código y elementos de diseño retrofuturista"
 ---
 

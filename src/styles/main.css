@@ -540,7 +540,7 @@ em.note {
 	background-color: var(--ink);
 	background-image:
 		linear-gradient(rgba(24, 24, 26, 0.78) 0%, rgba(24, 24, 26, 0.92) 100%),
-		url("/img/blade-runner-web.png");
+		var(--bg-image, none);
 	background-size: cover;
 	background-position: center;
 	color: var(--bg);
@@ -1076,6 +1076,32 @@ em.note {
    ========================================================= */
 .post-card {
 	position: relative;
+}
+
+/* Wrapper LQIP que generan los helpers img() y cardPicture() de _config.ts.
+   Lleva la base64 del placeholder en su style inline; el <picture><img>
+   real lo cubre cuando carga. Cabe dentro de cualquier contenedor con
+   dimensiones definidas (post-cover, post-card-cover, home-hero-cover, etc.). */
+.lqip-wrap {
+	position: relative;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	overflow: hidden;
+	width: 100%;
+	height: 100%;
+}
+.lqip-wrap picture {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+.lqip-wrap picture img {
+	opacity: 0;
+	transition: opacity 0.4s ease;
+}
+.lqip-wrap.loaded picture img {
+	opacity: 1;
 }
 
 .post-card-cover {
@@ -2639,7 +2665,7 @@ ol.archive-list .archive-item:hover .archive-item-title {
 	background-color: var(--ink);
 	background-image:
 		linear-gradient(rgba(24, 24, 26, 0.72) 0%, rgba(24, 24, 26, 0.92) 100%),
-		url("/img/pie.png");
+		var(--bg-image, none);
 	background-size: cover;
 	background-position: center;
 	color: var(--bg);

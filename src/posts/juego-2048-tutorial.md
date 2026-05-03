@@ -3,7 +3,7 @@ title: "Cómo programar el juego 2048 desde cero"
 date: 2025-12-01
 excerpt: "Un tutorial paso a paso para construir el clásico 2048 en una sola página web, sin frameworks ni dependencias. La gracia del proyecto está en una operación matemáticamente elegante que se aplica cuatro veces y resuelve todo el juego."
 tags: [apuntes, juegos, javascript]
-image: "/img/juego-2048.png"
+image: juego-2048.png
 image_alt: "Cuadrícula de cuatro por cuatro casillas con números potencia de dos en tonos cálidos sobre fondo claro, vista cenital ligeramente inclinada con efecto de profundidad"
 prototype: 2048
 ---

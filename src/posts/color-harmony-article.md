@@ -3,7 +3,7 @@ title: "Cómo construir una herramienta de armonías de color con JavaScript"
 date: 2026-04-03
 excerpt: "El círculo cromático lleva siglos explicando por qué ciertos colores funcionan juntos. Te cuento cómo convertir esa teoría en una pequeña utilidad web que calcule paletas armónicas a partir de cualquier color."
 tags: [javascript, técnicas, diseño]
-image: "/img/color-harmony-tool.png"
+image: color-harmony-tool.png
 image_alt: "Rueda de colores espectrales iluminada sobre fondo oscuro, con rayos de luz que forman un círculo cromático"
 prototype: color-harmony
 ---

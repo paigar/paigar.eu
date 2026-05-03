@@ -15,7 +15,7 @@
   <meta property="og:url" content="{{ site.url }}{{ url }}">
   <meta property="og:locale" content="es_ES">
   {{ if image }}
-    <meta property="og:image" content="{{ site.url }}{{ image }}">
+    <meta property="og:image" content="{{ imgUrl(image, 1200, 'jpg') }}">
   {{ /if }}
 
   <meta name="twitter:card" content="summary_large_image">

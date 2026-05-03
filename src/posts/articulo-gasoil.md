@@ -3,7 +3,7 @@ title: "Mi primer juego, treinta y cinco años después"
 date: 2025-11-10
 excerpt: "En 1989 mandé un programa en BASIC al concurso de MSX-Club. Tenía dieciséis años. Lo publicaron. Esta semana lo he vuelto a ver correr en pantalla."
 tags: [retrofuturismo, msx, basic, programación]
-image: /img/gasoil-header.png
+image: gasoil-header.png
 image_alt: "Plano cenital de un Toshiba MSX antiguo sobre una mesa de madera, con una cinta cassette etiquetada a mano, fotografía iluminada con luz cálida de tarde a través de una ventana"
 ---
 
@@ -29,7 +29,7 @@ Lo interesante es que se puede comprobar dónde están esas heridas sin necesida
 
 Una vez el fichero pasó todas las comprobaciones lo metí en un emulador del MSX en el navegador, monté el código como si fuera un disquete virtual y tecleé el `RUN"GASOIL.BAS` de toda la vida. Lo que apareció en pantalla no se parecía gran cosa al juego que recuerdo.
 
-<img src="/img/gasoil.png" alt="Captura de pantalla del juego Gasoil ejecutándose en el emulador con el escenario completamente desconfigurado, sprites cruzados y marcos rotos" data-bleed="md">
+<img src="{{ imgUrl('gasoil.png', 1200, 'jpg') }}" alt="Captura de pantalla del juego Gasoil ejecutándose en el emulador con el escenario completamente desconfigurado, sprites cruzados y marcos rotos" data-bleed="md" loading="lazy">
 
 El decorado salió descuajaringado, los marcos rotos por sitios donde no había marcos, los sprites cruzándose donde no debían, el `SCORE 0 RECORD 0` partido en dos pedazos y el cartel `OIL` aterrizado a saber dónde. Probablemente queden errores de OCR escondidos por el listado —algún byte perdido en los `DATA` de los sprites, algún espacio de más o de menos en los `PRINT` que dibujan el escenario, suficientes para que el resultado en pantalla quede inutilizable aunque el bucle principal del juego corra de principio a fin. El emulador estaba ejecutando el código que yo había recuperado, sí, pero el juego como tal no era jugable.
 

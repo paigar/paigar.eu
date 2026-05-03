@@ -3,7 +3,7 @@ title: "Cómo validar un DNI, NIE o Pasaporte en un formulario web"
 date: 2026-03-10
 excerpt: "Antes de rechazar a un usuario con un mensaje de error críptico, al menos asegúrate de que el rechazo está justificado. Aquí te explico cómo validar documentos de identidad españoles con JavaScript."
 tags: [apuntes, javascript, desarrollo web]
-image: "/img/validar-dni-nie-pasaporte.png"
+image: validar-dni-nie-pasaporte.png
 image_alt: "Mano tecleando en un teclado con pantalla de formulario digital en segundo plano, luz cálida de oficina"
 prototype: dni
 ---

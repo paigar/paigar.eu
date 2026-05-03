@@ -3,7 +3,7 @@ title: "Los nueve billones de nombres de Dios: el relato que no me abandona"
 date: 2025-11-24
 excerpt: "Un cuento de Arthur C. Clarke que al principio me pareció demasiado simple. Llevo años dándole vueltas sin saber muy bien por qué."
 tags: [lecturas, ciencia ficción, reflexiones]
-image: "/img/nueve-billones-nombres-dios.png"
+image: nueve-billones-nombres-dios.png
 image_alt: "Monasterio tibetano en la niebla nocturna bajo un cielo estrellado que se apaga lentamente"
 ---
 

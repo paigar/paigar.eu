@@ -43,7 +43,7 @@ description: El cuaderno digital de Juanjo. Apuntes, ideas, garabatos, artilugio
       {{ set heroTags = (hero.tags || []).filter(t => t !== 'post') }}
       <article class="home-hero">
         <a class="home-hero-cover" href="{{ hero.url }}" tabindex="-1" aria-hidden="true">
-          <img src="{{ hero.image }}" alt="" loading="eager">
+          {{ if hero.image }}{{ img(hero.image, "", "hero", "eager") }}{{ /if }}
         </a>
         <div class="home-hero-meta">
           {{ if heroTags.length }}
@@ -109,7 +109,7 @@ description: El cuaderno digital de Juanjo. Apuntes, ideas, garabatos, artilugio
           </a>
         </div>
         <a href="{{ featuredAPost.url }}" class="home-feature-split-cover" tabindex="-1" aria-hidden="true">
-          <img src="{{ featuredAPost.image }}" alt="" loading="lazy">
+          {{ if featuredAPost.image }}{{ img(featuredAPost.image, "", "content", "lazy") }}{{ /if }}
         </a>
       </article>
     {{ /if }}
@@ -119,7 +119,7 @@ description: El cuaderno digital de Juanjo. Apuntes, ideas, garabatos, artilugio
       {{ set featBTags = (featuredBPost.tags || []).filter(t => t !== 'post') }}
       <article class="home-featured">
         <a href="{{ featuredBPost.url }}" class="home-featured-link">
-          <img src="{{ featuredBPost.image }}" alt="" loading="lazy">
+          {{ if featuredBPost.image }}{{ img(featuredBPost.image, "", "hero", "lazy") }}{{ /if }}
           <div class="home-featured-overlay">
             {{ if featBTags.length }}
               <div class="home-featured-eyebrow">{{ featBTags.join(' · ') }}</div>
@@ -166,13 +166,13 @@ description: El cuaderno digital de Juanjo. Apuntes, ideas, garabatos, artilugio
           </a>
         </div>
         <a href="{{ featuredCPost.url }}" class="home-feature-split-cover" tabindex="-1" aria-hidden="true">
-          <img src="{{ featuredCPost.image }}" alt="" loading="lazy">
+          {{ if featuredCPost.image }}{{ img(featuredCPost.image, "", "content", "lazy") }}{{ /if }}
         </a>
       </article>
     {{ /if }}
 
     {{# === MANIFIESTO / CITA — al cierre como voice-statement === #}}
-    <aside class="home-manifesto" aria-label="Cita de cierre">
+    <aside class="home-manifesto" aria-label="Cita de cierre" style="--bg-image: url('{{ imgUrl('blade-runner-web.png', 1920, 'jpg') }}')">
       <blockquote class="home-manifesto-quote">
         <p>Yo… he visto cosas que vosotros no creeríais: diseñar páginas web usando Frontpage. He visto GIFs animados colonizar sitios completos más allá de los dominios de Geocities.</p>
         <p>Todos esos momentos se perderán… en el tiempo… como cookies en la red.</p>

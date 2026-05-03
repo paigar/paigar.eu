@@ -3,7 +3,7 @@ title: "Por qué creo que las versiones nuevas de la bandera LGTBIQ+ son un erro
 date: 2025-11-03
 excerpt: "Soy parte del colectivo y estoy convencidísimo de que la bandera arcoíris clásica es perfecta tal y como está. Las versiones recientes con triángulos y colores añadidos no suman, restan. Y lo digo desde el cariño y desde el oficio de quien lleva años trabajando con identidad visual."
 tags: [ideas, diseño, lgtbiq]
-image: "/img/bandera-lgtbi.png"
+image: bandera-lgtbi.png
 image_alt: "Bandera arcoíris clásica de seis franjas ondeando con suavidad sobre un cielo azul despejado, con luz natural y composición sencilla"
 ---
 

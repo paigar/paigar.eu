@@ -3,7 +3,7 @@ title: "He visto cosas que vosotros no creeríais"
 date: 2025-06-16
 excerpt: "Reescribir el monólogo de Roy Batty para hablar de FrontPage, GeoCities, GIFs animados y todo lo que un servidor vivió en los inicios de internet. Un paralelismo entre Blade Runner y la prehistoria del diseño web."
 tags: [retrofuturismo, desarrollo web]
-image: "/img/blade-runner-web.png"
+image: blade-runner-web.png
 image_alt: "Monitor CRT antiguo encendido sobre el borde de una azotea mojada por la lluvia, con luces de neón difuminadas al fondo y una paloma blanca alzando el vuelo"
 ---
 

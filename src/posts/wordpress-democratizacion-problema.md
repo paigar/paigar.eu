@@ -3,7 +3,7 @@ title: "WordPress: la democratización que trajo un problema"
 date: 2025-10-20
 excerpt: "WordPress ha democratizado la creación web de una forma genuinamente positiva. Más de un 40% de los sitios web del mundo funcionan con él. Pero toda democratización tiene efectos secundarios, y en el caso de WordPress, uno de los más dañinos ha sido la banalización del oficio de construir webs."
 tags: [wordpress, opinión, oficio]
-image: /img/wordpress-democratizacion-problema.png
+image: wordpress-democratizacion-problema.png
 image_alt: "Logo de wordpress tatuado a fuego en el brazo de un diseñador"
 ---
 

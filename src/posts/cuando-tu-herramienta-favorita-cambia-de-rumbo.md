@@ -3,7 +3,7 @@ title: "Cuando tu herramienta favorita cambia de rumbo"
 date: 2026-03-12
 excerpt: "Eleventy —el generador de sitios estáticos al que tantos hemos sido fieles— ha confirmado que se renombra a Build Awesome y entra al catálogo freemium de Font Awesome. La versión gratuita sigue existiendo, pero la promesa original —proyecto pequeño, independiente, sin agenda comercial— deja de estar sobre la mesa. Toca empezar a mirar el horizonte."
 tags: [ideas, oficio, desarrollo web, lume]
-image: /img/hta-cambio-rumbo.png
+image: hta-cambio-rumbo.png
 image_alt: "Carretera en curva pronunciada en el centro de una gran ciudad."
 ---
 

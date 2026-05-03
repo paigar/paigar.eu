@@ -3,7 +3,7 @@ title: "Cómo programar el juego de parejas desde cero"
 date: 2026-02-09
 excerpt: "Un tutorial paso a paso para construir el clásico juego de parejas de cartas en una sola página web. Sin canvas, sin frameworks, solo HTML, CSS y un poco de JavaScript bien organizado. Probablemente el proyecto más sencillo de toda la serie."
 tags: [apuntes, juegos, javascript]
-image: "/img/juego-parejas.png"
+image: juego-parejas.png
 image_alt: "Vista cenital de una mesa de madera con varias cartas cuadradas boca abajo dispuestas en una rejilla regular y un par de ellas levantadas mostrando dibujos infantiles de animales"
 prototype: parejas
 ---

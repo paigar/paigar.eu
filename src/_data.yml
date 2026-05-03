@@ -9,6 +9,10 @@ site:
     name: Juanjo
     url: https://paigar.eu
   email: hola@paigar.eu
+  # Base de la CDN. El helper imgUrl() prepende esta URL al slug de la imagen
+  # y le añade el sufijo de tamaño/formato para construir las variantes
+  # responsive: ${cdn}${slug-without-ext}-${width}.${fmt}
+  cdn: https://imagenes.paigar.es/paigar/
 
 nav:
   - { url: /, label: Feed }

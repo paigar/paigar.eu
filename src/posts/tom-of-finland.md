@@ -3,7 +3,7 @@ title: "Tom of Finland: de la clandestinidad al sello postal"
 date: 2025-12-22
 excerpt: "Su obra es explícitamente sexual y no se disculpa por ello. Pero reducirla a eso es quedarse en la superficie. Tom of Finland fue uno de los ilustradores más influyentes del siglo XX, y sus dibujos acabaron en el MoMA después de haber circulado de forma clandestina. Vale la pena verlos con mente abierta."
 tags: [arte, ilustración, lgtbiq]
-image: /img/tom-of-finland.png
+image: tom-of-finland.png
 image_alt: "Ilustración al estilo de Tom of Finland: tres hombres musculosos con gorras y chaqueta de cuero junto a una motocicleta, sobre fondo rojo"
 ---
 

@@ -3,7 +3,7 @@ title: "Las tecnologías que marcaron la web (vistas desde dentro)"
 date: 2026-01-12
 excerpt: "Llevo en internet desde antes de que internet tuviera imágenes. Desde Lynx hasta CSS Grid, pasando por las guerras de navegadores, Flash, Geocities y jQuery. No es una lista histórica — es un recorrido por lo que viví, con la perspectiva de alguien que estuvo ahí cuando cada una de estas cosas era el futuro inevitable de la web."
 tags: [oficio, opinión]
-image: /img/tecnologias-que-marcaron-la-web.png
+image: tecnologias-que-marcaron-la-web.png
 image_alt: "Monitor CRT antiguo encendido en una habitación oscura, con el cursor parpadeante en pantalla."
 ---
 

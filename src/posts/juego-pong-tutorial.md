@@ -3,7 +3,7 @@ title: "Cómo programar Pong desde cero"
 date: 2026-01-06
 excerpt: "Un tutorial paso a paso para construir el clásico Pong en una sola página web. Es probablemente el videojuego más sencillo jamás concebido y, precisamente por eso, una de las mejores formas de entender cómo funciona la física de los juegos."
 tags: [apuntes, juegos, javascript, canvas]
-image: "/img/juego-pong.png"
+image: juego-pong.png
 image_alt: "Pantalla negra mostrando una versión minimalista del Pong original con dos paletas blancas a los lados y una pelota cuadrada en el centro, junto a una línea de puntos vertical que divide el campo"
 prototype: pong
 ---

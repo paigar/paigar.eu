@@ -5,7 +5,7 @@ excerpt: Me llamo Juanjo Marcos, vivo en Bilbao y llevo desde 1999 haciendo cosa
 description: Sobre Juanjo Marcos — desarrollador web en Bilbao desde 1999, fundador de Idenautas y autor de paigar.eu.
 url: /sobre-mi/
 tags: [presentación]
-image: /img/paigar.jpeg
+image: paigar.jpeg
 image_alt: "Foto de Juanjo Marcos en Munich"
 ---
 

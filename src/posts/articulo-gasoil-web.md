@@ -3,7 +3,7 @@ title: "Volver a programar el juego que programé a los dieciséis"
 date: 2025-11-17
 excerpt: "Después de recuperar el listado de mi juego de 1989, una pregunta loca: ¿se podría hacer correr en un navegador? Con los píxeles originales, sin emulador. Spoiler: sí, juega bastante decente y al final está aquí abajo para que lo pruebes."
 tags: [artilugios, retrofuturismo, msx, javascript, canvas, juegos]
-image: /img/gasoil-web-header.png
+image: gasoil-web-header.png
 image_alt: "Pantalla de un ordenador moderno mostrando un juego de píxeles retro con tres niveles de plataformas, sprites blancos y rojos sobre fondo negro y un marco amarillo punteado, fotografía con luz natural"
 prototype: gasoil
 ---

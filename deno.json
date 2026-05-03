@@ -3,7 +3,8 @@
     "lume": "deno run --unstable-temporal -A cli.ts",
     "build": "deno task lume",
     "serve": "deno task lume -s",
-    "fonts": "deno run --allow-net --allow-read --allow-write scripts/fetch-fonts.ts"
+    "fonts": "deno run --allow-net --allow-read --allow-write scripts/fetch-fonts.ts",
+    "lqip": "deno run --allow-net --allow-read --allow-write scripts/lqip.ts"
   },
   "imports": {
     "lume/": "https://deno.land/x/lume@v3.2.4/"

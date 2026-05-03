@@ -3,7 +3,7 @@ title: "Mi peor logo, quince años después"
 date: 2025-08-25
 excerpt: "En 2008 firmé este logo para una agencia madrileña de personal filipino. No lo cobré: lo regalé a cambio de que me contrataran la web —que ya costaba una miseria—. Doce meses después la marca se renombraba pero seguían usando el mismo logo. Quince años más tarde, los mismos clientes volvieron a llamarme para una segunda vuelta y me dieron la oportunidad de no volver a equivocarme."
 tags: [garabatos, diseño]
-image: /img/mi-peor-logo-cover.png
+image: mi-peor-logo-cover.png
 image_alt: "Cuadrícula de tarjetas tipográficas con letras crema sobre bermellón, evocación de un muestrario de tipos."
 ---
 
@@ -14,7 +14,7 @@ Casa YEL era una agencia madrileña dedicada a traer personal filipino a España
 Hoy lo recupero solo para desmontarlo. A mí me sirvió de lección, y a lo mejor a alguien le sirve de aviso.
 
 <figure>
-  <img src="/img/casa-yel-logo.jpg" alt="Logo de Casa YEL: cubo isométrico con caras amarilla, roja y azul; tipografía CASA en sans-serif negra y YEL en versiones de las mismas letras coloreadas; subtítulo INTERNATIONAL PERSONNEL AGENCY en serif." loading="lazy" style="background: var(--bg-block); padding: 48px 32px;">
+  <img src="{{ imgUrl('casa-yel-logo.jpg', 1200, 'jpg') }}" alt="Logo de Casa YEL: cubo isométrico con caras amarilla, roja y azul; tipografía CASA en sans-serif negra y YEL en versiones de las mismas letras coloreadas; subtítulo INTERNATIONAL PERSONNEL AGENCY en serif." loading="lazy" style="background: var(--bg-block); padding: 48px 32px;">
   <figcaption>El logo de Casa YEL, 2008. Lo dejo entero antes de empezar a desmontarlo en partes.</figcaption>
 </figure>
 
@@ -51,7 +51,7 @@ Aquí es donde el post se vuelve interesante. En 2023, **Yolanda y su marido** �
 El logo que les hice esta vez tiene esta pinta:
 
 <figure>
-  <img src="/img/hestia-services-logo.jpg" alt="Logo de Hestia Services: círculo verde oscuro con una casita dorada estilizada dentro, debajo Hestia Services en script italic y staff.cleaning.maintenance en sans-serif con puntos como separadores" loading="lazy" style="background: var(--bg-block); padding: 32px;">
+  <img src="{{ imgUrl('hestia-services-logo.jpg', 1200, 'jpg') }}" alt="Logo de Hestia Services: círculo verde oscuro con una casita dorada estilizada dentro, debajo Hestia Services en script italic y staff.cleaning.maintenance en sans-serif con puntos como separadores" loading="lazy" style="background: var(--bg-block); padding: 32px;">
   <figcaption>Hestia Services, 2023. Quince años de oficio entre el de arriba y este.</figcaption>
 </figure>
 

@@ -4,7 +4,7 @@
 
   <a class="post-card-cover" href="{{ post.url }}" tabindex="-1" aria-hidden="true">
     {{ if post.image }}
-      <img src="{{ post.image }}" alt="" loading="lazy">
+      {{ cardPicture(post.image, "", true, false) }}
     {{ else }}
       <div class="post-card-poster">
         <span class="post-card-poster-letter">{{ post.title.charAt(0) }}.</span>

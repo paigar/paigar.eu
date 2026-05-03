@@ -45,7 +45,7 @@ layout: layouts/base.vto
 
   {{ if image }}
     <div class="post-cover{{ if image_contain }} post-cover--contain{{ /if }}">
-      <img src="{{ image }}" alt="{{ image_alt || title }}" loading="eager">
+      {{ img(image, image_alt || title, "hero", "eager") }}
     </div>
   {{ else }}
     <div class="post-poster" aria-hidden="true">

@@ -3,8 +3,9 @@ title: "LQIP en Lume: placeholders inline generados en build"
 date: 2026-04-28
 excerpt: "LQIP llena el hueco que deja una imagen mientras descarga: una versión diminuta y borrosa que se sustituye con un cross-fade cuando la real entra. Aquí cuento cómo lo implementé en Idenautas con un script Deno de cien líneas que genera los placeholders en build y los incrusta inline en el HTML, sin un solo byte de JavaScript de cliente más allá del onload del propio img."
 tags: [apuntes, desarrollo web, lume]
-image: /img/lqip-en-lume.png
+image: lqip-en-lume.png
 image_alt: "Portátil en un escritorio"
+templateEngine: md
 ---
 
 Cuando una imagen tarda en descargarse del CDN, el navegador deja un hueco. La página da un saltito cuando la imagen finalmente entra. Si he reservado el espacio con `width` y `height` no hay layout shift, pero el hueco vacío sigue ahí. Y si la conexión es lenta, el hueco dura más de lo razonable.

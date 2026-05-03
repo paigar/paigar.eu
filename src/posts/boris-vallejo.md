@@ -3,7 +3,7 @@ title: "Boris Vallejo: de Conan al Minage"
 date: 2025-09-29
 excerpt: "Descubrí a Boris Vallejo a través de una portada de Conan y no pude quitarme de la cabeza la pregunta de cómo alguien pintaba así. Décadas después, ese mismo ilustrador aparecía en la portada de uno de los mejores discos de Mónica Naranjo. Que dos cosas tan distintas encajen tan bien dice bastante sobre el alcance de su arte."
 tags: [arte, ilustración, retrofuturismo]
-image: /img/boris-vallejo.png
+image: boris-vallejo.png
 image_alt: "Ilustración fantástica al estilo de Boris Vallejo: figura heroica con musculatura imposible iluminada por una luz dramática sobre fondo oscuro"
 ---
 
