@@ -4,7 +4,8 @@
     "build": "deno task lume",
     "serve": "deno task lume -s",
     "fonts": "deno run --allow-net --allow-read --allow-write scripts/fetch-fonts.ts",
-    "lqip": "deno run --allow-net --allow-read --allow-write scripts/lqip.ts"
+    "lqip": "deno run --allow-net --allow-read --allow-write scripts/lqip.ts",
+    "css-audit": "deno run --allow-read scripts/css-audit.ts"
   },
   "imports": {
     "lume/": "https://deno.land/x/lume@v3.2.4/"
