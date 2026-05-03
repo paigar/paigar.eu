@@ -6,7 +6,7 @@ site:
   url: https://paigar.eu
   lang: es
   author:
-    name: Juanjo
+    name: Juanjo Marcos
     url: https://paigar.eu
   email: hola@paigar.eu
   # Base de la CDN. El helper imgUrl() prepende esta URL al slug de la imagen

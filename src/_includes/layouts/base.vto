@@ -16,16 +16,43 @@
   <meta property="og:locale" content="es_ES">
   {{ if image }}
     <meta property="og:image" content="{{ imgUrl(image, 1200, 'jpg') }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="800">
+    {{ if image_alt }}
+      <meta property="og:image:alt" content="{{ image_alt }}">
+    {{ /if }}
   {{ /if }}
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="{{ if title }}{{ title }} · {{ /if }}{{ site.title }}">
   <meta name="twitter:description" content="{{ description || excerpt || site.description }}">
+  {{ if image }}
+    <meta name="twitter:image" content="{{ imgUrl(image, 1200, 'jpg') }}">
+    {{ if image_alt }}
+      <meta name="twitter:image:alt" content="{{ image_alt }}">
+    {{ /if }}
+  {{ /if }}
+
+  {{# Meta específicas para entradas (type=post). Las dejamos fuera de
+      páginas estáticas para no contaminar su semántica. #}}
+  {{ if type === 'post' }}
+    {{ set postTags = (tags || []).filter(t => t !== 'post') }}
+    <meta property="article:published_time" content="{{ date.toISOString() }}">
+    <meta property="article:author" content="{{ site.author.name }}">
+    {{ for tag of postTags }}
+      <meta property="article:tag" content="{{ tag }}">
+    {{ /for }}
+  {{ /if }}
 
   <link rel="canonical" href="{{ site.url }}{{ url }}">
 
   <link rel="alternate" type="application/rss+xml" title="RSS · {{ site.title }}" href="/feed.xml">
   <link rel="alternate" type="application/feed+json" title="JSON Feed · {{ site.title }}" href="/feed.json">
+
+  {{# Preconnect a la CDN de imágenes — todas las imágenes del sitio se
+      cargan desde imagenes.paigar.es. El preconnect arranca DNS+TLS en
+      paralelo con el HTML y ahorra ~100-300ms en el primer LCP. #}}
+  <link rel="preconnect" href="https://imagenes.paigar.es" crossorigin>
 
   {{# Preload de los .woff2 latin críticos (titulares + cuerpo + mono) para
       reducir el FOUT inicial. El crossorigin es obligatorio aunque sean
@@ -37,7 +64,36 @@
   <link rel="stylesheet" href="/styles/fonts.css">
   <link rel="stylesheet" href="/styles/main.css">
 
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  {{# Los <link rel="icon">, <link rel="apple-touch-icon"> y la variante
+      con sizes los inyecta automáticamente lume/plugins/favicon.ts a
+      partir de /favicon.svg en cada build. #}}
+
+  {{# JSON-LD BlogPosting para entradas — habilita rich results en buscadores
+      y previews enriquecidos en Slack/Discord/etc. Solo en posts. #}}
+  {{ if type === 'post' }}
+    {{ set ldTags = (tags || []).filter(t => t !== 'post') }}
+    {{ set jsonld = {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": title,
+      "description": excerpt || description || site.description,
+      "datePublished": date.toISOString(),
+      "author": {
+        "@type": "Person",
+        "name": site.author.name,
+        "url": site.author.url
+      },
+      "publisher": {
+        "@type": "Person",
+        "name": site.author.name,
+        "url": site.url
+      },
+      "mainEntityOfPage": site.url + url,
+      "keywords": ldTags.join(", "),
+      "image": image ? imgUrl(image, 1200, "jpg") : undefined
+    } }}
+    <script type="application/ld+json">{{ JSON.stringify(jsonld) }}</script>
+  {{ /if }}
 </head>
 <body>
 

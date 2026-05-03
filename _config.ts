@@ -4,6 +4,9 @@ import slugify_urls from "lume/plugins/slugify_urls.ts";
 import feed from "lume/plugins/feed.ts";
 import sitemap from "lume/plugins/sitemap.ts";
 import code_highlight from "lume/plugins/code_highlight.ts";
+import favicon from "lume/plugins/favicon.ts";
+import lightningcss from "lume/plugins/lightningcss.ts";
+import minify_html from "lume/plugins/minify_html.ts";
 import { es } from "npm:date-fns/locale/es";
 import { parse as parseYaml } from "jsr:@std/yaml@^1";
 import slug from "./src/_data/slug.ts";
@@ -88,7 +91,7 @@ site.addEventListener("beforeBuild", async () => {
 });
 
 site.copy("static", ".");
-site.copy("styles");
+site.add("styles"); // Por la pipeline para que lightningcss procese los .css.
 
 site.use(date({ locales: { es } }));
 site.use(slugify_urls({
@@ -102,6 +105,10 @@ site.use(slugify_urls({
 }));
 site.use(code_highlight());
 site.use(sitemap());
+site.use(favicon()); // Genera favicon.ico (32x32), apple-touch-icon.png (180x180)
+                    // a partir de /favicon.svg, e inyecta los <link> en cada HTML.
+site.use(lightningcss()); // Minifica + autoprefixea main.css y fonts.css.
+site.use(minify_html());  // Minifica el HTML de salida (whitespace + atributos).
 
 // Habilita Vento sobre el cuerpo de los markdown para que los posts
 // puedan llamar a los helpers globales ({{ img(...) }}, {{ imgUrl(...) }}).
