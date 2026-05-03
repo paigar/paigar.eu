@@ -320,13 +320,11 @@ code {
 	display: grid;
 	grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
 	gap: 0;
-	/* align-items: start (en lugar del stretch implícito) desacopla la
-	   altura de la fila de la cover. Sin esto, en Chrome el aspect-ratio
-	   de .home-hero-cover combinado con align-items:stretch hace que la
-	   cover derive su width del height del meta, desbordándose hacia la
-	   columna meta y comiéndose los primeros caracteres del título.
-	   overflow:hidden es defensivo por si algo desbordara igualmente. */
-	align-items: start;
+	/* align-items: stretch (default) es lo que queremos: cover y meta a
+	   la misma altura. overflow: hidden es defensivo por si algo
+	   desbordara, pero la causa real del bug que tenía Chrome (la cover
+	   invadiendo la columna del meta) la hemos cortado quitando el
+	   aspect-ratio del cover en este breakpoint — ver más abajo. */
 	overflow: hidden;
 	background: var(--bg-block);
 	margin-top: 0;
@@ -338,7 +336,16 @@ code {
 }
 .home-hero-cover {
 	display: block;
-	aspect-ratio: 16 / 10;
+	/* SIN aspect-ratio en la versión de dos columnas: el cover toma su
+	   altura del row del grid (que iguala al meta gracias a stretch) y
+	   su width del 1.4fr de la columna. La imagen interior usa object-fit:
+	   cover, así que se recorta limpiamente a cualquier proporción. El
+	   bug de Chrome (cover.width derivado de cover.height vía aspect-ratio,
+	   acabando más ancho que la columna) desaparece porque ya no hay
+	   aspect-ratio que resolver.
+	   La aspect-ratio sí vuelve a aplicarse en la versión <=920px (single
+	   column), donde no hay meta al lado para emparejar altura. */
+	min-height: 320px;
 	overflow: hidden;
 	background: var(--ink);
 	position: relative;
@@ -804,6 +811,9 @@ code {
 	display: grid;
 	grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
 	gap: 0;
+	/* overflow: hidden defensivo — evita que el cover desborde la columna
+	   en Chrome (ver nota en .home-feature-split-cover). */
+	overflow: hidden;
 	background: var(--bg-block);
 	border: 1px solid var(--rule);
 	align-items: stretch;
@@ -900,7 +910,15 @@ code {
 
 .home-feature-split-cover {
 	display: block;
-	aspect-ratio: 4 / 3;
+	/* SIN aspect-ratio en versión de dos columnas. Mismo motivo que en
+	   .home-hero-cover: la combinación de aspect-ratio + align-items:stretch
+	   en Chrome hace que el cover derive su width de la altura de la fila
+	   (que iguala al meta), desbordándose si el meta es alto. Sin aspect-ratio,
+	   el cover toma su width de la columna y su height del row, y la imagen
+	   interior se recorta vía object-fit: cover.
+	   El media query <=920px sí restaura aspect-ratio (single column, sin
+	   meta al lado). */
+	min-height: 280px;
 	overflow: hidden;
 	background: var(--ink);
 }
