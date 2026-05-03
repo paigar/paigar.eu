@@ -1098,7 +1098,9 @@ em.note {
 }
 .lqip-wrap picture img {
 	opacity: 0;
-	transition: opacity 0.4s ease;
+	transition:
+		opacity 0.4s ease,
+		transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 .lqip-wrap.loaded picture img {
 	opacity: 1;
