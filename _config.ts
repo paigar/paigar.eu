@@ -32,7 +32,7 @@ try {
 // width/height del <img> (anti-CLS), las widths definen el srcset, y
 // sizes guía al navegador para elegir la variante correcta.
 const IMG_PRESETS = {
-  hero: { widths: [480, 1200, 1920], sizes: "100vw", aspect: "16/9" },
+  hero: { widths: [480, 800, 1200, 1920], sizes: "100vw", aspect: "16/9" },
   content: {
     widths: [480, 800, 1200],
     sizes: "(max-width: 768px) 100vw, 50vw",
