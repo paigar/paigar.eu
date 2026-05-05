@@ -2,7 +2,7 @@
 title: "La fuga de Logan y nuestra fecha de caducidad"
 date: 2026-02-15
 excerpt: "Una serie de televisión de los años setenta me convenció de niño de que treinta años era tiempo más que suficiente para vivir. Hoy, con casi el doble, puedo decir que me equivocaba bastante."
-tags: ["ciencia ficción", "retrofuturismo", "ideas"]
+tags: ["cine y tv", "ciencia ficción", "retrofuturismo", "ideas", "años-80"]
 image: "la-fuga-de-logan.png"
 image_alt: "Ciudad futurista bajo una cúpula, dos jóvenes huyendo por un corredor de ciencia ficción de los años setenta"
 ---

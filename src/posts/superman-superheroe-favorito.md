@@ -2,7 +2,7 @@
 title: "Por qué Superman sigue siendo mi superhéroe favorito"
 date: 2025-10-27
 excerpt: "Confesiones de un ex coleccionista de cómics que ha leído de todo, desde Batman hasta The Authority pasando por Miracleman, y que sigue eligiendo al kriptoniano. No por sus poderes. Por algo mucho más sencillo y mucho más raro hoy en día."
-tags: [ideas, lecturas, cómics]
+tags: [ideas, lecturas, cómics, cultura-pop]
 image: superman-superheroe-favorito.png
 image_alt: "Superheroe de espaldas"
 ---
