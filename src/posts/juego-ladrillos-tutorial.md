@@ -1,6 +1,6 @@
 ---
 title: "Cómo programar el juego de ladrillos desde cero"
-date: 2026-04-21
+date: 2026-04-18
 excerpt: "Un tutorial paso a paso para construir un clásico juego de ladrillos —de la familia de Breakout y Arkanoid— en una sola página web. Es el juego más completo de la serie hasta ahora: combina la física de Pong con la gestión de muchos objetos a la vez y una lógica de niveles que da mucho juego."
 tags: [apuntes, juegos, javascript, canvas]
 image: juego-ladrillos.png

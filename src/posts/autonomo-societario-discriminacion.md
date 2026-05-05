@@ -1,6 +1,6 @@
 ---
 title: "Autónomo societario: la trampa perfecta del sistema"
-date: 2026-05-03
+date: 2026-04-29
 excerpt: "Montas una sociedad para simplificarte la vida y descubres que has entrado en una categoría invisible que el sistema se encarga de penalizar en cada esquina."
 tags: [ideas, oficio, autónomos]
 image: autonomo-societario-discriminacion.png

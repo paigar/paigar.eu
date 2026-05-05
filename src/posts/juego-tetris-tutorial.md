@@ -1,14 +1,14 @@
 ---
 title: "Cómo programar el juego de Tetris desde cero"
-date: 2026-05-04
+date: 2026-04-30
 excerpt: "Un tutorial paso a paso para construir el clásico Tetris en una sola página web. Es la pieza más completa de la serie hasta ahora: rotación de matrices, gravedad por turnos, y la lógica de eliminación de líneas, que es el corazón del juego y sigue siendo, cuarenta años después, una de las invenciones más limpias de la historia de los videojuegos."
 tags: [apuntes, juegos, javascript, canvas]
 image: juego-tetromino.png
 image_alt: "Pantalla vertical de juego retro con bloques de colores apilados en la parte inferior, una pieza descendiendo hacia ellos en la parte superior, sobre fondo oscuro y rejilla de cuadrícula tenue al fondo"
-prototype: tetromino
+prototype: bloques
 ---
 
-Tetris lo escribió Alekséi Pájitnov en 1984, en un Electronika 60 ruso que ni siquiera tenía gráficos: las piezas se dibujaban con caracteres de texto. El nombre viene del prefijo griego *tetra* (cuatro, por las cuatro celdas que tiene cada pieza) y el deporte favorito de Pájitnov, el tenis. La historia de cómo el juego se filtró fuera del bloque soviético en plena Guerra Fría, pasó por Hungría, llegó a una empresa británica, terminó en Atari y Nintendo, y desató una guerra de licencias que duró años, es uno de los grandes culebrones de la industria del software. Pero la idea, la mecánica nuclear del juego, es de las cosas más limpias que ha producido el medio: siete piezas, diez columnas, gravedad constante, líneas que desaparecen cuando se completan. Cuarenta años después sigue siendo el ejemplo canónico de "diseño de juego perfecto".
+Tetris lo escribió Alekséi Pájitnov en 1984, en un Electronika 60 ruso que ni siquiera tenía gráficos: las piezas se dibujaban con caracteres de texto. El nombre viene del prefijo griego _tetra_ (cuatro, por las cuatro celdas que tiene cada pieza) y el deporte favorito de Pájitnov, el tenis. La historia de cómo el juego se filtró fuera del bloque soviético en plena Guerra Fría, pasó por Hungría, llegó a una empresa británica, terminó en Atari y Nintendo, y desató una guerra de licencias que duró años, es uno de los grandes culebrones de la industria del software. Pero la idea, la mecánica nuclear del juego, es de las cosas más limpias que ha producido el medio: siete piezas, diez columnas, gravedad constante, líneas que desaparecen cuando se completan. Cuarenta años después sigue siendo el ejemplo canónico de "diseño de juego perfecto".
 
 Como tutorial, además, es ideal. Mete sobre la mesa cosas que los seis juegos anteriores de esta serie no han tocado: la representación de las piezas como **matrices que se rotan**, la **gestión del tiempo** para una caída acompasada que se acelera con los niveles, y sobre todo la lógica de **detección y eliminación de líneas**, que es deceptivamente simple. Si has seguido los anteriores, este se va a sentir como un salto natural; si llegas nuevo, también funciona porque es un sistema autocontenido.
 
@@ -25,10 +25,10 @@ La estructura central de todo el juego es un **array de arrays** que representa 
 ```js
 const COLUMNAS = 10;
 const FILAS = 20;
-const TAMANO = 30;            // píxeles por celda
+const TAMANO = 30; // píxeles por celda
 
-const ANCHO = COLUMNAS * TAMANO;  // 300
-const ALTO = FILAS * TAMANO;      // 600
+const ANCHO = COLUMNAS * TAMANO; // 300
+const ALTO = FILAS * TAMANO; // 600
 
 let tablero = Array.from({ length: FILAS }, () => Array(COLUMNAS).fill(null));
 ```
@@ -41,17 +41,40 @@ Cada pieza la representamos también como una pequeña matriz: 1 = bloque, 0 = h
 
 ```js
 const PIEZAS = {
-  I: [[1, 1, 1, 1]],
-  O: [[1, 1], [1, 1]],
-  T: [[0, 1, 0], [1, 1, 1]],
-  L: [[0, 0, 1], [1, 1, 1]],
-  J: [[1, 0, 0], [1, 1, 1]],
-  S: [[0, 1, 1], [1, 1, 0]],
-  Z: [[1, 1, 0], [0, 1, 1]],
+	I: [[1, 1, 1, 1]],
+	O: [
+		[1, 1],
+		[1, 1],
+	],
+	T: [
+		[0, 1, 0],
+		[1, 1, 1],
+	],
+	L: [
+		[0, 0, 1],
+		[1, 1, 1],
+	],
+	J: [
+		[1, 0, 0],
+		[1, 1, 1],
+	],
+	S: [
+		[0, 1, 1],
+		[1, 1, 0],
+	],
+	Z: [
+		[1, 1, 0],
+		[0, 1, 1],
+	],
 };
 const COLORES = {
-  I: '#00d4d4', O: '#d4d400', T: '#a040c0',
-  L: '#d48028', J: '#3050d0', S: '#40c440', Z: '#d44040',
+	I: "#00d4d4",
+	O: "#d4d400",
+	T: "#a040c0",
+	L: "#d48028",
+	J: "#3050d0",
+	S: "#40c440",
+	Z: "#d44040",
 };
 ```
 
@@ -59,15 +82,15 @@ Cuando aparece una pieza nueva, elegimos un tipo al azar y guardamos una **copia
 
 ```js
 function clonarMatriz(m) {
-  return m.map((fila) => [...fila]);
+	return m.map((fila) => [...fila]);
 }
 
 function nuevaPieza() {
-  const TIPOS = Object.keys(PIEZAS);
-  const tipo = TIPOS[Math.floor(Math.random() * TIPOS.length)];
-  pieza = { tipo, forma: clonarMatriz(PIEZAS[tipo]), color: COLORES[tipo] };
-  x = Math.floor((COLUMNAS - pieza.forma[0].length) / 2);
-  y = 0;
+	const TIPOS = Object.keys(PIEZAS);
+	const tipo = TIPOS[Math.floor(Math.random() * TIPOS.length)];
+	pieza = { tipo, forma: clonarMatriz(PIEZAS[tipo]), color: COLORES[tipo] };
+	x = Math.floor((COLUMNAS - pieza.forma[0].length) / 2);
+	y = 0;
 }
 ```
 
@@ -79,17 +102,17 @@ Antes de mover, rotar o fijar una pieza, hay que saber si el movimiento sería v
 
 ```js
 function colisiona(forma, px, py) {
-  for (let f = 0; f < forma.length; f++) {
-    for (let c = 0; c < forma[f].length; c++) {
-      if (!forma[f][c]) continue;          // celda vacía de la pieza, ignorar
-      const tx = px + c;
-      const ty = py + f;
-      if (tx < 0 || tx >= COLUMNAS) return true;   // fuera por los lados
-      if (ty >= FILAS) return true;                 // fuera por abajo
-      if (ty >= 0 && tablero[ty][tx]) return true;  // pisa un bloque fijo
-    }
-  }
-  return false;
+	for (let f = 0; f < forma.length; f++) {
+		for (let c = 0; c < forma[f].length; c++) {
+			if (!forma[f][c]) continue; // celda vacía de la pieza, ignorar
+			const tx = px + c;
+			const ty = py + f;
+			if (tx < 0 || tx >= COLUMNAS) return true; // fuera por los lados
+			if (ty >= FILAS) return true; // fuera por abajo
+			if (ty >= 0 && tablero[ty][tx]) return true; // pisa un bloque fijo
+		}
+	}
+	return false;
 }
 ```
 
@@ -103,7 +126,7 @@ Con `colisiona` definida, mover lateralmente es trivial:
 
 ```js
 function moverHorizontal(dx) {
-  if (!colisiona(pieza.forma, x + dx, y)) x += dx;
+	if (!colisiona(pieza.forma, x + dx, y)) x += dx;
 }
 ```
 
@@ -111,12 +134,12 @@ Si el movimiento no causaría colisión, lo aplicamos. Si causaría colisión, n
 
 ```js
 function moverAbajo() {
-  if (!colisiona(pieza.forma, x, y + 1)) {
-    y++;
-    return true;
-  }
-  fijarPieza();
-  return false;
+	if (!colisiona(pieza.forma, x, y + 1)) {
+		y++;
+		return true;
+	}
+	fijarPieza();
+	return false;
 }
 ```
 
@@ -134,16 +157,16 @@ donde `N` es el número de filas de la matriz original. Implementado en código:
 
 ```js
 function rotar() {
-  if (pieza.tipo === 'O') return;   // El cuadrado no cambia al rotar
-  const N = pieza.forma.length;
-  const M = pieza.forma[0].length;
-  const nueva = Array.from({ length: M }, () => Array(N).fill(0));
-  for (let f = 0; f < N; f++) {
-    for (let c = 0; c < M; c++) {
-      nueva[c][N - 1 - f] = pieza.forma[f][c];
-    }
-  }
-  if (!colisiona(nueva, x, y)) pieza.forma = nueva;
+	if (pieza.tipo === "O") return; // El cuadrado no cambia al rotar
+	const N = pieza.forma.length;
+	const M = pieza.forma[0].length;
+	const nueva = Array.from({ length: M }, () => Array(N).fill(0));
+	for (let f = 0; f < N; f++) {
+		for (let c = 0; c < M; c++) {
+			nueva[c][N - 1 - f] = pieza.forma[f][c];
+		}
+	}
+	if (!colisiona(nueva, x, y)) pieza.forma = nueva;
 }
 ```
 
@@ -153,7 +176,7 @@ Tres detalles de los que merece la pena hablar:
 
 **Segundo**, la matriz nueva tiene dimensiones invertidas: si la original era `N×M`, la rotada es `M×N`. Por eso la I, que era `1×4` (una fila de cuatro celdas), después de rotar es `4×1` (una columna de cuatro celdas). Si dibujáramos antes y después no veríamos un cuadrado raro, sino la barra vertical clásica.
 
-**Tercero**, antes de aceptar la rotación verificamos que la nueva forma cabría en la posición actual. Si rotar la pieza la haría chocar con una pared o con bloques ya fijados, **simplemente no rotamos**. En implementaciones más sofisticadas existe el concepto de *wall kick* —si la rotación choca contra la pared, se intenta desplazar uno o dos espacios para que entre—, pero para una versión de tutorial limpia, no rotar es la decisión correcta.
+**Tercero**, antes de aceptar la rotación verificamos que la nueva forma cabría en la posición actual. Si rotar la pieza la haría chocar con una pared o con bloques ya fijados, **simplemente no rotamos**. En implementaciones más sofisticadas existe el concepto de _wall kick_ —si la rotación choca contra la pared, se intenta desplazar uno o dos espacios para que entre—, pero para una versión de tutorial limpia, no rotar es la decisión correcta.
 
 ## Fijar la pieza al tablero
 
@@ -161,16 +184,16 @@ Cuando `moverAbajo()` falla, llamamos a `fijarPieza`. Esta función "imprime" la
 
 ```js
 function fijarPieza() {
-  for (let f = 0; f < pieza.forma.length; f++) {
-    for (let c = 0; c < pieza.forma[f].length; c++) {
-      if (pieza.forma[f][c]) {
-        if (y + f < 0) continue;   // fuera del tablero por arriba: ignorar
-        tablero[y + f][x + c] = pieza.color;
-      }
-    }
-  }
-  eliminarLineas();
-  nuevaPieza();
+	for (let f = 0; f < pieza.forma.length; f++) {
+		for (let c = 0; c < pieza.forma[f].length; c++) {
+			if (pieza.forma[f][c]) {
+				if (y + f < 0) continue; // fuera del tablero por arriba: ignorar
+				tablero[y + f][x + c] = pieza.color;
+			}
+		}
+	}
+	eliminarLineas();
+	nuevaPieza();
 }
 ```
 
@@ -182,28 +205,28 @@ El núcleo conceptual del juego. Recorremos el tablero **de abajo arriba**, y cu
 
 ```js
 function eliminarLineas() {
-  let eliminadas = 0;
-  for (let f = FILAS - 1; f >= 0; f--) {
-    if (tablero[f].every((c) => c)) {
-      tablero.splice(f, 1);
-      tablero.unshift(Array(COLUMNAS).fill(null));
-      eliminadas++;
-      f++;   // el splice ha desplazado todo hacia abajo, hay que re-mirar esta f
-    }
-  }
-  if (eliminadas > 0) {
-    const puntosPorN = [0, 100, 300, 500, 800];
-    puntos += puntosPorN[eliminadas] * nivel;
-    lineas += eliminadas;
-    nivel = Math.floor(lineas / 10) + 1;
-    intervaloCaida = Math.max(80, 800 - (nivel - 1) * 60);
-  }
+	let eliminadas = 0;
+	for (let f = FILAS - 1; f >= 0; f--) {
+		if (tablero[f].every((c) => c)) {
+			tablero.splice(f, 1);
+			tablero.unshift(Array(COLUMNAS).fill(null));
+			eliminadas++;
+			f++; // el splice ha desplazado todo hacia abajo, hay que re-mirar esta f
+		}
+	}
+	if (eliminadas > 0) {
+		const puntosPorN = [0, 100, 300, 500, 800];
+		puntos += puntosPorN[eliminadas] * nivel;
+		lineas += eliminadas;
+		nivel = Math.floor(lineas / 10) + 1;
+		intervaloCaida = Math.max(80, 800 - (nivel - 1) * 60);
+	}
 }
 ```
 
 El detalle del `f++` después de un `splice` merece comentario. Cuando eliminamos la fila `f`, todas las filas que estaban encima bajan una posición; la fila que **ahora** ocupa el índice `f` no la hemos comprobado. Si la dejamos pasar, podríamos saltarnos una línea completa que acaba de bajar. Por eso incrementamos `f` para compensar el `f--` del bucle, manteniendo el índice. Es uno de esos pequeños bailes de índices que cuestan veinte minutos la primera vez que los escribes y cinco segundos cada vez después.
 
-La puntuación sigue la tabla canónica de Tetris: 100 puntos por una línea, 300 por dos, 500 por tres y 800 por cuatro (el famoso *Tetris*, una sola jugada de 4 líneas a la vez). Multiplicado por el nivel actual, así que ir más rápido vale más. El nivel sube cada 10 líneas y la velocidad de caída baja con él, hasta un mínimo de 80ms por paso.
+La puntuación sigue la tabla canónica de Tetris: 100 puntos por una línea, 300 por dos, 500 por tres y 800 por cuatro (el famoso _Tetris_, una sola jugada de 4 líneas a la vez). Multiplicado por el nivel actual, así que ir más rápido vale más. El nivel sube cada 10 líneas y la velocidad de caída baja con él, hasta un mínimo de 80ms por paso.
 
 ## El bucle del juego con tiempo real
 
@@ -215,18 +238,18 @@ let contadorCaida = 0;
 let intervaloCaida = 800;
 
 function bucle(tiempo) {
-  if (!ultimoTiempo) ultimoTiempo = tiempo;
-  const delta = tiempo - ultimoTiempo;
-  ultimoTiempo = tiempo;
+	if (!ultimoTiempo) ultimoTiempo = tiempo;
+	const delta = tiempo - ultimoTiempo;
+	ultimoTiempo = tiempo;
 
-  contadorCaida += delta;
-  if (contadorCaida >= intervaloCaida) {
-    moverAbajo();
-    contadorCaida = 0;
-  }
+	contadorCaida += delta;
+	if (contadorCaida >= intervaloCaida) {
+		moverAbajo();
+		contadorCaida = 0;
+	}
 
-  dibujar();
-  requestAnimationFrame(bucle);
+	dibujar();
+	requestAnimationFrame(bucle);
 }
 ```
 
@@ -238,12 +261,12 @@ La función de dibujo recorre el tablero pintando los bloques fijos y luego pint
 
 ```js
 function dibujarCelda(cx, cy, color) {
-  ctx.fillStyle = color;
-  ctx.fillRect(cx * TAMANO, cy * TAMANO, TAMANO, TAMANO);
-  ctx.fillStyle = 'rgba(255,255,255,0.18)';
-  ctx.fillRect(cx * TAMANO, cy * TAMANO, TAMANO, 3);            // brillo arriba
-  ctx.fillStyle = 'rgba(0,0,0,0.25)';
-  ctx.fillRect(cx * TAMANO, cy * TAMANO + TAMANO - 3, TAMANO, 3); // sombra abajo
+	ctx.fillStyle = color;
+	ctx.fillRect(cx * TAMANO, cy * TAMANO, TAMANO, TAMANO);
+	ctx.fillStyle = "rgba(255,255,255,0.18)";
+	ctx.fillRect(cx * TAMANO, cy * TAMANO, TAMANO, 3); // brillo arriba
+	ctx.fillStyle = "rgba(0,0,0,0.25)";
+	ctx.fillRect(cx * TAMANO, cy * TAMANO + TAMANO - 3, TAMANO, 3); // sombra abajo
 }
 ```
 
@@ -254,12 +277,15 @@ Las dos franjas adicionales —una clara arriba, una oscura abajo— dan a cada 
 Asignamos las teclas estándar: izquierda/derecha mueven la pieza, arriba la rota, abajo acelera la caída por una celda (soft drop), espacio la suelta de golpe hasta el fondo (hard drop). Cada acción reinicia el contador de caída para evitar comportamientos raros como que pulsar abajo justo antes de un tick automático cuente como dos pasos:
 
 ```js
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'ArrowLeft')  moverHorizontal(-1);
-  if (e.key === 'ArrowRight') moverHorizontal(1);
-  if (e.key === 'ArrowUp')    rotar();
-  if (e.key === 'ArrowDown') { moverAbajo(); contadorCaida = 0; }
-  if (e.key === ' ')          caidaInstantanea();
+document.addEventListener("keydown", (e) => {
+	if (e.key === "ArrowLeft") moverHorizontal(-1);
+	if (e.key === "ArrowRight") moverHorizontal(1);
+	if (e.key === "ArrowUp") rotar();
+	if (e.key === "ArrowDown") {
+		moverAbajo();
+		contadorCaida = 0;
+	}
+	if (e.key === " ") caidaInstantanea();
 });
 ```
 
@@ -267,8 +293,8 @@ document.addEventListener('keydown', (e) => {
 
 ```js
 function caidaInstantanea() {
-  while (!colisiona(pieza.forma, x, y + 1)) y++;
-  fijarPieza();
+	while (!colisiona(pieza.forma, x, y + 1)) y++;
+	fijarPieza();
 }
 ```
 
@@ -276,4 +302,4 @@ function caidaInstantanea() {
 
 Tetris funcionó en 1984 sobre una máquina sin gráficos y sigue funcionando hoy en una página HTML con menos de trescientas líneas de JavaScript. Los conceptos centrales —matriz 2D para el tablero, formas como matrices pequeñas, una función de colisión unificada, rotación por transposición de matriz, eliminación de líneas con `splice + unshift`, gravedad acompasada por delta time— son patrones que se repiten en muchos otros juegos del mismo género: Columns, Dr. Mario, Puyo Puyo, Lumines. Si has llegado hasta aquí entendiendo cada paso, en realidad has aprendido una familia entera de juegos, no uno solo.
 
-La versión que tienes encima del artículo está embebida en la propia página y funciona con teclado en escritorio y con tap/swipe en móvil. Si quieres trastear con el código, lo tienes todo en una sola IIFE autocontenida; cambiar los colores, las dimensiones del tablero o la curva de velocidad es un par de constantes. Si quieres más profundidad, el siguiente nivel sería implementar el sistema de *wall kicks* (Super Rotation System), añadir un *ghost piece* que muestre dónde caería la pieza si la soltaras, y meter una pieza guardada (*hold*) que se pueda intercambiar con la actual. Son tres mejoras independientes que multiplican el placer del juego sin tocar la mecánica nuclear que acabamos de construir.
+La versión que tienes encima del artículo está embebida en la propia página y funciona con teclado en escritorio y con tap/swipe en móvil. Si quieres trastear con el código, lo tienes todo en una sola IIFE autocontenida; cambiar los colores, las dimensiones del tablero o la curva de velocidad es un par de constantes. Si quieres más profundidad, el siguiente nivel sería implementar el sistema de _wall kicks_ (Super Rotation System), añadir un _ghost piece_ que muestre dónde caería la pieza si la soltaras, y meter una pieza guardada (_hold_) que se pueda intercambiar con la actual. Son tres mejoras independientes que multiplican el placer del juego sin tocar la mecánica nuclear que acabamos de construir.

@@ -1,6 +1,6 @@
 ---
 title: "Un sistema de layout con CSS Grid y columnas nombradas"
-date: 2026-02-16
+date: 2026-02-13
 excerpt: "El problema clásico: el texto va a 65 caracteres, pero las imágenes quieren ancho completo y las citas se quedan más estrechas. La solución habitual acumula divs wrapper sin semántica. Con un grid de columnas nombradas basta con una clase en el elemento hijo para que decida su propio ancho — sin wrappers, sin media queries, sin max-width repetidos por todo el CSS."
 tags: [css, layout, técnicas]
 image: css-grid-columnas-nombradas.png
@@ -18,15 +18,15 @@ La solución habitual es anidar divs con `max-width` y `margin: 0 auto`:
 ```html
 <!-- El markup típico -->
 <div class="wrapper">
-  <div class="narrow-wrapper">
-    <p>Texto estrecho...</p>
-  </div>
+	<div class="narrow-wrapper">
+		<p>Texto estrecho...</p>
+	</div>
 </div>
 <div class="full-width">
-  <img src="hero.jpg" alt="">
+	<img src="hero.jpg" alt="" />
 </div>
 <div class="wrapper">
-  <p>Texto normal...</p>
+	<p>Texto normal...</p>
 </div>
 ```
 
@@ -38,16 +38,28 @@ La idea es definir un único grid con columnas nombradas que representan los dif
 
 ```css
 .limites {
-  display: grid;
-  grid-template-columns:
-    [total-start] minmax(1rem, 1fr)
-    [ancho-start] minmax(0, calc((var(--anchura-ancho) - var(--anchura-normal)) / 2))
-    [normal-start] minmax(0, calc((var(--anchura-normal) - var(--anchura-estrecho)) / 2))
-    [estrecho-start] min(var(--anchura-estrecho), 100% - 2rem)
-    [estrecho-end] minmax(0, calc((var(--anchura-normal) - var(--anchura-estrecho)) / 2))
-    [normal-end] minmax(0, calc((var(--anchura-ancho) - var(--anchura-normal)) / 2))
-    [ancho-end] minmax(1rem, 1fr)
-    [total-end];
+	display: grid;
+	grid-template-columns:
+		[total-start] minmax(1rem, 1fr)
+		[ancho-start] minmax(
+			0,
+			calc((var(--anchura-ancho) - var(--anchura-normal)) / 2)
+		)
+		[normal-start] minmax(
+			0,
+			calc((var(--anchura-normal) - var(--anchura-estrecho)) / 2)
+		)
+		[estrecho-start] min(var(--anchura-estrecho), 100% - 2rem)
+		[estrecho-end] minmax(
+			0,
+			calc((var(--anchura-normal) - var(--anchura-estrecho)) / 2)
+		)
+		[normal-end] minmax(
+			0,
+			calc((var(--anchura-ancho) - var(--anchura-normal)) / 2)
+		)
+		[ancho-end] minmax(1rem, 1fr)
+		[total-end];
 }
 ```
 
@@ -58,20 +70,28 @@ Parece intimidante al principio, pero la lógica es sencilla: estás definiendo 
 Cada hijo del grid elige su ancho con una simple clase:
 
 ```css
-.limites > * { grid-column: normal; }
-.limites > .ancho { grid-column: ancho; }
-.limites > .estrecho { grid-column: estrecho; }
-.limites > .total { grid-column: total; }
+.limites > * {
+	grid-column: normal;
+}
+.limites > .ancho {
+	grid-column: ancho;
+}
+.limites > .estrecho {
+	grid-column: estrecho;
+}
+.limites > .total {
+	grid-column: total;
+}
 ```
 
 Y en el HTML:
 
 ```html
 <main class="limites">
-  <p>Este párrafo ocupa el ancho normal (65ch).</p>
-  <section class="ancho">Esto es más ancho (55rem).</section>
-  <blockquote class="estrecho">Esto es más estrecho.</blockquote>
-  <img class="total" src="panoramica.jpg" alt="">
+	<p>Este párrafo ocupa el ancho normal (65ch).</p>
+	<section class="ancho">Esto es más ancho (55rem).</section>
+	<blockquote class="estrecho">Esto es más estrecho.</blockquote>
+	<img class="total" src="panoramica.jpg" alt="" />
 </main>
 ```
 
@@ -89,9 +109,9 @@ Los anchos están definidos como variables CSS en los tokens del sitio:
 
 ```css
 :root {
-  --anchura-ancho: 55rem;
-  --anchura-normal: 65ch;
-  --anchura-estrecho: 50ch;
+	--anchura-ancho: 55rem;
+	--anchura-normal: 65ch;
+	--anchura-estrecho: 50ch;
 }
 ```
 

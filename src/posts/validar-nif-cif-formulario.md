@@ -1,6 +1,6 @@
 ---
 title: "Cómo validar un NIF español en un formulario web (con CIF incluido)"
-date: 2026-05-02
+date: 2026-04-27
 excerpt: "El NIF no es solo el DNI con otro nombre. Cuando tu formulario tiene que aceptar tanto personas físicas como empresas, el algoritmo del CIF añade una capa de complejidad que merece su propio artículo."
 tags: [apuntes, javascript, desarrollo web]
 image: validar-nif-cif-formulario.png
