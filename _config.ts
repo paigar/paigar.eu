@@ -212,6 +212,35 @@ site.data(
   },
 );
 
+site.data(
+  "figura",
+  function figura(
+    imgPath: string,
+    alt = "",
+    caption = "",
+  ): string {
+    const safeAlt = escapeAttr(alt);
+    const widths = [480, 800];
+    const largest = 800;
+    const width = largest;
+    const height = Math.round((largest * 2) / 3);
+    const sizes = "(max-width: 600px) 100vw, 720px";
+    const srcsetFor = (fmt: string) =>
+      widths.map((w) => `${imgUrl(imgPath, w, fmt)} ${w}w`).join(", ");
+    const lqip = lqipData[imgPath] || imgUrl(imgPath, 16, "jpg");
+    const figcaption = caption ? `<figcaption>${caption}</figcaption>` : "";
+    return `<figure><div class="lqip-wrap" style="background-image:url('${lqip}')"><picture><source type="image/avif" srcset="${
+      srcsetFor("avif")
+    }" sizes="${sizes}"><source type="image/webp" srcset="${
+      srcsetFor("webp")
+    }" sizes="${sizes}"><img src="${
+      imgUrl(imgPath, largest, "jpg")
+    }" srcset="${
+      srcsetFor("jpg")
+    }" sizes="${sizes}" alt="${safeAlt}" loading="lazy" width="${width}" height="${height}" onload="this.closest('.lqip-wrap').classList.add('loaded')"></picture></div>${figcaption}</figure>`;
+  },
+);
+
 site.use(feed({
   output: ["/feed.xml", "/feed.json"],
   query: "type=post",

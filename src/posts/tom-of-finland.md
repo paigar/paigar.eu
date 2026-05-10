@@ -23,11 +23,15 @@ Sería deshonesto no mencionar que la obra de Tom of Finland es explícitamente 
 
 Los cuerpos en sus dibujos son imposibles en la escala habitual de lo posible. Hombros que no caben en una puerta, cinturas que contrastan con torsos de proporciones hercúleas, mandíbulas cuadradas, uniformes tensos hasta el límite de lo que permite la tela. Todo exagerado de forma deliberada y sistemática, como si la hiperrealidad fuera la única manera honesta de representar el deseo. Hay algo en esa exageración que no es grotesco sino celebratorio, una suerte de himno dibujado a una masculinidad que en la época en que empezó a hacerlo no tenía casi ningún otro espacio de representación positiva.
 
+{{ figura('tom-of-finland-01.jpg', 'Ilustración de Tom of Finland: figura masculina de proporciones heroicas con uniforme tenso, trazo limpio y contraste radical', '© Tom of Finland Foundation') |> safe }}
+
 La línea es limpia, segura, sin titubeos. Los escenarios son esquemáticos, apenas esbozados, porque lo que importa es la figura. Y las figuras tienen siempre esa cualidad extraña de parecer a la vez idealizadas y completamente reales en su energía, como si captaran algo verdadero sobre la forma en que el deseo construye sus objetos.
 
 ## Una influencia que está en todas partes aunque no siempre se cite
 
 Poco después de aquel descubrimiento empecé a ver su huella en sitios donde antes no la habría reconocido. La estética del cuero gay, que él no inventó del todo pero sí codificó visualmente con más fuerza que nadie. La forma en que ciertas subculturas construyeron su iconografía en las décadas siguientes. El modo en que la masculinidad gay encontró un lenguaje propio para representarse a sí misma con potencia en lugar de con vergüenza.
+
+{{ figura('tom-of-finland-02.jpg', 'Ilustración de Tom of Finland: escena con la iconografía del cuero y la motocicleta que definió la estética de varias subculturas', '© Tom of Finland Foundation') |> safe }}
 
 Su impacto trascendió con el tiempo las comunidades para las que originalmente dibujó. Las ilustraciones de Tom of Finland llegaron al mundo del diseño, de la moda, del arte contemporáneo. Finlandia, el país que en sus años de formación criminalizaba su identidad, terminó emitiéndole sellos postales en 1992, el año de su muerte. La Tom of Finland Foundation en Los Ángeles —donde pasó parte de sus últimos años— preserva su archivo. Sus obras están en colecciones de museos como el MoMA. El arco completo de ese recorrido, de la clandestinidad al sello postal, dice bastante sobre cómo cambia la historia cuando alguien decide representar lo que quiere representar sin pedir permiso.
 
@@ -37,6 +41,12 @@ Aquel primer libro que compré en Amsterdam es pequeño, manejable, el tipo de e
 
 Con el tiempo compré algún otro libro suyo, incluyendo una edición en gran formato que le hace mucha más justicia a su trabajo. Cuando tienes las ilustraciones a ese tamaño, con esa presencia en el papel, la calidad del dibujo se impone de otra manera. Los detalles que en una edición pequeña se intuyen, en el formato grande se hacen evidentes: la precisión del trazo, el control sobre la luz y la sombra, la composición de cada imagen como un objeto autónomo.
 
+{{ figura('tom-of-finland-03.jpg', 'Ilustración de Tom of Finland: detalle que muestra la precisión del trazo, el control de la luz y la sombra, y la composición de la figura', '© Tom of Finland Foundation') |> safe }}
+
 No sé si en 1999, con el internet que había, habría llegado a él de otra forma. Probablemente no con esa misma inmediatez del objeto físico entre las manos, en una tienda de Amsterdam, en un otoño que ahora tiene más de veinticinco años. Que para conocer ciertas cosas hubiera que ir a buscarlas tiene algo que no me parece del todo mal en retrospectiva.
 
 Si aún no conoces su obra, o la has descartado de un vistazo, te animo a buscarla con curiosidad y sin prevenciones. No hace falta que todo te resulte cómodo para reconocer que estás ante algo genuinamente extraordinario. Laaksonen dibujó lo que quiso durante décadas, sin pedir permiso ni disculpas, y eso se ve en cada trazo. Vale la pena tomarse el tiempo de verlo.
+
+---
+
+*Las ilustraciones reproducidas en este artículo pertenecen al archivo de la Tom of Finland Foundation y se incluyen con fines informativos y de crítica cultural, al amparo del derecho de cita (art. 32 de la Ley de Propiedad Intelectual). © The Tom of Finland Foundation. Todos los derechos reservados.*

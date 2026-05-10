@@ -1524,6 +1524,9 @@ code {
 	height: auto;
 	display: block;
 }
+.post-body figure img {
+	margin: 0;
+}
 .post-body figcaption {
 	font-family: var(--font-body);
 	font-style: italic;
