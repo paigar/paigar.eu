@@ -1197,7 +1197,21 @@ code {
 	color: var(--rule);
 }
 .post-eyebrow .tags {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
 	color: var(--ink-soft);
+}
+.post-eyebrow .tags a {
+	color: inherit;
+	text-decoration: none;
+}
+.post-eyebrow .tags a:hover {
+	color: var(--accent);
+}
+.post-eyebrow .tags a + a::before {
+	content: ' · ';
+	color: var(--rule);
 }
 
 .post-title {

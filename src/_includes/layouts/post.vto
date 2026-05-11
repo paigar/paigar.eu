@@ -33,7 +33,7 @@ layout: layouts/base.vto
     <header class="post-hero">
       {{ if visibleTags.length }}
         <div class="post-eyebrow">
-          <span class="tags">{{ visibleTags.join(' · ') }}</span>
+          <nav class="tags">{{ for tag of visibleTags }}<a href="/etiqueta/{{ tag |> slug }}/">{{ tag }}</a>{{ /for }}</nav>
         </div>
       {{ /if }}
       <h1 class="post-title">{{ title }}</h1>

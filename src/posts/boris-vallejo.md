@@ -3,7 +3,7 @@ title: "Boris Vallejo: de Conan al Minage"
 date: 2025-09-29
 excerpt: "Descubrí a Boris Vallejo a través de una portada de Conan y no pude quitarme de la cabeza la pregunta de cómo alguien pintaba así. Décadas después, ese mismo ilustrador aparecía en la portada de uno de los mejores discos de Mónica Naranjo. Que dos cosas tan distintas encajen tan bien dice bastante sobre el alcance de su arte."
 tags: [arte, ilustración, retrofuturismo, cultura-pop, años-80]
-image: boris-vallejo.png
+image: boris-vallejo--00.jpg
 image_alt: "Ilustración fantástica al estilo de Boris Vallejo: figura heroica con musculatura imposible iluminada por una luz dramática sobre fondo oscuro"
 ---
 
@@ -19,6 +19,8 @@ En los setenta y los ochenta, el mercado americano de ficción de género —fan
 
 El referente inmediato es Frank Frazetta, el maestro que había establecido el lenguaje visual del bárbaro fantástico en las décadas anteriores. Frazetta era gestual, oscuro, con una energía casi instintiva en el trazo. Vallejo fue en otra dirección: más fotorrealista, más luminoso, con una atención al detalle que venía directamente de su formación académica. Los dos son extraordinarios y los dos son distintos, aunque se les cite juntos con tanta frecuencia que a veces parece que son el mismo artista.
 
+{{ figura('boris-vallejo--01.jpg', 'Ilustración de Boris Vallejo: figura heroica de fantasía épica con musculatura imposible y luz dramática, representativa de su trabajo para las portadas de novelas de bolsillo americanas', '© Boris Vallejo') |> safe }}
+
 ## La técnica que hace que todo lo demás tenga sentido
 
 Lo que distingue a Vallejo de muchos ilustradores del género es la solidez técnica. Trabaja al óleo, sobre superficies rígidas, y gran parte de sus obras parten de referencias fotográficas que él mismo dirige. Durante décadas, él y su pareja, la ilustradora Julie Bell, han posado como modelos para sus propias pinturas. Eso explica buena parte de la convicción anatómica de las figuras: no son inventadas, son construidas.
@@ -26,6 +28,8 @@ Lo que distingue a Vallejo de muchos ilustradores del género es la solidez téc
 El resultado es una hiperrealidad que no cae en lo grotesco porque tiene una base real. Los cuerpos son imposibles en la escala de lo cotidiano pero convincentes en la escala del mito. Es exactamente lo que el género pide: una representación del deseo y del poder que exagera sin mentir.
 
 Julie Bell merece en este contexto su propio reconocimiento. Su estilo comparte familia con el de Vallejo pero tiene una identidad propia —las figuras en su obra tienen una fuerza y una presencia que va más allá de la decoración—, y sus colaboraciones conjuntas son de las piezas más interesantes que han producido los dos. Tengo un libro de ilustraciones de ambos que sigo abriendo de vez en cuando, no por nostalgia sino porque cada vez que lo hago encuentro algo en lo que no me había fijado.
+
+{{ figura('boris-vallejo--02.jpg', 'Ilustración de Boris Vallejo al óleo: figura construida desde referencias fotográficas reales, con anatomía convincente y hiperrealismo que no cae en lo grotesco', '© Boris Vallejo') |> safe }}
 
 ## El giro que no me esperaba
 
@@ -41,4 +45,10 @@ Boris Vallejo tiene la mala suerte de ser demasiado bueno en un género que much
 
 Es una lástima, porque la técnica está ahí para quien quiera verla. El control de la luz, la anatomía, la composición, la capacidad de construir una imagen que impacta en el primer segundo y que aguanta el escrutinio más detallado. Eso no es fácil. No es accidental. Es el resultado de décadas de trabajo de alguien que aprendió a pintar en una escuela de bellas artes de Lima y terminó definiendo la imaginería fantástica de toda una generación.
 
+{{ figura('boris-vallejo--03.jpg', 'Ilustración de Boris Vallejo: obra representativa de su dominio técnico del óleo, con figuras de proporciones míticas y luz dramática', '© Boris Vallejo') |> safe }}
+
 Si no lo conoces más allá del nombre, búscalo con calma. Empieza por el Conan. Termina, si puedes, en la portada de _Minage_.
+
+---
+
+*Las ilustraciones reproducidas en este artículo son obra de Boris Vallejo y se incluyen con fines informativos y de crítica cultural, al amparo del derecho de cita (art. 32 de la Ley de Propiedad Intelectual). © Boris Vallejo. Todos los derechos reservados.*
