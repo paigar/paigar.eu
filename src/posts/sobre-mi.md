@@ -27,15 +27,15 @@ Tener tres espacios separados puede parecer un derroche. Mezclar todo en uno sol
 
 No ha sido un camino recto, pero cada etapa ha dejado su marca.
 
-**1990 — Primer programa publicado.** Con dieciséis años, la revista MSX Club, de difusión nacional, publicó [un juego de plataformas](/articulo-gasoil/) que había programado en Basic para MSX. Ver tu código impreso en papel marca de por vida la relación con los ordenadores.
+**1990 — Primer programa publicado.** Con dieciséis años, la revista MSX Club, de difusión nacional, publicó [un juego de plataformas](/articulo-gasoil/) que había programado en Basic para MSX. Ver mi código impreso en papel marcó de por vida mi relación con los ordenadores.
 
-**1991-1998 — Ingeniería superior industrial.** Años de formación técnica rigurosa. Nunca llegué a ejercer como ingeniero industrial, pero la disciplina analítica de aquellos años se nota en todo lo que vino después.
+**1991-1998 — Ingeniería superior industrial.** Años de formación técnica rigurosa. Nunca llegué a ejercer como ingeniero industrial, pero la disciplina analítica de aquellos años la noto en todo lo que vino después.
 
-**1999 — Eindhoven.** Beca en el instituto tecnológico de la Technische Universiteit Eindhoven, programando simulaciones para un lenguaje de programación capaz de resolver ecuaciones diferenciales parciales de forma nativa. Mi primer contacto con el desarrollo de software a nivel profesional.
+**1999 — Eindhoven.** Conseguí una beca en el instituto tecnológico de la Technische Universiteit Eindhoven, donde programé simulaciones para un lenguaje capaz de resolver ecuaciones diferenciales parciales de forma nativa. Fue mi primer contacto real con el desarrollo de software a nivel profesional.
 
-**2000-2001 — Profesor de informática.** Enseñar te obliga a entender las cosas a un nivel que no alcanzas solo programando. Aprendí tanto como enseñé.
+**2000-2001 — Profesor de informática.** Enseñar me obligó a entender las cosas a un nivel que no alcanzaba programando solo. Aprendí tanto como enseñé.
 
-**2001-2008 — Panda Software.** Siete años en una de las empresas españolas de referencia en seguridad informática. Antivirus, protección de sistemas, software a gran escala. Una escuela que no se replica en ningún curso.
+**2001-2008 — Panda Software.** Pasé siete años en una de las empresas españolas de referencia en seguridad informática. Antivirus, protección de sistemas, software a gran escala. Una escuela que no habría encontrado en ningún curso.
 
 **2008 — Salto al freelance.** Tras un paso breve por la filial española de Deutsche Telekom como Service Manager, dejo el mundo corporativo y empiezo como consultor freelance, buscando una forma de trabajo más alineada con lo que me motiva.
 
