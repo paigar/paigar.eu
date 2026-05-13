@@ -45,10 +45,34 @@ async function build(): Promise<void> {
   console.log("   Build completado.");
 }
 
+// ─── API key management ──────────────────────────────────────────────────────
+async function saveApiKey(key: string): Promise<void> {
+  let content = "";
+  try { content = await Deno.readTextFile(".env"); } catch { /* no existe */ }
+  if (/^STATICHOST_APIKEY=/m.test(content)) {
+    content = content.replace(/^STATICHOST_APIKEY=.*/m, `STATICHOST_APIKEY=${key}`);
+  } else {
+    content = content.trimEnd() + (content ? "\n" : "") + `STATICHOST_APIKEY=${key}\n`;
+  }
+  await Deno.writeTextFile(".env", content);
+  Deno.env.set("STATICHOST_APIKEY", key);
+}
+
+async function resolveApiKey(): Promise<string> {
+  let key = Deno.env.get("STATICHOST_APIKEY") ?? "";
+  if (!key) {
+    console.log("\n🔑 No se encontró STATICHOST_APIKEY en .env.");
+    key = prompt("   Introduce el API token de statichost.eu:") ?? "";
+    if (!key.trim()) throw new Error("API token vacío, abortando.");
+    await saveApiKey(key.trim());
+    console.log("   Token guardado en .env.");
+  }
+  return key.trim();
+}
+
 // ─── 3. Zip and upload to statichost.eu ─────────────────────────────────────
 async function upload(): Promise<void> {
-  const apiKey = Deno.env.get("STATICHOST_APIKEY");
-  if (!apiKey) throw new Error("Falta STATICHOST_APIKEY en .env");
+  let apiKey = await resolveApiKey();
 
   const zipPath = `${Deno.cwd()}\\statichost.zip`;
 
@@ -69,17 +93,30 @@ async function upload(): Promise<void> {
   ].join("; ");
   await run("powershell", "-Command", ps);
 
-  console.log(`\n🚀 Subiendo a ${BUILDER_HOST}/${SITE_NAME}/drop…`);
-  const zip = await Deno.readFile(zipPath);
-  const res = await fetch(`${BUILDER_HOST}/${SITE_NAME}/drop`, {
-    method: "POST",
-    headers: {
-      "Authorization": `Bearer ${apiKey}`,
-      "Content-Type": "application/zip",
-      "Accept": "text/plain",
-    },
-    body: zip,
-  });
+  const doUpload = async (key: string) => {
+    console.log(`\n🚀 Subiendo a ${BUILDER_HOST}/${SITE_NAME}/drop…`);
+    const zip = await Deno.readFile(zipPath);
+    return await fetch(`${BUILDER_HOST}/${SITE_NAME}/drop`, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${key}`,
+        "Content-Type": "application/zip",
+        "Accept": "text/plain",
+      },
+      body: zip,
+    });
+  };
+
+  let res = await doUpload(apiKey);
+
+  if (res.status === 401) {
+    console.log("\n🔑 Token rechazado (caducado o inválido).");
+    apiKey = prompt("   Introduce el nuevo API token:") ?? "";
+    if (!apiKey.trim()) throw new Error("API token vacío, abortando.");
+    await saveApiKey(apiKey.trim());
+    console.log("   Token actualizado en .env.");
+    res = await doUpload(apiKey.trim());
+  }
 
   try { await Deno.remove(zipPath); } catch { /* fine */ }
 
