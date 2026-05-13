@@ -56,7 +56,7 @@ async function upload(): Promise<void> {
   try { await Deno.remove(zipPath); } catch { /* fine */ }
   await run(
     "powershell", "-Command",
-    `Compress-Archive -Path "${SITE_DIR}\\*" -DestinationPath "${zipPath}" -Force`,
+    `Push-Location "${SITE_DIR}"; Compress-Archive -Path ".\\*" -DestinationPath "${zipPath}" -Force; Pop-Location`,
   );
 
   console.log(`\n🚀 Subiendo a ${BUILDER_HOST}/${SITE_NAME}/drop…`);
