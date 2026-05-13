@@ -54,10 +54,20 @@ async function upload(): Promise<void> {
 
   console.log("\n🗜️  Creando zip del sitio…");
   try { await Deno.remove(zipPath); } catch { /* fine */ }
-  await run(
-    "powershell", "-Command",
-    `Push-Location "${SITE_DIR}"; Compress-Archive -Path ".\\*" -DestinationPath "${zipPath}" -Force; Pop-Location`,
-  );
+  const ps = [
+    `Add-Type -AssemblyName System.IO.Compression.FileSystem`,
+    `Add-Type -AssemblyName System.IO.Compression`,
+    `$src = "${SITE_DIR}"`,
+    `$dst = "${zipPath}"`,
+    `if (Test-Path $dst) { Remove-Item $dst }`,
+    `$zip = [System.IO.Compression.ZipFile]::Open($dst, [System.IO.Compression.ZipArchiveMode]::Create)`,
+    `Get-ChildItem -Path $src -Recurse -File | ForEach-Object {`,
+    `  $rel = $_.FullName.Substring((Resolve-Path $src).Path.Length + 1).Replace('\\', '/')`,
+    `  [System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile($zip, $_.FullName, $rel) | Out-Null`,
+    `}`,
+    `$zip.Dispose()`,
+  ].join("; ");
+  await run("powershell", "-Command", ps);
 
   console.log(`\n🚀 Subiendo a ${BUILDER_HOST}/${SITE_NAME}/drop…`);
   const zip = await Deno.readFile(zipPath);
