@@ -12,7 +12,7 @@ site:
   # Base de la CDN. El helper imgUrl() prepende esta URL al slug de la imagen
   # y le añade el sufijo de tamaño/formato para construir las variantes
   # responsive: ${cdn}${slug-without-ext}-${width}.${fmt}
-  cdn: https://imagenes.paigar.es/paigar/
+  cdn: https://media.paigar.eu/paigar/
 
 nav:
   - { url: /, label: Feed }

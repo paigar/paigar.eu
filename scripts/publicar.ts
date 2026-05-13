@@ -1,7 +1,10 @@
 // Build, push to GitHub, and upload to statichost.eu via direct upload API.
 // Invoke with: deno task publicar
 
-import "jsr:@std/dotenv@0.225/load";
+import { load } from "jsr:@std/dotenv@0.225";
+
+const ENV_PATH = "../.env";
+await load({ envPath: ENV_PATH, export: true });
 
 const SITE_DIR = "_site";
 const SITE_NAME = "paigar";
@@ -48,13 +51,13 @@ async function build(): Promise<void> {
 // ─── API key management ──────────────────────────────────────────────────────
 async function saveApiKey(key: string): Promise<void> {
   let content = "";
-  try { content = await Deno.readTextFile(".env"); } catch { /* no existe */ }
+  try { content = await Deno.readTextFile(ENV_PATH); } catch { /* no existe */ }
   if (/^STATICHOST_APIKEY=/m.test(content)) {
     content = content.replace(/^STATICHOST_APIKEY=.*/m, `STATICHOST_APIKEY=${key}`);
   } else {
     content = content.trimEnd() + (content ? "\n" : "") + `STATICHOST_APIKEY=${key}\n`;
   }
-  await Deno.writeTextFile(".env", content);
+  await Deno.writeTextFile(ENV_PATH, content);
   Deno.env.set("STATICHOST_APIKEY", key);
 }
 
