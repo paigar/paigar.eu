@@ -109,5 +109,14 @@
 
   {{ include "partials/colophon.vto" }}
 
+  <script>
+    document.querySelectorAll('a[href]').forEach(function(a) {
+      if (a.hostname && a.hostname !== location.hostname) {
+        a.setAttribute('target', '_blank');
+        a.setAttribute('rel', 'noopener noreferrer');
+      }
+    });
+  </script>
+
 </body>
 </html>
