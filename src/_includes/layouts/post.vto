@@ -33,7 +33,7 @@ layout: layouts/base.vto
     <header class="post-hero">
       {{ if visibleTags.length }}
         <div class="post-eyebrow">
-          <nav class="tags">{{ for tag of visibleTags }}<a href="/etiqueta/{{ tag |> slug }}/">{{ tag }}</a>{{ /for }}</nav>
+          <ul class="tags">{{ for tag of visibleTags }}<li><a href="/etiqueta/{{ tag |> slug }}/">{{ tag }}</a></li>{{ /for }}</ul>
         </div>
       {{ /if }}
       <h1 class="post-title">{{ title }}</h1>
@@ -68,9 +68,9 @@ layout: layouts/base.vto
         {{ if visibleTags.length }}
           <div class="post-aside-tags-wrap">
             <span class="post-aside-label">Etiquetas</span>
-            <nav class="post-aside-tags">
-              {{ for tag of visibleTags }}<a href="/etiqueta/{{ tag |> slug }}/">{{ tag }}</a>{{ /for }}
-            </nav>
+            <ul class="post-aside-tags">
+              {{ for tag of visibleTags }}<li><a href="/etiqueta/{{ tag |> slug }}/">{{ tag }}</a></li>{{ /for }}
+            </ul>
           </div>
         {{ /if }}
 
@@ -96,7 +96,7 @@ layout: layouts/base.vto
 
     <div class="ornament">···</div>
 
-    <footer class="post-foot">
+    <div class="post-foot">
       <nav class="post-nav" aria-label="Navegación entre entradas">
         {{ if nextPost }}
           <a href="{{ nextPost.url }}" class="post-nav-item post-nav-item--prev" rel="next">
@@ -120,7 +120,7 @@ layout: layouts/base.vto
           </div>
         {{ /if }}
       </nav>
-    </footer>
+    </div>
 
     {{# === SUGERIDOS: 3 entradas relacionadas por etiquetas === #}}
     {{ if related.length }}
@@ -128,7 +128,7 @@ layout: layouts/base.vto
         <span class="post-related-eyebrow">Otras entradas</span>
         <ol class="post-related-grid">
           {{ for post of related }}
-            {{ include "partials/post-card.vto" { post } }}
+            <li>{{ include "partials/post-card.vto" { post } }}</li>
           {{ /for }}
         </ol>
       </section>

@@ -1214,7 +1214,7 @@ code {
 .post-eyebrow .tags a:hover {
 	color: var(--accent);
 }
-.post-eyebrow .tags a + a::before {
+.post-eyebrow .tags li + li a::before {
 	content: ' · ';
 	color: var(--rule);
 }
