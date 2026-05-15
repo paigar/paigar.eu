@@ -1,0 +1,17 @@
+{{ set fullbleedTags = (post.tags || []).filter(t => t !== 'post') }}
+<article class="home-featured">
+  <a href="{{ post.url }}" class="home-featured-link">
+    {{ if post.image }}{{ img(post.image, "", "hero", "lazy") }}{{ /if }}
+    <div class="home-featured-overlay">
+      {{ if eyebrow }}
+        <div class="home-featured-eyebrow">{{ eyebrow }}</div>
+      {{ else if fullbleedTags.length }}
+        <div class="home-featured-eyebrow">{{ fullbleedTags.join(' · ') }}</div>
+      {{ /if }}
+      <h2 class="home-featured-title">{{ post.title }}</h2>
+      {{ if post.excerpt }}
+        <p class="home-featured-excerpt">{{ post.excerpt }}</p>
+      {{ /if }}
+    </div>
+  </a>
+</article>

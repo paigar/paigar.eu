@@ -4,16 +4,19 @@ title: Bitácora
 description: El cuaderno digital de Juanjo. Apuntes, ideas, garabatos, artilugios y retrofuturismo.
 ---
 
-{{ set posts = search.pages("type=post", "date=desc") }}
+{{ set allPinned = pinned.map(url => search.page("url=" + url)).filter(p => p) }}
+{{ set featuredAPost = allPinned[0] }}
+{{ set featuredBPost = allPinned[1] }}
+{{ set featuredCPost = allPinned[2] }}
+{{ set featuredDPost = allPinned[3] }}
+{{ set featuredUrls = new Set(allPinned.slice(0, 4).map(p => p.url)) }}
+{{ set posts = search.pages("type=post", "date=desc").filter(p => !featuredUrls.has(p.url)) }}
 {{ set gridLimit = 12 }}
 {{ set tailLimit = 48 }}
 {{ set hero = posts[0] }}
 {{ set bentoPosts = posts.slice(1, 8) }}
-{{ set featuredAPost = posts[8] }}
-{{ set featuredBPost = posts[9] }}
-{{ set gridPosts = posts.slice(10, 10 + gridLimit) }}
-{{ set featuredCPost = posts[10 + gridLimit] }}
-{{ set tailStart = 10 + gridLimit + 1 }}
+{{ set gridPosts = posts.slice(8, 8 + gridLimit) }}
+{{ set tailStart = 8 + gridLimit }}
 {{ set tailPosts = posts.slice(tailStart, tailStart + tailLimit) }}
 {{ set hasArchive = posts.length >= 4 }}
 
@@ -90,47 +93,12 @@ description: El cuaderno digital de Juanjo. Apuntes, ideas, garabatos, artilugio
 
     {{# === FEATURED A: split horizontal (texto izquierda · imagen derecha) === #}}
     {{ if featuredAPost }}
-      {{ set featATags = (featuredAPost.tags || []).filter(t => t !== 'post') }}
-      <article class="home-feature-split">
-        <div class="home-feature-split-content">
-          {{ if featATags.length }}
-            <div class="home-feature-split-eyebrow">
-              {{ for i, tag of featATags }}<a href="/etiqueta/{{ tag |> slug }}/">{{ tag }}</a>{{ if i < featATags.length - 1 }}<span class="sep">·</span>{{ /if }}{{ /for }}
-            </div>
-          {{ /if }}
-          <h2 class="home-feature-split-title">
-            <a href="{{ featuredAPost.url }}">{{ featuredAPost.title }}</a>
-          </h2>
-          {{ if featuredAPost.excerpt }}
-            <p class="home-feature-split-excerpt">{{ featuredAPost.excerpt }}</p>
-          {{ /if }}
-          <a href="{{ featuredAPost.url }}" class="home-feature-split-readmore">
-            Leer la entrada<span class="visually-hidden">: {{ featuredAPost.title }}</span><span class="arrow">→</span>
-          </a>
-        </div>
-        <a href="{{ featuredAPost.url }}" class="home-feature-split-cover" tabindex="-1" aria-hidden="true">
-          {{ if featuredAPost.image }}{{ img(featuredAPost.image, "", "content", "lazy") }}{{ /if }}
-        </a>
-      </article>
+      {{ include "partials/feature-split.vto" { post: featuredAPost, eyebrow: "Destacado" } }}
     {{ /if }}
 
     {{# === FEATURED B: full-bleed con overlay === #}}
     {{ if featuredBPost }}
-      {{ set featBTags = (featuredBPost.tags || []).filter(t => t !== 'post') }}
-      <article class="home-featured">
-        <a href="{{ featuredBPost.url }}" class="home-featured-link">
-          {{ if featuredBPost.image }}{{ img(featuredBPost.image, "", "hero", "lazy") }}{{ /if }}
-          <div class="home-featured-overlay">
-            {{ if featBTags.length }}
-              <div class="home-featured-eyebrow">{{ featBTags.join(' · ') }}</div>
-            {{ /if }}
-            <h2 class="home-featured-title">{{ featuredBPost.title }}</h2>
-            {{ if featuredBPost.excerpt }}
-              <p class="home-featured-excerpt">{{ featuredBPost.excerpt }}</p>
-            {{ /if }}
-          </div>
-        </a>
-      </article>
+      {{ include "partials/feature-fullbleed.vto" { post: featuredBPost, eyebrow: "Destacado" } }}
     {{ /if }}
 
     {{# === GRID (Más del archivo) === #}}
@@ -147,28 +115,7 @@ description: El cuaderno digital de Juanjo. Apuntes, ideas, garabatos, artilugio
 
     {{# === FEATURED C: split horizontal invertido (imagen izquierda · texto derecha) === #}}
     {{ if featuredCPost }}
-      {{ set featCTags = (featuredCPost.tags || []).filter(t => t !== 'post') }}
-      <article class="home-feature-split home-feature-split--reverse">
-        <div class="home-feature-split-content">
-          {{ if featCTags.length }}
-            <div class="home-feature-split-eyebrow">
-              {{ for i, tag of featCTags }}<a href="/etiqueta/{{ tag |> slug }}/">{{ tag }}</a>{{ if i < featCTags.length - 1 }}<span class="sep">·</span>{{ /if }}{{ /for }}
-            </div>
-          {{ /if }}
-          <h2 class="home-feature-split-title">
-            <a href="{{ featuredCPost.url }}">{{ featuredCPost.title }}</a>
-          </h2>
-          {{ if featuredCPost.excerpt }}
-            <p class="home-feature-split-excerpt">{{ featuredCPost.excerpt }}</p>
-          {{ /if }}
-          <a href="{{ featuredCPost.url }}" class="home-feature-split-readmore">
-            Leer la entrada<span class="visually-hidden">: {{ featuredCPost.title }}</span><span class="arrow">→</span>
-          </a>
-        </div>
-        <a href="{{ featuredCPost.url }}" class="home-feature-split-cover" tabindex="-1" aria-hidden="true">
-          {{ if featuredCPost.image }}{{ img(featuredCPost.image, "", "content", "lazy") }}{{ /if }}
-        </a>
-      </article>
+      {{ include "partials/feature-split.vto" { post: featuredCPost, eyebrow: "Destacado" } }}
     {{ /if }}
 
     {{# === MANIFIESTO / CITA — al cierre como voice-statement === #}}
@@ -183,6 +130,11 @@ description: El cuaderno digital de Juanjo. Apuntes, ideas, garabatos, artilugio
         <a href="/sobre-mi/">Quién escribe<span class="arrow">→</span></a>
       </div>
     </aside>
+
+    {{# === FEATURED D: split horizontal (texto izquierda · imagen derecha) === #}}
+    {{ if featuredDPost }}
+      {{ include "partials/feature-split.vto" { post: featuredDPost, reverse: true, eyebrow: "Destacado" } }}
+    {{ /if }}
 
     {{# === SEGUNDO GRID: cola del archivo (si hay material para 1 fila) === #}}
     {{ if tailPosts.length >= 3 }}
@@ -224,7 +176,7 @@ description: El cuaderno digital de Juanjo. Apuntes, ideas, garabatos, artilugio
         <div class="archive-banner-text">
           <span class="archive-banner-eyebrow">El archivo</span>
           <h2 class="archive-banner-title">Todo lo publicado, año por año.</h2>
-          <p class="archive-banner-sub">{{ posts.length }} entradas en orden cronológico inverso, sin algoritmo, sin filtros, sin paginación infinita. Tal y como se publicaron.</p>
+          <p class="archive-banner-sub">{{ posts.length + featuredUrls.size }} entradas en orden cronológico inverso, sin algoritmo, sin filtros, sin paginación infinita. Tal y como se publicaron.</p>
         </div>
         <a href="/archivo/" class="archive-banner-link">
           Ver el archivo completo

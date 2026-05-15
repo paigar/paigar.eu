@@ -1,5 +1,5 @@
 ---
-title: "Leyendecker: un genio escondido en plain sight"
+title: "Leyendecker: un genio escondido a plena vista"
 date: 2026-05-05
 excerpt: "Hace poco descubrí a Joseph Christian Leyendecker. Hizo más portadas del Saturday Evening Post que Norman Rockwell, inventó el bebé de Año Nuevo y el Arrow Collar Man. Y su nombre lleva décadas enterrado."
 tags: ["arte", "ilustración", "lgtbiq", "cultura-pop"]
@@ -19,13 +19,13 @@ También fue Leyendecker quien fijó visualmente algunas de las imágenes más a
 
 {{ figura('leyendecker-02.jpg', 'Portada de J.C. Leyendecker para el Saturday Evening Post: escena de la vida americana con esa presencia visual que convirtió la revista en fenómeno de masas', 'J.C. Leyendecker') |> safe }}
 
-## El Arrow Collar Man y el amor escondido en plain sight
+## El Arrow Collar Man y el amor escondido a plena vista
 
 La campaña que lo hizo más famoso en su época fue la del Arrow Collar Man, una serie de ilustraciones publicitarias para una marca de camisas que se convirtieron en fenómeno cultural. El personaje — apuesto, elegante, con esa mandíbula perfecta y esa postura de quien sabe exactamente dónde está — generó una respuesta que hoy llamaríamos viral. Las mujeres americanas enviaban cartas de amor a un hombre de papel. La empresa recibía más correspondencia dirigida al Arrow Collar Man que muchos actores de carne y hueso.
 
 {{ figura('leyendecker-03.jpg', 'Ilustración publicitaria de J.C. Leyendecker para Arrow Collar: figura masculina apuesta y elegante que generó una respuesta cultural sin precedentes en la publicidad americana', 'J.C. Leyendecker') |> safe }}
 
-Lo que el público no sabía, y que tardó décadas en documentarse, es que el modelo era Charles Beach, la pareja de Leyendecker durante casi cincuenta años. Vivían juntos, viajaban juntos, Beach gestionaba su carrera y sus finanzas. En la América de principios del siglo XX eso era un secreto a voces que nadie nombraba en voz alta. Leyendecker llevó su vida entera escondida en plain sight: el hombre al que amaba era literalmente la cara más reconocida de la publicidad americana, y nadie hacía la pregunta obvia.
+Lo que el público no sabía, y que tardó décadas en documentarse, es que el modelo era Charles Beach, la pareja de Leyendecker durante casi cincuenta años. Vivían juntos, viajaban juntos, Beach gestionaba su carrera y sus finanzas. En la América de principios del siglo XX eso era un secreto a voces que nadie nombraba en voz alta. Leyendecker llevó su vida entera escondida a plena vista: el hombre al que amaba era literalmente la cara más reconocida de la publicidad americana, y nadie hacía la pregunta obvia.
 
 {{ figura('leyendecker-04.jpg', 'Ilustración de J.C. Leyendecker del Arrow Collar Man: el modelo era Charles Beach, su pareja durante casi cincuenta años, retratado con una atención y admiración que va más allá del encargo comercial', 'J.C. Leyendecker') |> safe }}
 
