@@ -126,6 +126,21 @@ site.preprocess([".md"], (pages) => {
 
 site.filter("slug", slug);
 
+// Abre en pestaña nueva todos los enlaces externos del contenido generado.
+site.process([".html"], (pages) => {
+  for (const page of pages) {
+    const doc = page.document;
+    if (!doc) continue;
+    for (const link of doc.querySelectorAll('a[href^="http"]')) {
+      const href = link.getAttribute("href") ?? "";
+      if (!href.includes("paigar.eu")) {
+        link.setAttribute("target", "_blank");
+        link.setAttribute("rel", "noopener noreferrer");
+      }
+    }
+  }
+});
+
 // ─── Helpers de imagen como filtros y datos globales ───────────────────
 // Los datos globales hacen que en Vento puedas llamar:
 //   {{ imgUrl("foo.png", 1200, "jpg") }}
