@@ -29,8 +29,8 @@
     {{ /if }}
 
     {{ if !compact }}
-      <a href="{{ post.url }}" class="post-card-readmore" aria-label="Leer {{ post.title }}">
-        Leer <span class="arrow">→</span>
+      <a href="{{ post.url }}" class="post-card-readmore">
+        Leer<span class="visually-hidden"> {{ post.title }}</span> <span class="arrow">→</span>
       </a>
     {{ /if }}
 

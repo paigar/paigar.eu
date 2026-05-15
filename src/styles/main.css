@@ -57,6 +57,7 @@
 html {
 	scroll-behavior: smooth;
 	-webkit-text-size-adjust: 100%;
+	scroll-padding-top: 72px;
 }
 
 img,
@@ -472,29 +473,33 @@ code {
 }
 
 /* Tarjeta grande izquierda: ocupa col 1, span 3 filas, fondo gris */
-.home-bento > .post-card:first-child {
+.home-bento > li:first-child {
 	grid-column: 1;
 	grid-row: 1 / 4;
+	display: flex;
+}
+.home-bento > li:first-child > .post-card {
+	flex: 1;
 	background: var(--bg-block);
 	display: flex;
 	flex-direction: column;
 }
-.home-bento > .post-card:first-child .post-card-cover {
+.home-bento > li:first-child .post-card-cover {
 	margin-bottom: 0;
 	aspect-ratio: 16 / 10;
 	flex: 0 0 auto;
 }
-.home-bento > .post-card:first-child .post-card-body {
+.home-bento > li:first-child .post-card-body {
 	padding: clamp(24px, 2.4vw, 40px) clamp(28px, 2.8vw, 44px)
 		clamp(28px, 3vw, 44px);
 	flex: 1 1 auto;
 	display: flex;
 	flex-direction: column;
 }
-.home-bento > .post-card:first-child .post-card-excerpt {
+.home-bento > li:first-child .post-card-excerpt {
 	flex: 1 1 auto;
 }
-.home-bento > .post-card:first-child .post-card-title {
+.home-bento > li:first-child .post-card-title {
 	font-family: var(--font-display);
 	font-weight: 400;
 	font-size: clamp(22px, 2.4vw, 32px);
@@ -504,19 +509,19 @@ code {
 }
 
 /* Tarjetas pequeñas derecha: solo imagen + título centrado */
-.home-bento > .post-card:not(:first-child) {
+.home-bento > li:not(:first-child) > .post-card {
 	text-align: center;
 }
-.home-bento > .post-card:not(:first-child) .post-card-eyebrow,
-.home-bento > .post-card:not(:first-child) .post-card-excerpt,
-.home-bento > .post-card:not(:first-child) .post-card-readmore {
+.home-bento > li:not(:first-child) .post-card-eyebrow,
+.home-bento > li:not(:first-child) .post-card-excerpt,
+.home-bento > li:not(:first-child) .post-card-readmore {
 	display: none;
 }
-.home-bento > .post-card:not(:first-child) .post-card-cover {
+.home-bento > li:not(:first-child) .post-card-cover {
 	margin-bottom: 14px;
 	aspect-ratio: 4 / 3;
 }
-.home-bento > .post-card:not(:first-child) .post-card-title {
+.home-bento > li:not(:first-child) .post-card-title {
 	font-family: var(--font-body);
 	font-weight: 500;
 	font-size: 16.5px;

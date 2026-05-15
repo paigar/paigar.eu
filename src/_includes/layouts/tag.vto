@@ -16,7 +16,7 @@ layout: layouts/base.vto
 
     <ol class="home-grid-cards" style="padding-top: 3rem;">
       {{ for post of posts }}
-        {{ include "partials/post-card.vto" { post } }}
+        <li>{{ include "partials/post-card.vto" { post } }}</li>
       {{ /for }}
     </ol>
 

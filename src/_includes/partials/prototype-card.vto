@@ -30,8 +30,8 @@
       <p class="post-card-excerpt">{{ prototipo.tagline }}</p>
     {{ /if }}
 
-    <a href="{{ protoUrl }}" class="post-card-readmore" aria-label="{{ actionLabel }} {{ prototipo.name }}">
-      {{ actionLabel }} <span class="arrow">→</span>
+    <a href="{{ protoUrl }}" class="post-card-readmore">
+      {{ actionLabel }}<span class="visually-hidden"> {{ prototipo.name }}</span> <span class="arrow">→</span>
     </a>
 
   </div>

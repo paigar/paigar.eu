@@ -1,6 +1,7 @@
 <header class="site-header" role="banner">
   <div class="site-header-inner">
-    <a href="/" class="site-header-mark" aria-label="Inicio · PAIGAR · {{ site.subtitle }}">
+    <a href="/" class="site-header-mark">
+      <span class="visually-hidden">Inicio · </span>
       <span class="site-header-mark-name">PAIGAR</span>
       <span class="site-header-mark-tagline">{{ site.subtitle }}</span>
     </a>
@@ -10,10 +11,10 @@
       <span class="site-header-toggle-bar"></span>
     </button>
     <nav id="site-nav" class="site-header-nav" aria-label="Navegación principal">
-      <a href="/"{{ if url === '/' }} class="is-current"{{ /if }}>Bitácora</a>
-      <a href="/juegos/"{{ if url && url.startsWith('/juegos/') }} class="is-current"{{ /if }}>Juegos</a>
-      <a href="/herramientas/"{{ if url && url.startsWith('/herramientas/') }} class="is-current"{{ /if }}>Herramientas</a>
-      <a href="/que-es-esto/"{{ if url === '/que-es-esto/' }} class="is-current"{{ /if }}>Qué es esto</a>
+      <a href="/"{{ if url === '/' }} class="is-current" aria-current="page"{{ /if }}>Bitácora</a>
+      <a href="/juegos/"{{ if url && url.startsWith('/juegos/') }} class="is-current" aria-current="page"{{ /if }}>Juegos</a>
+      <a href="/herramientas/"{{ if url && url.startsWith('/herramientas/') }} class="is-current" aria-current="page"{{ /if }}>Herramientas</a>
+      <a href="/que-es-esto/"{{ if url === '/que-es-esto/' }} class="is-current" aria-current="page"{{ /if }}>Qué es esto</a>
     </nav>
   </div>
   <script>

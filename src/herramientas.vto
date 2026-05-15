@@ -26,7 +26,7 @@ description: Pequeñas utilidades web autocontenidas. Sin enviar nada a ningún 
 
     <ol class="home-grid-cards" style="padding-top: 3rem;">
       {{ for prototipo of herramientas }}
-        {{ include "partials/prototype-card.vto" { prototipo } }}
+        <li>{{ include "partials/prototype-card.vto" { prototipo } }}</li>
       {{ /for }}
     </ol>
 

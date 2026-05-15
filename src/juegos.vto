@@ -26,7 +26,7 @@ description: Juegos web jugables al instante — clásicos del arcade y del nave
 
     <ol class="home-grid-cards" style="padding-top: 3rem;">
       {{ for prototipo of juegos }}
-        {{ include "partials/prototype-card.vto" { prototipo } }}
+        <li>{{ include "partials/prototype-card.vto" { prototipo } }}</li>
       {{ /for }}
     </ol>
 

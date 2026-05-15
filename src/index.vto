@@ -1,6 +1,6 @@
 ---
 layout: layouts/base.vto
-title: false
+title: Bitácora
 description: El cuaderno digital de Juanjo. Apuntes, ideas, garabatos, artilugios y retrofuturismo.
 ---
 
@@ -58,7 +58,7 @@ description: El cuaderno digital de Juanjo. Apuntes, ideas, garabatos, artilugio
             <p class="home-hero-excerpt">{{ hero.excerpt }}</p>
           {{ /if }}
           <a href="{{ hero.url }}" class="home-hero-readmore">
-            Leer la entrada<span class="arrow">→</span>
+            Leer la entrada<span class="visually-hidden">: {{ hero.title }}</span><span class="arrow">→</span>
           </a>
         </div>
       </article>
@@ -70,7 +70,7 @@ description: El cuaderno digital de Juanjo. Apuntes, ideas, garabatos, artilugio
         <span class="home-bento-eyebrow">Más recientes</span>
         <ol class="home-bento">
           {{ for post of bentoPosts }}
-            {{ include "partials/post-card.vto" { post } }}
+            <li>{{ include "partials/post-card.vto" { post } }}</li>
           {{ /for }}
         </ol>
       </section>
@@ -84,7 +84,7 @@ description: El cuaderno digital de Juanjo. Apuntes, ideas, garabatos, artilugio
         <p class="home-about-text">
           PAIGAR es el sitio donde van a parar las cosas que no encajan en ningún otro sitio: apuntes, ideas a medio cocinar, capturas con un comentario al lado, pequeños cacharros web, ramalazos hacia ese internet de antes que imaginaba un futuro distinto al que llegó.
         </p>
-        <a href="/que-es-esto/" class="home-about-link">Leer la presentación →</a>
+        <a href="/que-es-esto/" class="home-about-link">Leer la presentación<span class="visually-hidden"> de PAIGAR</span> →</a>
       </div>
     </aside>
 
@@ -105,7 +105,7 @@ description: El cuaderno digital de Juanjo. Apuntes, ideas, garabatos, artilugio
             <p class="home-feature-split-excerpt">{{ featuredAPost.excerpt }}</p>
           {{ /if }}
           <a href="{{ featuredAPost.url }}" class="home-feature-split-readmore">
-            Leer la entrada<span class="arrow">→</span>
+            Leer la entrada<span class="visually-hidden">: {{ featuredAPost.title }}</span><span class="arrow">→</span>
           </a>
         </div>
         <a href="{{ featuredAPost.url }}" class="home-feature-split-cover" tabindex="-1" aria-hidden="true">
@@ -139,7 +139,7 @@ description: El cuaderno digital de Juanjo. Apuntes, ideas, garabatos, artilugio
         <span class="home-grid-eyebrow">Más del archivo</span>
         <ol class="home-grid-cards">
           {{ for post of gridPosts }}
-            {{ include "partials/post-card.vto" { post } }}
+            <li>{{ include "partials/post-card.vto" { post } }}</li>
           {{ /for }}
         </ol>
       </section>
@@ -162,7 +162,7 @@ description: El cuaderno digital de Juanjo. Apuntes, ideas, garabatos, artilugio
             <p class="home-feature-split-excerpt">{{ featuredCPost.excerpt }}</p>
           {{ /if }}
           <a href="{{ featuredCPost.url }}" class="home-feature-split-readmore">
-            Leer la entrada<span class="arrow">→</span>
+            Leer la entrada<span class="visually-hidden">: {{ featuredCPost.title }}</span><span class="arrow">→</span>
           </a>
         </div>
         <a href="{{ featuredCPost.url }}" class="home-feature-split-cover" tabindex="-1" aria-hidden="true">
@@ -190,7 +190,7 @@ description: El cuaderno digital de Juanjo. Apuntes, ideas, garabatos, artilugio
         <span class="home-grid-eyebrow">Aún más entradas</span>
         <ol class="home-grid-cards home-grid-cards--compact">
           {{ for post of tailPosts }}
-            {{ include "partials/post-card.vto" { post, compact: true } }}
+            <li>{{ include "partials/post-card.vto" { post, compact: true } }}</li>
           {{ /for }}
         </ol>
       </section>

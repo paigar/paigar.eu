@@ -133,10 +133,17 @@ site.process([".html"], (pages) => {
     if (!doc) continue;
     for (const link of doc.querySelectorAll('a[href^="http"]')) {
       const href = link.getAttribute("href") ?? "";
-      if (!href.includes("paigar.eu")) {
-        link.setAttribute("target", "_blank");
-        link.setAttribute("rel", "noopener noreferrer");
-      }
+      try {
+        const { hostname } = new URL(href);
+        if (hostname !== "paigar.eu" && hostname !== "www.paigar.eu") {
+          link.setAttribute("target", "_blank");
+          link.setAttribute("rel", "noopener noreferrer");
+          const notice = doc.createElement("span");
+          notice.setAttribute("class", "visually-hidden");
+          notice.textContent = " (abre en ventana nueva)";
+          link.appendChild(notice);
+        }
+      } catch { /* URL malformada, ignorar */ }
     }
   }
 });
