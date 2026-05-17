@@ -75,6 +75,8 @@ function escapeAttr(s: string): string {
 }
 
 // ─── Lume site ────────────────────────────────────────────────────────
+const isServe = Deno.args.some((a: string) => a === "--serve" || a === "-s");
+
 const site = lume({
   src: "./src",
   location: new URL("https://paigar.eu"),
@@ -115,11 +117,17 @@ site.use(minify_html());  // Minifica el HTML de salida (whitespace + atributos)
 // Los posts que muestran sintaxis Vento en bloques de código pueden
 // optar fuera con `templateEngine: md` en su frontmatter.
 site.preprocess([".md"], (pages) => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
   for (const page of pages) {
     // deno-lint-ignore no-explicit-any
     const fm = page.data as any;
     if (fm.templateEngine === undefined) {
       fm.templateEngine = ["vto", "md"];
+    }
+    // En build (no serve), posts con fecha futura se marcan como draft.
+    if (!isServe && fm.date && new Date(fm.date) > today && fm.draft === undefined) {
+      fm.draft = true;
     }
   }
 });

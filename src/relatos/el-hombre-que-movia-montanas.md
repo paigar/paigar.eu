@@ -8,7 +8,7 @@ image_alt: "Un hombre de mediana edad sentado solo en una terraza del Casco Viej
 
 ## I
  
-La mañana del once de marzo de 2003 Izan Goikoetxea se despertó con la certeza de que el día iba a ser un martes sin mayor interés.
+La mañana del cuatro de marzo de 2003 Izan Goikoetxea se despertó con la certeza de que el día iba a ser un martes sin mayor interés.
  
 Eso, en sí mismo, no era inusual. Llevaba treinta y ocho años despertándose con certezas de ese tipo: que llovería, que tenía reunión a las once, que debía acordarse de llamar a su madre. Lo inusual era que todavía eran las siete y cuarenta y dos de la mañana y ya sabía exactamente lo que le iba a decir Marta en el descanso del café, antes de que Marta lo hubiera dicho.
  
