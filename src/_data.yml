@@ -8,6 +8,8 @@ site:
   author:
     name: Juanjo Marcos
     url: https://paigar.eu
+    bio: Escribo sobre tecnología, diseño y, al parecer, ciencia ficción.
+    avatar: /avatar.jpg
   email: hola@paigar.eu
   # Base de la CDN. El helper imgUrl() prepende esta URL al slug de la imagen
   # y le añade el sufijo de tamaño/formato para construir las variantes

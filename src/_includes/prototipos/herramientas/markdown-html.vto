@@ -1,0 +1,553 @@
+---
+slug: markdown-html
+name: Conversor Markdown → HTML
+tagline: Escribe o pega Markdown y obtén el HTML limpio al instante. Sin servidores, sin registro, sin esperas.
+cover: conversor-markdown-html.png
+articleUrl: /conversor-markdown-html/
+---
+
+<div id="mh-prototipo">
+  <div class="mh-card">
+    <div class="mh-eyebrow">Herramienta · paigar.eu</div>
+    <h3 class="mh-title">Conversor <em>Markdown</em> → HTML</h3>
+    <p class="mh-subtitle">Escribe o pega Markdown a la izquierda y obtén el HTML a la derecha.</p>
+
+    <div class="mh-workspace">
+
+      <div class="mh-pane">
+        <div class="mh-pane-header">
+          <span class="mh-pane-label">Markdown</span>
+          <button class="mh-ghost-btn" id="mh-clearBtn">Limpiar</button>
+        </div>
+        <textarea id="mh-input" spellcheck="false" aria-label="Texto Markdown"></textarea>
+      </div>
+
+      <div class="mh-splitter" aria-hidden="true"></div>
+
+      <div class="mh-pane">
+        <div class="mh-pane-header">
+          <div class="mh-tabs" role="tablist">
+            <button class="mh-tab is-active" data-tab="html" role="tab" aria-selected="true">HTML</button>
+            <button class="mh-tab" data-tab="preview" role="tab" aria-selected="false">Vista previa</button>
+          </div>
+          <button class="mh-copy-btn" id="mh-copyBtn">Copiar</button>
+        </div>
+        <pre class="mh-output" id="mh-output"><code id="mh-code"></code></pre>
+        <div class="mh-preview" id="mh-preview" hidden aria-live="polite"></div>
+      </div>
+
+    </div>
+
+    <div class="mh-statusbar">
+      <span id="mh-stat-chars">— car.</span>
+      <span class="mh-sep">·</span>
+      <span id="mh-stat-words">— pal.</span>
+      <span class="mh-sep">·</span>
+      <span id="mh-stat-lines">— líns.</span>
+    </div>
+
+    <p class="mh-footer-note">Conversión realizada en el navegador · ningún dato se envía a ningún servidor</p>
+  </div>
+</div>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap');
+
+#mh-prototipo {
+  --mh-ink: #1a1a2e;
+  --mh-paper: #f5f0e8;
+  --mh-accent: #c8321f;
+  --mh-accent-soft: #f0e0dd;
+  --mh-ok: #1a6b3c;
+  --mh-ok-soft: #d4edde;
+  --mh-mid: #6b5b3e;
+  --mh-border: #c8b89a;
+  --mh-mono: 'DM Mono', monospace;
+  --mh-serif: 'DM Serif Display', serif;
+  --mh-sans: 'DM Sans', sans-serif;
+  --mh-workspace-h: 360px;
+  display: flex;
+  justify-content: center;
+  padding: 2rem 0;
+  font-family: var(--mh-sans);
+  color: var(--mh-ink);
+}
+
+#mh-prototipo * {
+  box-sizing: border-box;
+}
+
+#mh-prototipo .mh-card {
+  background: white;
+  border: 1.5px solid var(--mh-border);
+  border-radius: 2px;
+  padding: 3rem 3.5rem;
+  width: 100%;
+  position: relative;
+  box-shadow: 6px 6px 0 var(--mh-border);
+}
+
+#mh-prototipo .mh-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 4px;
+  background: linear-gradient(90deg, var(--mh-accent) 0%, var(--mh-ink) 50%, var(--mh-ok) 100%);
+}
+
+#mh-prototipo .mh-eyebrow {
+  font-family: var(--mh-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.15em;
+  color: var(--mh-mid);
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+#mh-prototipo .mh-title {
+  font-family: var(--mh-serif);
+  font-size: 2rem;
+  font-weight: 400;
+  line-height: 1.1;
+  color: var(--mh-ink);
+  margin-bottom: 0.4rem;
+}
+
+#mh-prototipo .mh-title em {
+  font-style: italic;
+  color: var(--mh-accent);
+}
+
+#mh-prototipo .mh-subtitle {
+  font-size: 0.85rem;
+  color: var(--mh-mid);
+  margin-bottom: 2rem;
+  font-weight: 300;
+}
+
+/* Workspace */
+
+#mh-prototipo .mh-workspace {
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr;
+  gap: 0;
+  height: var(--mh-workspace-h);
+  border: 1.5px solid var(--mh-border);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+}
+
+#mh-prototipo .mh-splitter {
+  background: var(--mh-border);
+  width: 1px;
+}
+
+#mh-prototipo .mh-pane {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+#mh-prototipo .mh-pane-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.5rem 0.85rem;
+  border-bottom: 1px solid var(--mh-border);
+  background: var(--mh-paper);
+  flex-shrink: 0;
+}
+
+#mh-prototipo .mh-pane-label {
+  font-family: var(--mh-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mh-mid);
+}
+
+#mh-prototipo .mh-ghost-btn {
+  font-family: var(--mh-sans);
+  font-size: 0.72rem;
+  color: var(--mh-mid);
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  padding: 0.2rem 0.5rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+#mh-prototipo .mh-ghost-btn:hover {
+  border-color: var(--mh-border);
+  color: var(--mh-ink);
+}
+
+/* Input */
+
+#mh-prototipo textarea {
+  flex: 1;
+  width: 100%;
+  padding: 1rem;
+  font-family: var(--mh-mono);
+  font-size: 0.8rem;
+  line-height: 1.65;
+  color: var(--mh-ink);
+  background: white;
+  border: none;
+  outline: none;
+  resize: none;
+  tab-size: 2;
+}
+
+#mh-prototipo textarea::placeholder {
+  color: var(--mh-border);
+}
+
+/* Output */
+
+#mh-prototipo .mh-tabs {
+  display: flex;
+  gap: 0.25rem;
+}
+
+#mh-prototipo .mh-tab {
+  font-family: var(--mh-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mh-mid);
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  padding: 0.2rem 0.5rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+#mh-prototipo .mh-tab:hover {
+  color: var(--mh-ink);
+  border-color: var(--mh-border);
+}
+
+#mh-prototipo .mh-tab.is-active {
+  color: var(--mh-ink);
+  background: white;
+  border-color: var(--mh-border);
+}
+
+#mh-prototipo .mh-copy-btn {
+  font-family: var(--mh-sans);
+  font-size: 0.72rem;
+  color: var(--mh-mid);
+  background: var(--mh-paper);
+  border: 1px solid var(--mh-border);
+  border-radius: 2px;
+  padding: 0.2rem 0.6rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+#mh-prototipo .mh-copy-btn:hover {
+  background: var(--mh-ink);
+  border-color: var(--mh-ink);
+  color: var(--mh-paper);
+}
+
+#mh-prototipo .mh-copy-btn.copied {
+  background: var(--mh-ok);
+  border-color: var(--mh-ok);
+  color: white;
+}
+
+#mh-prototipo .mh-output {
+  flex: 1;
+  margin: 0;
+  padding: 1rem;
+  font-family: var(--mh-mono);
+  font-size: 0.75rem;
+  line-height: 1.65;
+  color: var(--mh-ink);
+  background: #faf9f7;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+#mh-prototipo .mh-output code {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+#mh-prototipo .mh-preview {
+  flex: 1;
+  padding: 1rem 1.25rem;
+  overflow: auto;
+  font-family: var(--mh-sans);
+  font-size: 0.875rem;
+  line-height: 1.7;
+  color: var(--mh-ink);
+  background: #faf9f7;
+}
+
+#mh-prototipo .mh-preview[hidden] { display: none; }
+
+#mh-prototipo .mh-preview h1,
+#mh-prototipo .mh-preview h2,
+#mh-prototipo .mh-preview h3 {
+  font-family: var(--mh-serif);
+  font-weight: 400;
+  margin-top: 1.25rem;
+  margin-bottom: 0.4rem;
+  line-height: 1.2;
+}
+
+#mh-prototipo .mh-preview h1 { font-size: 1.5rem; }
+#mh-prototipo .mh-preview h2 { font-size: 1.2rem; }
+#mh-prototipo .mh-preview h3 { font-size: 1rem; }
+
+#mh-prototipo .mh-preview p { margin-bottom: 0.75rem; }
+
+#mh-prototipo .mh-preview code {
+  font-family: var(--mh-mono);
+  font-size: 0.8em;
+  background: var(--mh-paper);
+  border: 1px solid var(--mh-border);
+  border-radius: 2px;
+  padding: 0.1em 0.35em;
+}
+
+#mh-prototipo .mh-preview pre {
+  background: var(--mh-paper);
+  border: 1px solid var(--mh-border);
+  border-radius: 2px;
+  padding: 0.75rem 1rem;
+  overflow: auto;
+  margin-bottom: 0.75rem;
+}
+
+#mh-prototipo .mh-preview pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.78rem;
+}
+
+#mh-prototipo .mh-preview blockquote {
+  border-left: 3px solid var(--mh-accent);
+  margin: 0 0 0.75rem;
+  padding: 0.25rem 0 0.25rem 1rem;
+  color: var(--mh-mid);
+  font-style: italic;
+}
+
+#mh-prototipo .mh-preview ul,
+#mh-prototipo .mh-preview ol {
+  padding-left: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+#mh-prototipo .mh-preview a {
+  color: var(--mh-accent);
+  text-underline-offset: 2px;
+}
+
+#mh-prototipo .mh-preview hr {
+  border: none;
+  border-top: 1px solid var(--mh-border);
+  margin: 1rem 0;
+}
+
+/* Status bar */
+
+#mh-prototipo .mh-statusbar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0;
+  font-family: var(--mh-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.06em;
+  color: var(--mh-mid);
+}
+
+#mh-prototipo .mh-sep {
+  opacity: 0.4;
+}
+
+#mh-prototipo .mh-footer-note {
+  margin-top: 1.25rem;
+  font-size: 0.72rem;
+  color: var(--mh-mid);
+  font-style: italic;
+  text-align: right;
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+  #mh-prototipo .mh-card {
+    padding: 2rem 1.25rem;
+  }
+
+  #mh-prototipo .mh-title {
+    font-size: 1.6rem;
+  }
+
+  #mh-prototipo .mh-workspace {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1px 1fr;
+    --mh-workspace-h: 560px;
+  }
+
+  #mh-prototipo .mh-splitter {
+    width: 100%;
+    height: 1px;
+  }
+}
+</style>
+
+<script>
+(function () {
+  'use strict';
+
+  var SAMPLE = [
+    '# Conversor Markdown → HTML',
+    '',
+    'Escribe tu propio contenido o modifica este ejemplo.',
+    '',
+    '## Qué puedes convertir',
+    '',
+    'Texto con **negrita**, _cursiva_ y `código en línea`.',
+    '[Un enlace](https://paigar.eu) o una imagen.',
+    '',
+    '## Listas',
+    '',
+    '- Primer elemento',
+    '- Segundo elemento',
+    '  - Subelemento anidado',
+    '',
+    '1. Paso uno',
+    '2. Paso dos',
+    '3. Paso tres',
+    '',
+    '## Citas y código',
+    '',
+    '> Una cita en bloque.',
+    '> Puede ocupar varias líneas.',
+    '',
+    '```javascript',
+    'function saluda(nombre) {',
+    '  return "Hola, " + nombre;',
+    '}',
+    '```',
+    '',
+    '---',
+    '',
+    '*Herramienta construida con [marked.js](https://marked.js.org).*'
+  ].join('\n');
+
+  var input    = document.getElementById('mh-input');
+  var codeEl   = document.getElementById('mh-code');
+  var outputEl = document.getElementById('mh-output');
+  var previewEl = document.getElementById('mh-preview');
+  var copyBtn  = document.getElementById('mh-copyBtn');
+  var clearBtn = document.getElementById('mh-clearBtn');
+  var tabs     = document.querySelectorAll('#mh-prototipo .mh-tab');
+  var statChars = document.getElementById('mh-stat-chars');
+  var statWords = document.getElementById('mh-stat-words');
+  var statLines = document.getElementById('mh-stat-lines');
+
+  var currentTab = 'html';
+  var currentHtml = '';
+
+  function updateStats(text) {
+    var chars = text.length;
+    var words = text.trim() ? text.trim().split(/\s+/).length : 0;
+    var lines = text ? text.split('\n').length : 0;
+    statChars.textContent = chars + ' car.';
+    statWords.textContent = words + ' pal.';
+    statLines.textContent = lines + (lines === 1 ? ' lín.' : ' líns.');
+  }
+
+  function escapeHtml(str) {
+    return str
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+  }
+
+  function render(text) {
+    currentHtml = window.marked ? window.marked.parse(text) : '<p>Cargando el conversor…</p>';
+    codeEl.textContent = currentHtml;
+    previewEl.innerHTML = currentHtml;
+    updateStats(text);
+  }
+
+  function switchTab(tab) {
+    currentTab = tab;
+    tabs.forEach(function (btn) {
+      var isActive = btn.dataset.tab === tab;
+      btn.classList.toggle('is-active', isActive);
+      btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+    });
+    if (tab === 'html') {
+      outputEl.style.display = '';
+      previewEl.hidden = true;
+    } else {
+      outputEl.style.display = 'none';
+      previewEl.hidden = false;
+    }
+  }
+
+  tabs.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      switchTab(btn.dataset.tab);
+    });
+  });
+
+  var copyTimer;
+  copyBtn.addEventListener('click', function () {
+    if (!currentHtml) return;
+    navigator.clipboard.writeText(currentHtml).then(function () {
+      copyBtn.textContent = '¡Copiado!';
+      copyBtn.classList.add('copied');
+      clearTimeout(copyTimer);
+      copyTimer = setTimeout(function () {
+        copyBtn.textContent = 'Copiar';
+        copyBtn.classList.remove('copied');
+      }, 2000);
+    });
+  });
+
+  clearBtn.addEventListener('click', function () {
+    input.value = '';
+    render('');
+    input.focus();
+  });
+
+  input.addEventListener('input', function () {
+    render(input.value);
+  });
+
+  function init() {
+    if (window.marked) {
+      window.marked.setOptions({ breaks: true, gfm: true });
+    }
+    input.value = SAMPLE;
+    render(SAMPLE);
+  }
+
+  var script = document.createElement('script');
+  script.src = 'https://cdn.jsdelivr.net/npm/marked@12/marked.min.js';
+  script.onload = function () { init(); };
+  script.onerror = function () {
+    codeEl.textContent = 'No se pudo cargar la librería de conversión. Comprueba tu conexión a internet.';
+  };
+  document.head.appendChild(script);
+
+}());
+</script>

@@ -1,6 +1,6 @@
 ---
 title: "La ciudad que sí ha pensado en ti (y el vecino que no)"
-date: 2026-05-10
+date: 2026-05-08
 excerpt: "Bilbao ha hecho un trabajo extraordinario en accesibilidad urbana. El problema no es la ciudad. El problema es lo que hacemos con ella."
 tags: [ideas, accesibilidad, bilbao, dependencia]
 image: aceras-bilbao-silla-ruedas.png

@@ -1001,6 +1001,10 @@ code {
 	.home-grid-cards {
 		grid-template-columns: 1fr;
 	}
+	.home-feature-split-cover, .home-hero-cover {
+		aspect-ratio: unset;
+		height: 70vw;
+	}
 }
 
 /* =========================================================
@@ -1694,6 +1698,83 @@ code {
 /* ---- Banner archivo dentro de cada post ---- */
 .post .archive-banner {
 	margin-top: 64px;
+}
+
+/* =========================================================
+   RELATOS — layout de lectura larga
+   ========================================================= */
+
+.relato-hero {
+	max-width: var(--container-reading);
+	margin: 56px 0 48px;
+}
+
+.relato-eyebrow {
+	display: inline-block;
+	font-family: var(--font-mono);
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.24em;
+	text-transform: uppercase;
+	color: var(--accent);
+	margin-bottom: 20px;
+	text-decoration: none;
+	border-bottom: none;
+}
+.relato-eyebrow:hover {
+	color: var(--accent-deep);
+}
+
+.relato-body-wrap {
+	max-width: var(--container-reading);
+	margin: 64px auto 80px;
+}
+
+/* Cabeceras de capítulo (## I, ## Título…): alineadas a la izquierda */
+.relato-body h2 {
+	font-family: var(--font-display);
+	font-weight: 400;
+	letter-spacing: 0;
+	text-align: left;
+	margin: 72px 0 40px;
+}
+.relato-body h2::before {
+	display: none;
+}
+
+/* Bloque de autor al pie del relato */
+.relato-author {
+	display: flex;
+	align-items: center;
+	gap: 20px;
+	max-width: var(--container-reading);
+	margin: 0 auto 64px;
+	padding: 28px 0;
+	border-top: 1px solid var(--rule);
+	border-bottom: 1px solid var(--rule);
+}
+.relato-author-avatar {
+	width: 64px;
+	height: 64px;
+	border-radius: 50%;
+	object-fit: cover;
+	flex-shrink: 0;
+}
+.relato-author-name {
+	font-family: var(--font-mono);
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.2em;
+	text-transform: uppercase;
+	color: var(--ink);
+	margin-bottom: 6px;
+}
+.relato-author-bio {
+	font-family: var(--font-body);
+	font-style: italic;
+	font-size: 16px;
+	color: var(--ink-soft);
+	line-height: 1.5;
 }
 
 /* =========================================================

@@ -1,0 +1,89 @@
+---
+layout: layouts/base.vto
+---
+
+{{ set allRelatos = search.pages("type=relato", "date=desc") }}
+{{ set descIndex = allRelatos.findIndex(p => p.url === url) }}
+{{ set prevRelato = allRelatos[descIndex + 1] || null }}
+{{ set nextRelato = allRelatos[descIndex - 1] || null }}
+
+<article class="relato">
+
+  <div class="container">
+    <header class="relato-hero">
+      <a class="relato-eyebrow" href="/relatos/">Relato</a>
+      <h1 class="post-title">{{ title }}</h1>
+    </header>
+  </div>
+
+  {{ if image }}
+    <div class="post-cover">
+      {{ img(image, image_alt || title, "hero", "eager") }}
+    </div>
+  {{ else }}
+    <div class="post-poster" aria-hidden="true">
+      <h2 class="post-poster-title">{{ title }}</h2>
+    </div>
+  {{ /if }}
+
+  <div class="container">
+
+    <div class="relato-body-wrap">
+      <div class="post-body relato-body">
+        {{ content }}
+      </div>
+    </div>
+
+    <div class="relato-author">
+      {{ if site.author.avatar }}
+        <img class="relato-author-avatar" src="{{ site.author.avatar }}" alt="{{ site.author.name }}" width="64" height="64">
+      {{ /if }}
+      <div class="relato-author-info">
+        <p class="relato-author-name">{{ site.author.name }}</p>
+        <p class="relato-author-bio">{{ site.author.bio }}</p>
+      </div>
+    </div>
+
+    <div class="ornament">···</div>
+
+    <div class="post-foot">
+      <nav class="post-nav" aria-label="Navegación entre relatos">
+        {{ if nextRelato }}
+          <a href="{{ nextRelato.url }}" class="post-nav-item post-nav-item--prev" rel="next">
+            <span class="post-nav-label">← Anterior</span>
+            <span class="post-nav-title">{{ nextRelato.title }}</span>
+          </a>
+        {{ else }}
+          <div class="post-nav-item post-nav-item--prev post-nav-empty">
+            <span class="post-nav-label">— Último relato</span>
+          </div>
+        {{ /if }}
+
+        {{ if prevRelato }}
+          <a href="{{ prevRelato.url }}" class="post-nav-item post-nav-item--next" rel="prev">
+            <span class="post-nav-label">Siguiente →</span>
+            <span class="post-nav-title">{{ prevRelato.title }}</span>
+          </a>
+        {{ else }}
+          <div class="post-nav-item post-nav-item--next post-nav-empty">
+            <span class="post-nav-label">Primer relato —</span>
+          </div>
+        {{ /if }}
+      </nav>
+    </div>
+
+    <aside class="archive-banner" aria-label="Blog">
+      <div class="archive-banner-text">
+        <span class="archive-banner-eyebrow">El blog</span>
+        <h2 class="archive-banner-title">Artículos, notas y experimentos.</h2>
+        <p class="archive-banner-sub">Tecnología, diseño y ciencia ficción.</p>
+      </div>
+      <a href="/" class="archive-banner-link">
+        Ir al blog
+        <span class="arrow">→</span>
+      </a>
+    </aside>
+
+  </div>
+
+</article>
