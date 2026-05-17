@@ -119,15 +119,17 @@ site.use(minify_html());  // Minifica el HTML de salida (whitespace + atributos)
 site.preprocess([".md"], (pages) => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  for (const page of pages) {
+  for (let i = pages.length - 1; i >= 0; i--) {
+    const page = pages[i];
     // deno-lint-ignore no-explicit-any
     const fm = page.data as any;
     if (fm.templateEngine === undefined) {
       fm.templateEngine = ["vto", "md"];
     }
-    // En build (no serve), posts con fecha futura se marcan como draft.
-    if (!isServe && fm.date && new Date(fm.date) > today && fm.draft === undefined) {
-      fm.draft = true;
+    // En build (no serve), elimina del pipeline los posts con fecha futura.
+    if (!isServe && fm.date && new Date(fm.date) > today) {
+      site.removePage(page);
+      pages.splice(i, 1);
     }
   }
 });
