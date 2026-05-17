@@ -116,20 +116,32 @@ site.use(minify_html());  // Minifica el HTML de salida (whitespace + atributos)
 // puedan llamar a los helpers globales ({{ img(...) }}, {{ imgUrl(...) }}).
 // Los posts que muestran sintaxis Vento en bloques de código pueden
 // optar fuera con `templateEngine: md` en su frontmatter.
-site.preprocess([".md"], (pages) => {
+// En build (no serve), ignora los .md con fecha futura antes de que se carguen.
+// site.ignore() con función actúa durante el escaneo de fuentes, antes de crear páginas.
+if (!isServe) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  for (let i = pages.length - 1; i >= 0; i--) {
-    const page = pages[i];
+  site.ignore((path: string) => {
+    if (!path.endsWith(".md")) return false;
+    try {
+      const content = Deno.readTextFileSync(`${Deno.cwd()}/src${path}`);
+      const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+      if (!match) return false;
+      const fm = parseYaml(match[1]) as Record<string, unknown>;
+      if (!fm.date) return false;
+      return new Date(fm.date as string) > today;
+    } catch {
+      return false;
+    }
+  });
+}
+
+site.preprocess([".md"], (pages) => {
+  for (const page of pages) {
     // deno-lint-ignore no-explicit-any
     const fm = page.data as any;
     if (fm.templateEngine === undefined) {
       fm.templateEngine = ["vto", "md"];
-    }
-    // En build (no serve), elimina del pipeline los posts con fecha futura.
-    if (!isServe && fm.date && new Date(fm.date) > today) {
-      site.removePage(page);
-      pages.splice(i, 1);
     }
   }
 });
