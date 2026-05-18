@@ -1,5 +1,5 @@
 ---
-title: "El segundo relato: una sala de espera, dos androides y una pregunta incómoda"
+title: "Una sala de espera, dos androides y una pregunta incómoda"
 date: 2026-05-30
 excerpt: "La ciencia ficción usa los robots de formas muy previsibles. Me interesaba explorar una distinta: el androide como activo económico familiar. Y lo que pasa cuando ese activo envejece."
 tags: ["relato", "ciencia ficción", "androides", "escritura"]
