@@ -1,6 +1,6 @@
 ---
 title: "Qué es el movimiento IndieWeb"
-date: 2025-08-11
+date: 2025-07-11
 excerpt: "Un movimiento que lleva más de una década reivindicando lo que para muchos era obvio: que tu identidad digital debería estar en tu dominio, que tu contenido debería ser tuyo, y que las plataformas centralizadas son un sitio peligroso donde apoyar tu vida en línea."
 tags: [ideas, desarrollo-web]
 image: indieweb-movimiento.png

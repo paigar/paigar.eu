@@ -1,6 +1,6 @@
 ---
 title: "Cada junio me piden lo mismo"
-date: 2025-06-23
+date: 2025-06-05
 excerpt: "A finales de mayo, todos los años, dos o tres clientes me piden el logo en arcoíris durante junio. Cumplo el encargo y facturo. Pero este cuaderno es mío, y aquí sí puedo decir lo que pienso de ese gesto."
 tags: [ideas, oficio, desarrollo-web, lgtbiq]
 image: cada-junio-me-piden-lo-mismo.png

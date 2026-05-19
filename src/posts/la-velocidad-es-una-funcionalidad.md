@@ -1,6 +1,6 @@
 ---
 title: "La velocidad es una funcionalidad"
-date: 2025-07-14
+date: 2025-06-18
 excerpt: "Hay una tendencia a tratar el rendimiento como algo que se optimiza al final del proyecto. Primero construyes la web, luego la haces rápida. Como si la velocidad fuera una capa de pintura sobre una estructura terminada. Eso no funciona — es el resultado de cientos de decisiones que se tomaron sin pensar en el rendimiento."
 tags: [ideas, desarrollo-web]
 image: la-velocidad-es-una-funcionalidad.png
