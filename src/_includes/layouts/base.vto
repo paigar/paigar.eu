@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#F2F2F0">
+  <meta name="color-scheme" content="light">
 
   <title>{{ if title }}{{ title }} · {{ /if }}{{ site.title }}</title>
   <meta name="description" content="{{ description || excerpt || site.description }}">
@@ -14,23 +15,21 @@
   <meta property="og:type" content="{{ if type === 'post' }}article{{ else }}website{{ /if }}">
   <meta property="og:url" content="{{ site.url }}{{ url }}">
   <meta property="og:locale" content="es_ES">
-  {{ if image }}
-    <meta property="og:image" content="{{ imgUrl(image, 1200, 'jpg') }}">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="800">
-    {{ if image_alt }}
-      <meta property="og:image:alt" content="{{ image_alt }}">
-    {{ /if }}
+  {{ set _ogImage = image || site.default_image }}
+  {{ set _ogImageAlt = image_alt || site.default_image_alt }}
+  <meta property="og:image" content="{{ imgUrl(_ogImage, 1200, 'jpg') }}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="800">
+  {{ if _ogImageAlt }}
+    <meta property="og:image:alt" content="{{ _ogImageAlt }}">
   {{ /if }}
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="{{ if title }}{{ title }} · {{ /if }}{{ site.title }}">
   <meta name="twitter:description" content="{{ description || excerpt || site.description }}">
-  {{ if image }}
-    <meta name="twitter:image" content="{{ imgUrl(image, 1200, 'jpg') }}">
-    {{ if image_alt }}
-      <meta name="twitter:image:alt" content="{{ image_alt }}">
-    {{ /if }}
+  <meta name="twitter:image" content="{{ imgUrl(_ogImage, 1200, 'jpg') }}">
+  {{ if _ogImageAlt }}
+    <meta name="twitter:image:alt" content="{{ _ogImageAlt }}">
   {{ /if }}
 
   {{# Meta específicas para entradas (type=post). Las dejamos fuera de
@@ -59,12 +58,28 @@
   {{# Preload de los .woff2 latin críticos (titulares + cuerpo + mono) para
       reducir el FOUT inicial. El crossorigin es obligatorio aunque sean
       same-origin, por una particularidad del CORS de fuentes. #}}
+  {{# Preload de la imagen hero cuando la página tiene una propia — mejora el LCP
+      porque el navegador empieza a descargarla en paralelo con el parsing del HTML.
+      Se usa imagesrcset para que el browser elija el tamaño correcto igual que el <img>. #}}
+  {{ if image }}
+  <link rel="preload" as="image"
+    imagesrcset="{{ imgUrl(image, 480, 'avif') }} 480w, {{ imgUrl(image, 800, 'avif') }} 800w, {{ imgUrl(image, 1200, 'avif') }} 1200w, {{ imgUrl(image, 1920, 'avif') }} 1920w"
+    imagesizes="100vw"
+    href="{{ imgUrl(image, 1920, 'avif') }}">
+  {{ /if }}
+
+  {{# Preload de los .woff2 latin críticos (titulares + cuerpo + mono) para
+      reducir el FOUT inicial. El crossorigin es obligatorio aunque sean
+      same-origin, por una particularidad del CORS de fuentes. #}}
   <link rel="preload" href="/fonts/newsreader-normal-300-700-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/major-mono-display-normal-400-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/dm-mono-normal-400-latin.woff2" as="font" type="font/woff2" crossorigin>
 
-  <link rel="stylesheet" href="/styles/fonts.css">
-  <link rel="stylesheet" href="/styles/main.css">
+  <link rel="stylesheet" href="/styles/fonts.css" inline>
+  <link rel="stylesheet" href="/styles/base.css" inline>
+  {{ for cssFile of (extraStyles ?? []) }}
+  <link rel="stylesheet" href="/styles/{{ cssFile }}" inline>
+  {{ /for }}
 
   {{# Los <link rel="icon">, <link rel="apple-touch-icon"> y la variante
       con sizes los inyecta automáticamente lume/plugins/favicon.ts a
@@ -73,6 +88,16 @@
   {{# JSON-LD BlogPosting para entradas — habilita rich results en buscadores
       y previews enriquecidos en Slack/Discord/etc. Solo en posts. #}}
   {{ if type === 'post' }}
+    {{ set jsonldBreadcrumb = {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Inicio", "item": site.url + "/" },
+        { "@type": "ListItem", "position": 2, "name": title, "item": site.url + url }
+      ]
+    } }}
+    <script type="application/ld+json">{{ JSON.stringify(jsonldBreadcrumb) }}</script>
+
     {{ set ldTags = (tags || []).filter(t => t !== 'post') }}
     {{ set jsonld = {
       "@context": "https://schema.org",
@@ -93,6 +118,39 @@
       "mainEntityOfPage": site.url + url,
       "keywords": ldTags.join(", "),
       "image": image ? imgUrl(image, 1200, "jpg") : undefined
+    } }}
+    <script type="application/ld+json">{{ JSON.stringify(jsonld) }}</script>
+  {{ /if }}
+
+  {{ if url === '/' }}
+    {{ set jsonld = {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": site.title,
+      "url": site.url,
+      "description": site.description,
+      "author": {
+        "@type": "Person",
+        "name": site.author.name,
+        "url": site.author.url
+      }
+    } }}
+    <script type="application/ld+json">{{ JSON.stringify(jsonld) }}</script>
+  {{ /if }}
+
+  {{ if url === '/que-es-esto/' }}
+    {{ set jsonld = {
+      "@context": "https://schema.org",
+      "@type": "AboutPage",
+      "url": site.url + url,
+      "name": title,
+      "description": description,
+      "author": {
+        "@type": "Person",
+        "name": site.author.name,
+        "url": site.author.url,
+        "image": site.url + site.author.avatar
+      }
     } }}
     <script type="application/ld+json">{{ JSON.stringify(jsonld) }}</script>
   {{ /if }}

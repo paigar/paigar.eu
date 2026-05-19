@@ -1,0 +1,704 @@
+/* =========================================================
+   PAIGAR — article
+   Estilos para post.vto y relato.vto
+   ========================================================= */
+
+/* =========================================================
+   POST DETAIL — header centrado + cover full-bleed + body 2-col
+   ========================================================= */
+.post {
+	/* hereda container */
+}
+
+.post-hero {
+	max-width: var(--container-mid);
+	margin: 56px 0 48px;
+}
+
+.post-eyebrow {
+	font-family: var(--font-mono);
+	font-size: 11px;
+	font-weight: 500;
+	letter-spacing: 0.24em;
+	text-transform: uppercase;
+	color: var(--ink-soft);
+	margin-bottom: 28px;
+	padding-bottom: 18px;
+	border-bottom: 1px solid var(--rule);
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px 18px;
+	align-items: baseline;
+}
+.post-eyebrow .sep {
+	color: var(--rule);
+}
+.post-eyebrow .tags {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	color: var(--ink-soft);
+}
+.post-eyebrow .tags a {
+	color: inherit;
+	text-decoration: none;
+}
+.post-eyebrow .tags a:hover {
+	color: var(--accent);
+}
+.post-eyebrow .tags li + li a::before {
+	content: ' · ';
+	color: var(--rule);
+}
+
+.post-title {
+	font-family: var(--font-display);
+	font-weight: 400;
+	font-size: clamp(32px, 5vw, 72px);
+	line-height: 1.02;
+	letter-spacing: 0;
+	color: var(--ink);
+	text-wrap: balance;
+	margin: 0 0 24px;
+}
+
+.post-deck {
+	font-family: var(--font-body);
+	font-style: italic;
+	font-size: clamp(18px, 1.6vw, 24px);
+	line-height: 1.4;
+	color: var(--ink-soft);
+	font-variation-settings: "opsz" 22;
+	text-wrap: pretty;
+	max-width: 56ch;
+	margin: 0;
+}
+
+/* Body wrap — grid con aside marginal + columna de lectura.
+   Usamos minmax(0, 1fr) en la columna de contenido para evitar
+   que un <pre> ancho fuerce la expansión del grid y desborde el wrap. */
+.post-body-wrap {
+	max-width: 920px;
+	margin: 0 auto;
+	display: grid;
+	grid-template-columns: 140px minmax(0, 1fr);
+	gap: 0 60px;
+	align-items: start;
+	position: relative;
+}
+
+.post-aside {
+	position: sticky;
+	top: 32px;
+	align-self: start;
+	font-family: var(--font-mono);
+}
+
+.post-aside-date {
+	display: block;
+	margin-bottom: 32px;
+	padding-bottom: 22px;
+	border-bottom: 1px solid var(--rule);
+}
+.post-aside-date .day {
+	font-family: var(--font-display);
+	font-size: 44px;
+	line-height: 0.95;
+	color: var(--ink);
+	display: block;
+	letter-spacing: 0;
+}
+.post-aside-date .month {
+	font-family: var(--font-mono);
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.24em;
+	text-transform: uppercase;
+	color: var(--accent);
+	display: block;
+	margin-top: 8px;
+}
+.post-aside-date .year {
+	font-family: var(--font-mono);
+	font-size: 10.5px;
+	font-weight: 500;
+	letter-spacing: 0.22em;
+	color: var(--ink-faint);
+	display: block;
+	margin-top: 2px;
+}
+
+.post-aside-label {
+	font-family: var(--font-mono);
+	font-size: 10px;
+	font-weight: 700;
+	letter-spacing: 0.24em;
+	text-transform: uppercase;
+	color: var(--accent);
+	margin-bottom: 14px;
+	display: block;
+}
+
+.post-aside-tags {
+	display: flex;
+	flex-direction: column;
+	gap: 9px;
+	font-family: var(--font-mono);
+	font-size: 11px;
+	font-weight: 500;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+}
+.post-aside-tags a {
+	color: var(--ink-soft);
+	border-bottom: 1px solid transparent;
+	padding-bottom: 1px;
+	transition:
+		color 0.2s,
+		border-color 0.2s;
+	display: inline-block;
+	width: fit-content;
+}
+.post-aside-tags a:hover {
+	color: var(--accent);
+	border-bottom-color: var(--accent);
+}
+
+.post-body {
+	font-family: var(--font-body);
+	font-size: 19px;
+	line-height: 1.72;
+	color: var(--ink);
+	font-variation-settings: "opsz" 18;
+}
+
+.post-body p {
+	margin-bottom: 22px;
+	text-wrap: pretty;
+	hyphens: none;
+}
+
+.post-body hr {
+	border: none;
+	height: 1.5px;
+	background: var(--rule);
+	width: 80px;
+	margin: 3rem auto;
+}
+
+/* Drop cap */
+.post-body > p:first-of-type::first-letter {
+	font-family: var(--font-display);
+	font-size: 4.6em;
+	float: left;
+	line-height: 0.85;
+	margin: 0.04em 0.14em -0.04em 0;
+	color: var(--accent);
+	font-weight: 400;
+}
+
+.post-body h2 {
+	font-family: var(--font-body);
+	font-weight: 600;
+	font-size: clamp(24px, 2.6vw, 30px);
+	line-height: 1.2;
+	letter-spacing: -0.01em;
+	margin: 56px 0 18px;
+	color: var(--ink);
+	font-variation-settings: "opsz" 28;
+	text-wrap: balance;
+}
+.post-body h2::before {
+	content: "";
+	display: inline-block;
+	width: 28px;
+	height: 2px;
+	background: var(--accent);
+	vertical-align: 0.32em;
+	margin-right: 16px;
+}
+
+.post-body h3 {
+	font-family: var(--font-body);
+	font-weight: 500;
+	font-style: italic;
+	font-size: 22px;
+	line-height: 1.3;
+	margin: 36px 0 14px;
+	color: var(--ink);
+	font-variation-settings: "opsz" 18;
+}
+
+.post-body h4 {
+	font-family: var(--font-mono);
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.22em;
+	text-transform: uppercase;
+	color: var(--accent);
+	margin: 32px 0 14px;
+}
+
+.post-body ul,
+.post-body ol {
+	margin: 0 0 24px 0;
+	padding-left: 1.6em;
+}
+.post-body ul {
+	list-style: none;
+}
+.post-body ul li {
+	position: relative;
+	margin-bottom: 8px;
+	padding-left: 4px;
+}
+.post-body ul li::before {
+	content: "";
+	position: absolute;
+	left: -1.2em;
+	top: 0.7em;
+	width: 14px;
+	height: 1.5px;
+	background: var(--accent);
+}
+.post-body ol {
+	list-style: decimal;
+	padding-left: 1.6em;
+}
+.post-body ol li::marker {
+	color: var(--accent);
+	font-family: var(--font-mono);
+	font-weight: 600;
+}
+.post-body ol li {
+	padding-left: 6px;
+	margin-bottom: 8px;
+}
+
+.post-body blockquote {
+	border-left: 4px solid var(--accent);
+	padding: 10px 0 10px 28px;
+	margin: 44px 0;
+	font-style: italic;
+	color: var(--ink);
+	font-size: clamp(22px, 2.4vw, 26px);
+	line-height: 1.45;
+	font-variation-settings: "opsz" 24;
+	text-wrap: pretty;
+}
+.post-body blockquote p {
+	margin-bottom: 12px;
+}
+.post-body blockquote p:last-child {
+	margin-bottom: 0;
+}
+
+.post-body img,
+.post-body figure {
+	margin: 36px 0;
+}
+.post-body img {
+	width: 100%;
+	height: auto;
+	display: block;
+}
+.post-body figure img {
+	margin: 0;
+}
+.post-body figcaption {
+	font-family: var(--font-body);
+	font-style: italic;
+	font-size: 14.5px;
+	color: var(--ink-faint);
+	margin-top: 10px;
+	font-variation-settings: "opsz" 13;
+}
+
+/* Figuras anchas dentro del cuerpo: extienden a la derecha del content,
+   dado que la columna izquierda la ocupa el aside marginal */
+.post-body figure[data-bleed="md"],
+.post-body img[data-bleed="md"] {
+	width: calc(100% + 60px);
+	max-width: none;
+}
+.post-body figure[data-bleed="lg"],
+.post-body img[data-bleed="lg"] {
+	width: calc(100% + 200px);
+	max-width: none;
+}
+
+.post-body a {
+	color: var(--accent);
+	border-bottom: 1px solid currentColor;
+	padding-bottom: 1px;
+}
+.post-body a:hover {
+	color: var(--accent-deep);
+	background: var(--bg-block);
+}
+
+.post-body pre {
+	background: var(--ink);
+	color: var(--bg);
+	padding: 24px 28px;
+	margin: 28px 0;
+	font-family: var(--font-mono);
+	font-size: 13.5px;
+	line-height: 1.65;
+	overflow-x: auto;
+	border-left: 4px solid var(--accent);
+}
+.post-body pre code {
+	background: transparent;
+	color: inherit;
+	padding: 0;
+	font-size: inherit;
+}
+
+/* Adorno */
+.ornament {
+	text-align: center;
+	font-family: var(--font-display);
+	font-size: 14px;
+	color: var(--rule);
+	margin: 64px auto;
+	letter-spacing: 1.2em;
+	padding-left: 1.2em;
+	user-select: none;
+	max-width: var(--container-reading);
+}
+
+/* Pie del post */
+.post-foot {
+	margin-top: 64px;
+	padding-top: 32px;
+	border-top: 1px solid var(--rule);
+}
+
+.post-nav {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 32px;
+}
+.post-nav-item {
+	display: block;
+	padding: 12px 0;
+	text-decoration: none;
+}
+.post-nav-item--prev {
+	text-align: left;
+}
+.post-nav-item--next {
+	text-align: right;
+}
+.post-nav-label {
+	font-family: var(--font-mono);
+	font-size: 10px;
+	font-weight: 600;
+	letter-spacing: 0.22em;
+	text-transform: uppercase;
+	color: var(--accent);
+	display: block;
+	margin-bottom: 8px;
+}
+.post-nav-title {
+	font-family: var(--font-body);
+	font-style: italic;
+	font-size: 17px;
+	color: var(--ink-soft);
+	display: block;
+	line-height: 1.4;
+	text-wrap: pretty;
+	font-variation-settings: "opsz" 16;
+}
+.post-nav-item:hover .post-nav-title {
+	color: var(--accent);
+}
+.post-nav-empty {
+	color: var(--ink-faint);
+	opacity: 0.5;
+}
+
+/* ---- Sugeridos: 3 entradas relacionadas tras la navegación ---- */
+.post-related {
+	margin-top: 80px;
+	padding-top: 48px;
+	border-top: 1px solid var(--rule);
+}
+.post-related-eyebrow {
+	font-family: var(--font-mono);
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.26em;
+	text-transform: uppercase;
+	color: var(--accent);
+	display: block;
+	margin-bottom: 28px;
+}
+.post-related-grid {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 48px 32px;
+}
+@media (max-width: 760px) {
+	.post-related-grid {
+		grid-template-columns: 1fr;
+		gap: 48px;
+	}
+}
+
+/* ---- Banner archivo dentro de cada post ---- */
+.post .archive-banner {
+	margin-top: 64px;
+}
+
+/* =========================================================
+   RELATOS — layout de lectura larga
+   ========================================================= */
+
+.relato-hero {
+	max-width: var(--container-reading);
+	margin: 56px 0 48px;
+}
+
+.relato-eyebrow {
+	display: inline-block;
+	font-family: var(--font-mono);
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.24em;
+	text-transform: uppercase;
+	color: var(--accent);
+	margin-bottom: 20px;
+	text-decoration: none;
+	border-bottom: none;
+}
+.relato-eyebrow:hover {
+	color: var(--accent-deep);
+}
+
+.relato-body-wrap {
+	max-width: var(--container-reading);
+	margin: 64px auto 80px;
+}
+
+/* Cabeceras de capítulo (## I, ## Título…): alineadas a la izquierda */
+.relato-body h2 {
+	font-family: var(--font-display);
+	font-weight: 400;
+	letter-spacing: 0;
+	text-align: left;
+	margin: 72px 0 40px;
+}
+.relato-body h2::before {
+	display: none;
+}
+
+/* Bloque de autor al pie del relato */
+.relato-author {
+	display: flex;
+	align-items: center;
+	gap: 20px;
+	max-width: var(--container-reading);
+	margin: 0 auto 64px;
+	padding: 28px 0;
+	border-top: 1px solid var(--rule);
+	border-bottom: 1px solid var(--rule);
+}
+.relato-author-avatar {
+	width: 64px;
+	height: 64px;
+	border-radius: 50%;
+	object-fit: cover;
+	flex-shrink: 0;
+}
+.relato-author-name {
+	font-family: var(--font-mono);
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.2em;
+	text-transform: uppercase;
+	color: var(--ink);
+	margin-bottom: 6px;
+}
+.relato-author-bio {
+	font-family: var(--font-body);
+	font-style: italic;
+	font-size: 16px;
+	color: var(--ink-soft);
+	line-height: 1.5;
+}
+
+
+/* =========================================================
+   RESPONSIVE — article (post y relato)
+   ========================================================= */
+@media (max-width: 720px) {
+	.post-hero {
+		margin: 32px auto 32px;
+	}
+	.post-title {
+		font-size: clamp(32px, 9vw, 56px);
+		margin-bottom: 18px;
+	}
+	.post-deck {
+		font-size: 17px;
+	}
+	.post-body-wrap {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 0;
+	}
+	/* Aside en móvil: dos filas, todo inline */
+	.post-aside {
+		position: static;
+		padding-bottom: 18px;
+		margin-bottom: 28px;
+		border-bottom: 1px solid var(--rule);
+		display: block;
+	}
+	.post-aside-date {
+		margin-bottom: 10px;
+		padding-bottom: 0;
+		border-bottom: 0;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: 4px 10px;
+		font-family: var(--font-mono);
+	}
+	.post-aside-date .day,
+	.post-aside-date .month,
+	.post-aside-date .year {
+		display: inline;
+		font-family: var(--font-mono);
+		font-size: 10.5px;
+		letter-spacing: 0.22em;
+		text-transform: uppercase;
+		margin: 0;
+		line-height: 1.3;
+	}
+	.post-aside-date .day {
+		color: var(--ink);
+		font-weight: 700;
+	}
+	.post-aside-date .month {
+		color: var(--accent);
+		font-weight: 700;
+	}
+	.post-aside-date .year {
+		color: var(--ink-faint);
+		font-weight: 500;
+	}
+
+	.post-aside-tags-wrap {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: 4px 14px;
+	}
+	.post-aside-label {
+		margin-bottom: 0;
+		margin-right: 0;
+	}
+	.post-aside-tags {
+		flex-direction: row;
+		flex-wrap: wrap;
+		gap: 4px 14px;
+	}
+	.post-body {
+		font-size: 17.5px;
+	}
+	.post-body > p:first-of-type::first-letter {
+		font-size: 4em;
+	}
+	.post-body figure[data-bleed="md"],
+	.post-body img[data-bleed="md"],
+	.post-body figure[data-bleed="lg"],
+	.post-body img[data-bleed="lg"] {
+		width: 100%;
+	}
+
+	.post-nav {
+		grid-template-columns: 1fr;
+		gap: 18px;
+	}
+	.post-nav-item--next {
+		text-align: left;
+	}
+
+	.ornament {
+		margin: 40px auto;
+		font-size: 12px;
+	}
+}
+
+/* =========================================================
+   MICRO-ANIMACIÓN al cargar el post
+   ========================================================= */
+@media (prefers-reduced-motion: no-preference) {
+	.post-title {
+		animation: rise 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+	}
+	.post-eyebrow {
+		animation: fade 0.6s ease both;
+		animation-delay: 0.05s;
+	}
+	.post-cover,
+	.post-poster {
+		animation: fade 0.7s ease both;
+		animation-delay: 0.15s;
+	}
+	@keyframes rise {
+		from {
+			opacity: 0;
+			transform: translateY(14px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+	@keyframes fade {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
+}
+
+/* =========================================================
+   CTA "Abrir en página propia" — dentro de posts con prototype
+   ========================================================= */
+.prototype-fullscreen-cta {
+	margin: 32px 0 16px;
+	padding: 0;
+	text-align: center;
+}
+.prototype-fullscreen-link {
+	display: inline-flex;
+	align-items: center;
+	gap: 12px;
+	font-family: var(--font-mono);
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.24em;
+	text-transform: uppercase;
+	color: var(--accent);
+	border-bottom: 1px solid currentColor;
+	padding-bottom: 4px;
+	transition: color 0.2s;
+}
+.prototype-fullscreen-link .arrow {
+	transition: transform 0.2s;
+}
+.prototype-fullscreen-link:hover {
+	color: var(--accent-deep);
+}
+.prototype-fullscreen-link:hover .arrow {
+	transform: translateX(4px);
+}

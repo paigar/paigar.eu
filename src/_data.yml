@@ -3,11 +3,13 @@ site:
   subtitle: Portal de Apuntes, Ideas, Garabatos, Artilugios y Retrofuturismo
   short_subtitle: Cuaderno digital
   description: El cuaderno digital de Juanjo. Apuntes sueltos, ideas a medio cocinar, capturas con un comentario al lado, pequeños cacharros web, ramalazos retrofuturistas.
-  url: https://paigar.eu
+  url: https://www.paigar.eu
+  default_image: que-es-esto.png
+  default_image_alt: "Retrato ilustrado de perfil sobre fondo oscuro con textura de cuaderno, líneas de código y elementos de diseño retrofuturista"
   lang: es
   author:
     name: Juanjo Marcos
-    url: https://paigar.eu
+    url: https://www.paigar.eu
     bio: Escribo sobre tecnología, desarrollo y, al parecer, ciencia ficción.
     avatar: /avatar.jpg
   email: hola@paigar.eu

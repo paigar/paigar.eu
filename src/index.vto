@@ -2,6 +2,7 @@
 layout: layouts/base.vto
 title: Bitácora
 description: El cuaderno digital de Juanjo. Apuntes, ideas, garabatos, artilugios y retrofuturismo.
+extraStyles: ["home.css"]
 ---
 
 {{ set allPinned = pinned.map(url => search.page("url=" + url)).filter(p => p) }}

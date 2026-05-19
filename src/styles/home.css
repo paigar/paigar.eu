@@ -1,0 +1,537 @@
+/* =========================================================
+   PAIGAR — home
+   Estilos exclusivos de la portada (/)
+   ========================================================= */
+
+.home {
+	/* nada por ahora — los hijos manejan su propio espacio */
+}
+
+.home > * + * {
+	margin-top: 96px;
+}
+
+/* ---- HERO POST — full bleed, sin margen superior ---- */
+.home-hero {
+	display: grid;
+	grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+	gap: 0;
+	/* align-items: stretch (default) es lo que queremos: cover y meta a
+	   la misma altura. overflow: hidden es defensivo por si algo
+	   desbordara, pero la causa real del bug que tenía Chrome (la cover
+	   invadiendo la columna del meta) la hemos cortado quitando el
+	   aspect-ratio del cover en este breakpoint — ver más abajo. */
+	overflow: hidden;
+	background: var(--bg-block);
+	margin-top: 0;
+	width: 100vw;
+	position: relative;
+	left: 50%;
+	margin-left: -50vw;
+	margin-right: -50vw;
+}
+.home-hero-cover {
+	display: block;
+	/* SIN aspect-ratio en la versión de dos columnas: el cover toma su
+	   altura del row del grid (que iguala al meta gracias a stretch) y
+	   su width del 1.4fr de la columna. La imagen interior usa object-fit:
+	   cover, así que se recorta limpiamente a cualquier proporción. El
+	   bug de Chrome (cover.width derivado de cover.height vía aspect-ratio,
+	   acabando más ancho que la columna) desaparece porque ya no hay
+	   aspect-ratio que resolver.
+	   La aspect-ratio sí vuelve a aplicarse en la versión <=920px (single
+	   column), donde no hay meta al lado para emparejar altura. */
+	min-height: 320px;
+	overflow: hidden;
+	background: var(--ink);
+	position: relative;
+}
+.home-hero-cover img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+	transition: transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.home-hero-cover:hover img {
+	transform: scale(1.025);
+}
+
+.home-hero-meta {
+	padding: clamp(36px, 4vw, 80px);
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	min-width: 0;
+	max-width: 720px;
+}
+.home-hero-eyebrow {
+	font-family: var(--font-mono);
+	font-size: 10.5px;
+	font-weight: 500;
+	letter-spacing: 0.22em;
+	text-transform: uppercase;
+	color: var(--ink-soft);
+	margin-bottom: 22px;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px 14px;
+}
+.home-hero-eyebrow .sep {
+	color: var(--rule);
+}
+.home-hero-eyebrow a {
+	color: var(--ink-soft);
+	border-bottom: 1px solid transparent;
+}
+.home-hero-eyebrow a:hover {
+	color: var(--accent);
+	border-bottom-color: var(--accent);
+}
+
+.home-hero-title {
+	font-family: var(--font-display);
+	font-weight: 400;
+	font-size: clamp(32px, 3.4vw, 56px);
+	line-height: 1;
+	letter-spacing: 0;
+	margin-bottom: 22px;
+	color: var(--ink);
+	text-wrap: balance;
+}
+.home-hero-title a {
+	color: inherit;
+	background-image: linear-gradient(var(--accent), var(--accent));
+	background-position: 0 100%;
+	background-repeat: no-repeat;
+	background-size: 0% 1.5px;
+	transition:
+		background-size 0.4s ease,
+		color 0.2s ease;
+}
+.home-hero-title a:hover {
+	background-size: 100% 1.5px;
+	color: var(--accent);
+}
+
+.home-hero-excerpt {
+	font-family: var(--font-body);
+	font-style: italic;
+	font-size: clamp(17px, 1.3vw, 19px);
+	line-height: 1.5;
+	color: var(--ink-soft);
+	margin-bottom: 24px;
+	font-variation-settings: "opsz" 17;
+	text-wrap: pretty;
+	max-width: 50ch;
+}
+.home-hero-readmore {
+	font-family: var(--font-mono);
+	font-size: 10.5px;
+	font-weight: 700;
+	letter-spacing: 0.24em;
+	text-transform: uppercase;
+	color: var(--accent);
+	align-self: flex-start;
+}
+.home-hero-readmore .arrow {
+	transition: transform 0.2s ease;
+	display: inline-block;
+	margin-left: 6px;
+}
+.home-hero-readmore:hover .arrow {
+	transform: translateX(4px);
+}
+
+/* ---- BENTO ---- */
+.home-bento-eyebrow,
+.home-grid-eyebrow {
+	font-family: var(--font-mono);
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.26em;
+	text-transform: uppercase;
+	color: var(--accent);
+	display: block;
+	margin-bottom: 24px;
+	padding-bottom: 14px;
+	border-bottom: 1px solid var(--rule);
+}
+
+/* Bento estilo apetogentleman: 1 grande con bg gris a la izquierda
+   ocupando 3 filas + 6 pequeños 2×3 con título centrado a la derecha */
+.home-bento {
+	display: grid;
+	grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
+	grid-template-rows: repeat(3, auto);
+	gap: 28px 28px;
+}
+
+/* Tarjeta grande izquierda: ocupa col 1, span 3 filas, fondo gris */
+.home-bento > li:first-child {
+	grid-column: 1;
+	grid-row: 1 / 4;
+	display: flex;
+}
+.home-bento > li:first-child > .post-card {
+	flex: 1;
+	background: var(--bg-block);
+	display: flex;
+	flex-direction: column;
+}
+.home-bento > li:first-child .post-card-cover {
+	margin-bottom: 0;
+	aspect-ratio: 16 / 10;
+	flex: 0 0 auto;
+}
+.home-bento > li:first-child .post-card-body {
+	padding: clamp(24px, 2.4vw, 40px) clamp(28px, 2.8vw, 44px)
+		clamp(28px, 3vw, 44px);
+	flex: 1 1 auto;
+	display: flex;
+	flex-direction: column;
+}
+.home-bento > li:first-child .post-card-excerpt {
+	flex: 1 1 auto;
+}
+.home-bento > li:first-child .post-card-title {
+	font-family: var(--font-display);
+	font-weight: 400;
+	font-size: clamp(22px, 2.4vw, 32px);
+	line-height: 1.05;
+	letter-spacing: 0;
+	font-variation-settings: normal;
+}
+
+/* Tarjetas pequeñas derecha: solo imagen + título centrado */
+.home-bento > li:not(:first-child) > .post-card {
+	text-align: center;
+}
+.home-bento > li:not(:first-child) .post-card-eyebrow,
+.home-bento > li:not(:first-child) .post-card-excerpt,
+.home-bento > li:not(:first-child) .post-card-readmore {
+	display: none;
+}
+.home-bento > li:not(:first-child) .post-card-cover {
+	margin-bottom: 14px;
+	aspect-ratio: 4 / 3;
+}
+.home-bento > li:not(:first-child) .post-card-title {
+	font-family: var(--font-body);
+	font-weight: 500;
+	font-size: 16.5px;
+	line-height: 1.25;
+	letter-spacing: -0.005em;
+	margin: 0 auto;
+	max-width: 22ch;
+}
+
+/* ---- MANIFIESTO (cita Blade Runner) ----
+   Full-bleed con la imagen del post de Blade Runner como fondo, degradado
+   oscuro fuerte encima para legibilidad. Cita en cream italic, links cream. */
+.home-manifesto {
+	position: relative;
+	width: 100vw;
+	left: 50%;
+	margin-left: -50vw;
+	margin-right: -50vw;
+	padding: clamp(80px, 15vw, 240px) clamp(28px, 5vw, 80px);
+	min-height: 520px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	background-color: var(--ink);
+	background-image:
+		linear-gradient(rgba(24, 24, 26, 0.78) 0%, rgba(24, 24, 26, 0.92) 100%),
+		var(--bg-image, none);
+	background-size: cover;
+	background-position: center;
+	color: var(--bg);
+	text-align: center;
+	overflow: hidden;
+}
+
+.home-manifesto-quote {
+	margin: 0 auto;
+	max-width: 760px;
+	font-family: var(--font-body);
+	font-style: italic;
+	font-size: clamp(20px, 2.3vw, 30px);
+	line-height: 1.4;
+	font-variation-settings: "opsz" 26;
+	color: var(--bg);
+	text-wrap: pretty;
+	padding: 0;
+	border: 0;
+	position: relative;
+	z-index: 1;
+}
+.home-manifesto-quote p {
+	margin: 0 0 20px;
+}
+.home-manifesto-quote p:last-of-type {
+	margin-bottom: 0;
+}
+
+/* Cita marcada con comillas francesas: aperturas y cierres en bermellón */
+.home-manifesto-quote p:first-of-type::before {
+	content: "«";
+	margin-right: 4px;
+	color: var(--accent-soft);
+	font-style: normal;
+}
+.home-manifesto-quote p:last-of-type::after {
+	content: "»";
+	margin-left: 4px;
+	color: var(--accent-soft);
+	font-style: normal;
+}
+
+.home-manifesto-links {
+	margin-top: 44px;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 16px 40px;
+	position: relative;
+	z-index: 1;
+}
+.home-manifesto-links a {
+	font-family: var(--font-mono);
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.24em;
+	text-transform: uppercase;
+	color: var(--accent-soft);
+	border-bottom: 1px solid currentColor;
+	padding-bottom: 2px;
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	transition: color 0.2s ease;
+}
+.home-manifesto-links a .arrow {
+	transition: transform 0.2s ease;
+	display: inline-block;
+}
+.home-manifesto-links a:hover {
+	color: var(--bg);
+}
+.home-manifesto-links a:hover .arrow {
+	transform: translateX(4px);
+}
+
+@media (max-width: 600px) {
+	.home-manifesto {
+		padding: 56px 22px;
+		min-height: 380px;
+	}
+	.home-manifesto-quote {
+		font-size: 19px;
+	}
+	.home-manifesto-links {
+		flex-direction: column;
+		align-items: center;
+		gap: 14px;
+	}
+}
+
+/* ---- ABOUT INTERLUDE ---- */
+.home-about {
+	background: var(--ink);
+	color: var(--bg);
+	padding: clamp(56px, 6vw, 96px) clamp(32px, 5vw, 80px);
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
+	gap: 32px clamp(40px, 6vw, 80px);
+	align-items: start;
+	position: relative;
+	overflow: hidden;
+}
+.home-about::before {
+	content: "P.";
+	position: absolute;
+	bottom: -32px;
+	right: -16px;
+	font-family: var(--font-display);
+	font-size: clamp(180px, 26vw, 360px);
+	line-height: 1;
+	color: var(--accent);
+	opacity: 0.35;
+	pointer-events: none;
+	user-select: none;
+}
+.home-about-eyebrow {
+	font-family: var(--font-mono);
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.26em;
+	text-transform: uppercase;
+	color: var(--accent-soft);
+	display: block;
+}
+.home-about-content {
+	position: relative;
+	z-index: 1;
+}
+.home-about-title {
+	font-family: var(--font-display);
+	font-weight: 400;
+	font-size: clamp(28px, 3vw, 44px);
+	line-height: 1.05;
+	margin-bottom: 24px;
+	color: var(--bg);
+	letter-spacing: 0;
+}
+.home-about-text {
+	font-family: var(--font-body);
+	font-size: clamp(17px, 1.3vw, 20px);
+	line-height: 1.6;
+	color: rgba(242, 242, 240, 0.82);
+	margin-bottom: 24px;
+	font-variation-settings: "opsz" 18;
+	text-wrap: pretty;
+	max-width: 56ch;
+}
+.home-about-link {
+	font-family: var(--font-mono);
+	font-size: 10.5px;
+	font-weight: 700;
+	letter-spacing: 0.24em;
+	text-transform: uppercase;
+	color: var(--accent-soft);
+	border-bottom: 1px solid currentColor;
+	padding-bottom: 2px;
+}
+.home-about-link:hover {
+	color: var(--bg);
+	border-bottom-color: var(--bg);
+}
+
+/* ---- FEATURED POST — full bleed con imagen y texto sobreimpreso ---- */
+.home-featured {
+	position: relative;
+	width: 100vw;
+	left: 50%;
+	margin-left: -50vw;
+	margin-right: -50vw;
+	aspect-ratio: 24 / 9;
+	min-height: 520px;
+	overflow: hidden;
+	background: var(--ink);
+}
+.home-featured-link {
+	display: block;
+	position: relative;
+	width: 100%;
+	height: 100%;
+	text-decoration: none;
+}
+.home-featured-link img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+	transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.home-featured-link:hover img {
+	transform: scale(1.04);
+}
+.home-featured-overlay {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	padding: clamp(60px, 10vw, 160px);
+	background: linear-gradient(
+		to bottom,
+		rgba(24, 24, 26, 0.5) 0%,
+		rgba(24, 24, 26, 0.7) 100%
+	);
+	color: var(--bg);
+}
+.home-featured-eyebrow {
+	font-family: var(--font-mono);
+	font-size: 10.5px;
+	font-weight: 600;
+	letter-spacing: 0.26em;
+	text-transform: uppercase;
+	color: var(--accent-soft);
+	margin-bottom: 16px;
+}
+.home-featured-title {
+	font-family: var(--font-display);
+	font-weight: 400;
+	font-size: clamp(34px, 4.4vw, 64px);
+	line-height: 1;
+	margin-bottom: 16px;
+	color: var(--bg);
+	letter-spacing: 0;
+	max-width: 24ch;
+	text-wrap: balance;
+}
+.home-featured-excerpt {
+	font-family: var(--font-body);
+	font-style: italic;
+	font-size: clamp(16px, 1.2vw, 18px);
+	line-height: 1.5;
+	color: rgba(242, 242, 240, 0.85);
+	max-width: 60ch;
+	font-variation-settings: "opsz" 16;
+	margin-bottom: 0;
+}
+
+/* ---- GRID variants (home-only) ---- */
+.home-grid-cards--compact {
+	gap: 20px 40px;
+}
+.home-grid-cards--compact .post-card-cover {
+	margin-bottom: 10px;
+	aspect-ratio: 14 / 9;
+}
+.home-grid-cards--compact .post-card-title {
+	font-family: var(--font-body);
+	font-weight: 500;
+	text-align: center;
+}
+.home-grid-cards.minimal .post-card-eyebrow {
+	display: none;
+}
+
+
+@media (max-width: 920px) {
+	.home > * + * {
+		margin-top: 64px;
+	}
+	.home-hero {
+		grid-template-columns: 1fr;
+	}
+	.home-hero-cover {
+		aspect-ratio: 16 / 9;
+	}
+	.home-hero-meta {
+		padding: 32px 28px;
+	}
+	.home-bento {
+		grid-template-columns: 1fr;
+		gap: 40px;
+	}
+	.home-about {
+		grid-template-columns: 1fr;
+		padding: 48px 32px;
+	}
+	.home-featured {
+		aspect-ratio: 4 / 3;
+	}
+}
+
+@media (max-width: 600px) {
+	.home-hero-cover {
+		aspect-ratio: unset;
+		height: 70vw;
+	}
+}

@@ -1,0 +1,768 @@
+/* =========================================================
+   PAIGAR — pages
+   Estilos para páginas secundarias: archivo, etiquetas,
+   páginas estáticas, prototipos, contacto
+   ========================================================= */
+
+/* =========================================================
+   PÁGINA DE ETIQUETA — usa el patrón .page-header
+   ========================================================= */
+.tag-page .page-title {
+	text-transform: uppercase;
+}
+
+.tag-page-back-wrap {
+	text-align: center;
+	margin-top: 56px;
+}
+
+/* =========================================================
+   ARCHIVO COMPLETO (/archivo/) — listado por años
+   ========================================================= */
+.archive-search {
+	max-width: var(--container-reading);
+	margin-bottom: 56px;
+}
+.archive-search-label {
+	display: block;
+	font-family: var(--font-mono);
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--ink-faint);
+	margin-bottom: 10px;
+}
+.archive-search-input {
+	width: 100%;
+	background: transparent;
+	border: none;
+	border-bottom: 2px solid var(--ink-faint);
+	padding: 8px 0;
+	font-family: var(--font-body);
+	font-size: clamp(20px, 2vw, 26px);
+	color: var(--ink);
+	outline: none;
+	transition: border-color 0.2s;
+}
+.archive-search-input::placeholder {
+	color: var(--ink-faint);
+}
+.archive-search-input:focus {
+	border-bottom-color: var(--accent);
+}
+.archive-search-empty {
+	margin-top: 16px;
+	font-family: var(--font-body);
+	font-style: italic;
+	color: var(--ink-faint);
+}
+.archive {
+	max-width: var(--container-reading);
+}
+.archive-year {
+	margin-bottom: 56px;
+}
+.archive-year:last-child {
+	margin-bottom: 0;
+}
+
+.archive-year-title {
+	font-family: var(--font-display);
+	font-weight: 400;
+	font-size: clamp(40px, 5vw, 72px);
+	line-height: 1;
+	letter-spacing: 0;
+	color: var(--ink);
+	margin: 0 0 8px;
+	padding-bottom: 12px;
+	border-bottom: 2px solid var(--ink);
+}
+
+.page-body ol.archive-list,
+ol.archive-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+}
+.page-body ol.archive-list li,
+ol.archive-list li {
+	margin: 0;
+	/* padding lo controla .archive-item con specificity alta abajo */
+}
+.page-body ol.archive-list li::marker {
+	content: "";
+}
+
+/* Cada entrada: thumb a la izquierda (rellena alto de fila),
+   fecha · tags · título en filas separadas a la derecha.
+   Selector con specificity suficiente (0,3,1) para vencer a
+   `.page-body ol.archive-list li` (0,2,2). */
+.page-body ol.archive-list .archive-item,
+ol.archive-list .archive-item {
+	display: grid;
+	grid-template-columns: 120px minmax(0, 1fr);
+	grid-template-rows: auto auto auto;
+	gap: 6px 24px;
+	align-items: start;
+	padding: 16px 4px;
+	border-bottom: 1px solid var(--rule);
+	position: relative;
+	transition:
+		padding-left 0.2s ease,
+		background 0.2s ease;
+}
+.page-body ol.archive-list .archive-item:hover,
+ol.archive-list .archive-item:hover {
+	background: var(--bg-block);
+	padding-left: 12px;
+}
+
+.archive-item-thumb {
+	grid-row: 1 / 4;
+	grid-column: 1;
+	display: block;
+	width: 120px;
+	height: 100%;
+	background: var(--bg-deep);
+	border: 1px solid var(--rule);
+	overflow: hidden;
+	align-self: stretch;
+	position: relative;
+}
+.archive-item-thumb img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+	transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+	position: absolute;
+	inset: 0;
+}
+.archive-item:hover .archive-item-thumb img {
+	transform: scale(1.04);
+}
+
+.archive-item-date {
+	grid-row: 1;
+	grid-column: 2;
+	font-family: var(--font-mono);
+	font-size: 10.5px;
+	font-weight: 700;
+	letter-spacing: 0.22em;
+	text-transform: uppercase;
+	color: var(--accent);
+	white-space: nowrap;
+	align-self: start;
+}
+
+.archive-item-tags {
+	grid-row: 2;
+	grid-column: 2;
+	font-family: var(--font-mono);
+	font-size: 10px;
+	font-weight: 500;
+	letter-spacing: 0.2em;
+	text-transform: uppercase;
+	color: var(--ink-faint);
+}
+
+/* Forzamos especificidad alta para vencer a `.page-body a` que
+   pintaba los títulos en bermellón. Por defecto van en ink. */
+.page-body .archive-item-title,
+.archive-item-title {
+	grid-row: 3;
+	grid-column: 2;
+	font-family: var(--font-body);
+	font-size: 20px;
+	line-height: 1.3;
+	color: var(--ink);
+	text-wrap: balance;
+	font-variation-settings: "opsz" 19;
+	transition: color 0.2s ease;
+	align-self: end;
+	margin-top: 4px;
+	border-bottom: none;
+}
+.page-body .archive-item-title::after,
+.archive-item-title::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+}
+.page-body ol.archive-list .archive-item:hover .archive-item-title,
+ol.archive-list .archive-item:hover .archive-item-title {
+	color: var(--accent);
+}
+
+/* Filtro del buscador del archivo: el JS de archivo.vto añade .is-hidden
+   con classList.toggle a items que no matchean la query, y a años enteros
+   cuando ninguno de sus items queda visible. */
+.archive-item.is-hidden {
+	display: none !important;
+}
+.archive-year.is-hidden {
+	display: none;
+}
+
+@media (max-width: 600px) {
+	.page-body ol.archive-list .archive-item,
+	ol.archive-list .archive-item {
+		grid-template-columns: 80px minmax(0, 1fr);
+		gap: 4px 16px;
+		padding: 14px 4px;
+	}
+	.archive-item-thumb {
+		width: 80px;
+	}
+	.archive-item-date {
+		font-size: 9.5px;
+	}
+	.archive-item-tags {
+		font-size: 9.5px;
+	}
+	.page-body .archive-item-title,
+	.archive-item-title {
+		font-size: 17.5px;
+	}
+}
+
+/* =========================================================
+   ÍNDICE DE ETIQUETAS (/etiquetas/)
+   ========================================================= */
+.tags-index {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 0 56px;
+	margin: 8px 0 0;
+	padding-top: 16px;
+	max-width: var(--container-reading);
+	border-top: 2px solid var(--ink);
+}
+.tags-index-tag {
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	gap: 16px;
+	padding: 14px 6px;
+	font-family: var(--font-mono);
+	letter-spacing: 0.22em;
+	text-transform: uppercase;
+	color: var(--ink);
+	text-decoration: none;
+	border-bottom: 1px solid var(--rule);
+	transition:
+		color 0.2s,
+		background 0.2s,
+		padding 0.2s;
+}
+.tags-index-tag:hover {
+	color: var(--accent);
+	background: var(--bg-block);
+	padding-left: 12px;
+}
+.tags-index-tag-name {
+	font-size: 12.5px;
+	font-weight: 600;
+}
+.tags-index-tag-count {
+	font-size: 10.5px;
+	font-weight: 500;
+	color: var(--ink-faint);
+	font-feature-settings: "tnum";
+}
+.tags-index-tag:hover .tags-index-tag-count {
+	color: var(--accent);
+}
+
+@media (max-width: 600px) {
+	.tags-index {
+		grid-template-columns: 1fr;
+		gap: 0;
+	}
+}
+.tag-page-back {
+	font-family: var(--font-mono);
+	font-size: 10.5px;
+	font-weight: 600;
+	letter-spacing: 0.22em;
+	text-transform: uppercase;
+	color: var(--accent);
+	display: inline-block;
+	margin-top: 36px;
+}
+.tag-page-back::before {
+	content: "← ";
+	display: inline-block;
+	transition: transform 0.2s ease;
+}
+.tag-page-back:hover::before {
+	transform: translateX(-4px);
+}
+
+/* =========================================================
+   PÁGINA ESTÁTICA
+   ========================================================= */
+.page-header {
+	max-width: var(--container-mid);
+	margin: 56px 0 0;
+	padding-bottom: 36px;
+	border-bottom: 1px solid var(--rule);
+}
+.page-eyebrow {
+	font-family: var(--font-mono);
+	font-size: 11px;
+	font-weight: 500;
+	letter-spacing: 0.24em;
+	text-transform: uppercase;
+	color: var(--ink-soft);
+	margin-bottom: 28px;
+	padding-bottom: 18px;
+	border-bottom: 1px solid var(--rule);
+}
+.page-eyebrow a {
+	color: inherit;
+	border-bottom: 1px solid transparent;
+	padding-bottom: 1px;
+	transition:
+		color 0.2s ease,
+		border-color 0.2s ease;
+}
+.page-eyebrow a:hover {
+	color: var(--accent);
+	border-bottom-color: var(--accent);
+}
+.page-title {
+	font-family: var(--font-display);
+	font-weight: 400;
+	font-size: clamp(32px, 5vw, 72px);
+	line-height: 1.02;
+	color: var(--ink);
+	margin: 0 0 24px;
+	letter-spacing: 0;
+	text-wrap: balance;
+}
+.page-subtitle {
+	font-family: var(--font-body);
+	font-style: italic;
+	font-size: clamp(18px, 1.6vw, 24px);
+	line-height: 1.4;
+	color: var(--ink-soft);
+	margin: 0;
+	font-variation-settings: "opsz" 22;
+	max-width: 56ch;
+	text-wrap: pretty;
+}
+.page-body {
+	max-width: var(--container-reading);
+	font-family: var(--font-body);
+	font-size: 18.5px;
+	line-height: 1.72;
+	color: var(--ink);
+	font-variation-settings: "opsz" 17;
+	margin-top: 40px;
+}
+.page-body p {
+	margin-bottom: 22px;
+	text-wrap: pretty;
+	hyphens: none;
+}
+.page-body h2 {
+	font-family: var(--font-body);
+	font-weight: 600;
+	font-size: clamp(24px, 2.6vw, 30px);
+	line-height: 1.2;
+	margin: 56px 0 16px;
+	color: var(--ink);
+}
+.page-body h2::before {
+	content: "";
+	display: inline-block;
+	width: 28px;
+	height: 2px;
+	background: var(--accent);
+	vertical-align: 0.32em;
+	margin-right: 16px;
+}
+.page-body h3 {
+	font-family: var(--font-body);
+	font-weight: 500;
+	font-style: italic;
+	font-size: 20px;
+	margin: 36px 0 14px;
+	color: var(--ink);
+}
+.page-body ul {
+	list-style: none;
+	margin: 0 0 22px 0;
+	padding-left: 1.6em;
+}
+.page-body ul li {
+	position: relative;
+	margin-bottom: 8px;
+}
+.page-body ul li::before {
+	content: "";
+	position: absolute;
+	left: -1.2em;
+	top: 0.7em;
+	width: 14px;
+	height: 1.5px;
+	background: var(--accent);
+}
+.page-body ol {
+	margin: 0 0 22px 1.6em;
+	padding: 0;
+}
+.page-body ol li {
+	margin-bottom: 8px;
+	padding-left: 6px;
+}
+.page-body ol li::marker {
+	color: var(--accent);
+	font-family: var(--font-mono);
+	font-weight: 600;
+}
+.page-body blockquote {
+	border-left: 3px solid var(--accent);
+	padding: 8px 0 8px 24px;
+	margin: 28px 0;
+	font-style: italic;
+	color: var(--ink-soft);
+}
+.page-body a {
+	color: var(--accent);
+	border-bottom: 1px solid currentColor;
+}
+.page-body a:hover {
+	color: var(--accent-deep);
+	background: var(--bg-block);
+}
+.page-body table {
+	width: 100%;
+	border-collapse: collapse;
+	margin: 28px 0;
+	font-size: 15px;
+}
+.page-body th,
+.page-body td {
+	text-align: left;
+	padding: 10px 14px;
+	border-bottom: 1px solid var(--rule);
+	vertical-align: top;
+}
+.page-body th {
+	font-family: var(--font-mono);
+	font-size: 10.5px;
+	font-weight: 700;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	color: var(--accent);
+	background: var(--bg-block);
+	border-bottom: 1px solid var(--ink);
+}
+
+/* =========================================================
+   PROTOTIPO standalone — /juegos/{slug}/ y /herramientas/{slug}/
+   ========================================================= */
+.prototipo-page {
+	padding-top: clamp(40px, 6vw, 80px);
+	padding-bottom: clamp(60px, 8vw, 120px);
+}
+
+.prototipo-header {
+	text-align: center;
+	margin: 0 auto 56px;
+	max-width: 800px;
+}
+.prototipo-eyebrow {
+	font-family: var(--font-mono);
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.32em;
+	text-transform: uppercase;
+	color: var(--accent);
+	display: block;
+	margin-bottom: 20px;
+}
+.prototipo-title {
+	font-family: var(--font-display);
+	font-weight: 400;
+	font-size: clamp(36px, 5vw, 64px);
+	line-height: 1;
+	letter-spacing: 0;
+	color: var(--ink);
+	margin: 0 0 20px;
+	text-wrap: balance;
+}
+.prototipo-tagline {
+	font-family: var(--font-body);
+	font-style: italic;
+	font-size: clamp(17px, 1.4vw, 21px);
+	line-height: 1.5;
+	color: var(--ink-soft);
+	margin: 0 auto;
+	max-width: 60ch;
+	font-variation-settings: "opsz" 18;
+	text-wrap: pretty;
+}
+
+/* El partial vive aquí. Ancho generoso para que canvas y formularios
+   tengan sitio sin chocar con el reading container. */
+.prototipo-stage {
+	margin: 0 auto 64px;
+	max-width: 1100px;
+	padding: 0 clamp(20px, 4vw, 40px);
+}
+
+.prototipo-foot {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 16px 32px;
+	padding-top: 40px;
+	border-top: 1px solid var(--rule);
+}
+.prototipo-foot-link {
+	font-family: var(--font-mono);
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.26em;
+	text-transform: uppercase;
+	color: var(--accent);
+	display: inline-flex;
+	align-items: center;
+	gap: 12px;
+	border-bottom: 1px solid currentColor;
+	padding-bottom: 4px;
+	transition: color 0.2s;
+}
+.prototipo-foot-link .arrow {
+	transition: transform 0.2s;
+	display: inline-block;
+}
+.prototipo-foot-link:hover {
+	color: var(--accent-deep);
+}
+.prototipo-foot-link:hover .arrow {
+	transform: translateX(4px);
+}
+.prototipo-foot-link--back:hover .arrow {
+	transform: translateX(-4px);
+}
+
+/* =========================================================
+   QUÉ ES ESTO
+   ========================================================= */
+.que-es-intro {
+	max-width: var(--container-reading);
+	font-family: var(--font-body);
+	font-size: clamp(18px, 1.5vw, 22px);
+	font-style: italic;
+	line-height: 1.65;
+	color: var(--ink-soft);
+	margin: 48px 0 56px;
+	text-wrap: pretty;
+}
+
+/* =========================================================
+   PÁGINA DE CONTACTO
+   ========================================================= */
+.contact-grid {
+	display: grid;
+	grid-template-columns: 280px minmax(0, 1fr);
+	gap: 64px;
+	margin-top: 48px;
+	margin-bottom: 80px;
+	align-items: start;
+}
+@media (max-width: 760px) {
+	.contact-grid {
+		grid-template-columns: 1fr;
+		gap: 40px;
+	}
+}
+
+.contact-info-block {
+	display: flex;
+	flex-direction: column;
+	gap: 36px;
+}
+.contact-info-item {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+.contact-info-label {
+	font-family: var(--font-mono);
+	font-size: 10px;
+	font-weight: 700;
+	letter-spacing: 0.22em;
+	text-transform: uppercase;
+	color: var(--ink-faint);
+}
+.contact-info-item a,
+.contact-info-item address {
+	font-family: var(--font-body);
+	font-size: 16px;
+	color: var(--ink);
+	font-style: normal;
+	line-height: 1.6;
+}
+.contact-info-item a {
+	color: var(--accent);
+	border-bottom: 1px solid currentColor;
+	transition: color 0.2s ease;
+}
+.contact-info-item a:hover {
+	color: var(--accent-deep);
+}
+
+/* Formulario */
+.contact-form {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+.contact-form-row {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 16px;
+}
+@media (max-width: 560px) {
+	.contact-form-row {
+		grid-template-columns: 1fr;
+	}
+}
+.contact-form-field {
+	display: flex;
+	flex-direction: column;
+}
+.contact-form-field label {
+	display: block;
+	font-family: var(--font-mono);
+	font-size: 10px;
+	font-weight: 700;
+	letter-spacing: 0.2em;
+	text-transform: uppercase;
+	color: var(--ink-soft);
+	margin-bottom: 6px;
+}
+.contact-form input:not([type="checkbox"]):not([type="submit"]),
+.contact-form textarea {
+	width: 100%;
+	background-color: #fff;
+	border: 1px solid var(--rule);
+	border-radius: 2px;
+	padding: 12px 14px;
+	font-family: var(--font-body);
+	font-size: 16px;
+	color: var(--ink);
+	transition: border-color 0.2s ease;
+}
+.contact-form input:not([type="checkbox"]):not([type="submit"])::placeholder,
+.contact-form textarea::placeholder {
+	color: var(--ink-faint);
+}
+.contact-form input:not([type="checkbox"]):not([type="submit"]):focus,
+.contact-form textarea:focus {
+	outline: none;
+	border-color: var(--accent);
+}
+.contact-form textarea {
+	resize: vertical;
+	min-height: 140px;
+}
+.contact-form-footer {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 20px;
+	flex-wrap: wrap;
+	margin-top: 4px;
+}
+.contact-form-privacy {
+	display: flex;
+	align-items: flex-start;
+	gap: 10px;
+	font-family: var(--font-mono);
+	font-size: 11px;
+	color: var(--ink-soft);
+	cursor: pointer;
+	line-height: 1.5;
+	max-width: 320px;
+}
+.contact-form-privacy input[type="checkbox"] {
+	flex-shrink: 0;
+	margin-top: 1px;
+	accent-color: var(--accent);
+}
+.contact-form-privacy a {
+	color: var(--accent);
+	border-bottom: 1px solid currentColor;
+}
+.contact-form-submit {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	font-family: var(--font-mono);
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.22em;
+	text-transform: uppercase;
+	color: var(--bg);
+	background: var(--ink);
+	border: none;
+	padding: 14px 24px;
+	cursor: pointer;
+	transition:
+		background 0.2s ease,
+		color 0.2s ease;
+	white-space: nowrap;
+}
+.contact-form-submit .arrow {
+	transition: transform 0.2s ease;
+}
+.contact-form-submit:hover {
+	background: var(--accent);
+}
+.contact-form-submit:hover .arrow {
+	transform: translateX(4px);
+}
+
+/* Mensajes de estado de ideforms */
+.ideforms-error {
+	font-family: var(--font-mono);
+	font-size: 12px;
+	color: var(--accent);
+	margin-top: 8px;
+}
+.ideforms-success {
+	font-family: var(--font-mono);
+	font-size: 12px;
+	color: var(--ink-soft);
+	margin-top: 8px;
+}
+
+/* Página de gracias */
+.contact-thanks {
+	margin: 48px 0 80px;
+	max-width: var(--container-reading);
+}
+.contact-thanks a {
+	font-family: var(--font-mono);
+	font-size: 12px;
+	font-weight: 700;
+	letter-spacing: 0.22em;
+	text-transform: uppercase;
+	color: var(--accent);
+	border-bottom: 1px solid currentColor;
+	transition: color 0.2s;
+}
+.contact-thanks a:hover {
+	color: var(--accent-deep);
+}
