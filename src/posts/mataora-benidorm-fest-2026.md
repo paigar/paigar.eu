@@ -2,7 +2,7 @@
 title: "Mataora: la obra de arte que el Benidorm Fest 2026 no supo premiar"
 date: 2026-02-18
 excerpt: "Rosalinda Galán llegó al Benidorm Fest 2026 con una canción sobre Carmen, un plano secuencia que es pura artesanía televisiva y una actuación que debería estar en los libros de historia del festival. Pero no ganó. Y eso todavía me duele un poco."
-tags: ["ideas", "música", "cine y tv"]
+tags: [ideas, cultura-pop]
 image: "mataora-rosalinda-galan.jpg"
 image_alt: "Una mujer de cabello oscuro con un clavel rojo en el pelo y mantón de encaje, mirando desafiante en un callejón sevillano al atardecer"
 ---

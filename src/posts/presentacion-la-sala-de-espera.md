@@ -2,7 +2,7 @@
 title: "Una sala de espera, dos androides y una pregunta incómoda"
 date: 2026-05-30
 excerpt: "La ciencia ficción usa los robots de formas muy previsibles. Me interesaba explorar una distinta: el androide como activo económico familiar. Y lo que pasa cuando ese activo envejece."
-tags: ["relato", "ciencia ficción", "androides", "escritura"]
+tags: [relato, ciencia-ficción]
 image: la-sala-de-espera-articulo.jpg
 image_alt: "Sala de espera institucional vacía, con filas de sillas de plástico gris bajo luz fluorescente fría. Un cartel en la pared. La atmósfera es burocrática e indiferente."
 ---

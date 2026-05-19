@@ -2,7 +2,7 @@
 title: "Flash Gordon, la película que el tiempo se tragó sin avisar"
 date: 2026-05-01
 excerpt: "En 1980 llegó a los cines una película con Queen, con Max von Sydow, con un universo visual absolutamente delirante. Y sin embargo, casi nadie la recuerda. Esto es una reivindicación, aunque no sé muy bien si tengo autoridad para hacerla."
-tags: [cine y tv, cultura-pop, ciencia ficción, años-80]
+tags: [cultura-pop, ciencia-ficción, retrofuturismo]
 image: flash-gordon.jpg
 image_alt: "Set de rodaje de Flash Gordon recreado con IA"
 ---

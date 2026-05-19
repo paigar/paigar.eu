@@ -2,7 +2,7 @@
 title: "Treinta años de Entre Ánimas, el disco que me rompió los esquemas"
 date: 2026-05-12
 excerpt: "En 1996 llegó un disco diferente a todo lo que sonaba en la radio española. Se llamaba Entre Ánimas, lo firmaba Virjinia Glück, y todavía treinta años después lo pongo y digo: coño, es muy bueno."
-tags: ["ideas", "música", "cultura-pop"]
+tags: [ideas, cultura-pop]
 image: "virjinia-gluck-entre-animas.jpg"
 image_alt: "Imagen generada por IA que recuerda la figura de Virjinia Glück"
 ---

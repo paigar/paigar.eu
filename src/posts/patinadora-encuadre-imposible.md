@@ -2,7 +2,7 @@
 title: "La patinadora entera no cabe"
 date: 2026-05-03
 excerpt: "Llevamos décadas con pantallas rectangulares y seguimos sin ponernos de acuerdo en qué dirección va el rectángulo. Una reflexión sobre proporciones, encuadres imposibles y la ceguera espacial que todos tenemos en algún sitio."
-tags: ["ideas", "oficio", "diseño"]
+tags: [ideas, oficio]
 image: patinadora-encuadre-imposible.jpg
 image_alt: "Patinadora sobre hielo fotografiada en vertical, con su imagen recortada torpemente en una pantalla panorámica"
 ---

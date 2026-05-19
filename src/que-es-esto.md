@@ -1,31 +1,55 @@
 ---
+layout: layouts/base.vto
+templateEngine: vto
 title: Qué es esto
-layout: layouts/page.vto
+url: /que-es-esto/
 type: page
 section_mark: PAIGAR
-subtitle: Un cuaderno digital sin pretensiones desde Bilbao
+subtitle: "Un cajón desastre. Escribo sobre lo que me apetece cuando me apetece: desarrollo web, ilustración, videojuegos, ciencia ficción, herramientas pequeñas, cosas que me han llamado la atención. Sin línea editorial, sin métricas, sin red de seguridad"
 description: Quién escribe paigar.eu, qué es este sitio y cómo ponerse en contacto.
-url: /que-es-esto/
 image: que-es-esto.png
 image_alt: "Retrato ilustrado de perfil sobre fondo oscuro con textura de cuaderno, líneas de código y elementos de diseño retrofuturista"
 ---
 
-## Quién escribe esto
+<article class="page">
 
-Me llamo Juanjo Marcos. Vivo en Bilbao y me dedico al desarrollo web desde 1999. Soy el fundador de [Idenautas](https://idenautas.com), una pequeña agencia especializada en proyectos web a medida. Además de este cuaderno, mantengo [Bilbonauta](https://bilbonauta.com), un blog de viajes.
+  <div class="container">
+    <header class="page-header">
+      <div class="page-eyebrow">{{ section_mark }}</div>
+      <h1 class="page-title">{{ title }}</h1>
+      <p class="page-subtitle">{{ subtitle }}</p>
+    </header>
+  </div>
 
-Las cosas serias van a idenautas.com. Los viajes van al Bilbonauta. Lo que no cabe en ningún otro lado, acaba aquí.
+  <div class="container">
+    {{ set esenciales = esencial.map(url => search.page("url=" + url)).filter(p => p) }}
+    {{ set esencialesGrid = esenciales.slice(0, -1) }}
+    {{ set esencialesFeatured = esenciales[esenciales.length - 1] }}
+    <ol class="home-grid-cards minimal" style="padding: 0; margin-block: 80px;">
+      {{ for post of esencialesGrid }}
+        <li>{{ include "partials/post-card.vto" { post } }}</li>
+      {{ /for }}
+    </ol>
+  </div>
 
-Si quieres la historia completa, hay [un artículo sobre mí](/sobre-mi/) con bastante más detalle.
+  <div class="container">
+  {{ if esencialesFeatured }}
+    {{ include "partials/feature-split.vto" { post: esencialesFeatured } }}
+  {{ /if }}
+  </div>
 
-## Qué es paigar.eu
+  <div class="container" style="margin-block: 80px;">
+    <aside class="archive-banner" aria-label="Blog">
+      <div class="archive-banner-text">
+        <span class="archive-banner-eyebrow">El blog</span>
+        <h2 class="archive-banner-title">Artículos, notas y experimentos.</h2>
+        <p class="archive-banner-sub">Tecnología, diseño y ciencia ficción.</p>
+      </div>
+      <a href="/" class="archive-banner-link">
+        Ir al blog
+        <span class="arrow">→</span>
+      </a>
+    </aside>
+  </div>
 
-Un cajón desastre. Escribo sobre lo que me apetece cuando me apetece: desarrollo web, ilustración, videojuegos, ciencia ficción, herramientas pequeñas, cosas que me han llamado la atención. Sin línea editorial, sin métricas, sin red de seguridad.
-
-El nombre tiene su propia historia. Si tienes diez minutos, [aquí está](/el-origen-de-paigar/).
-
-## Contacto
-
-Puedes escribirme a **[juanjo@paigar.es](mailto:juanjo@paigar.es)**.
-
-Si prefieres algo más inmediato, también estoy en WhatsApp: [+34 605 639 214](https://wa.me/34605639214).
+</article>

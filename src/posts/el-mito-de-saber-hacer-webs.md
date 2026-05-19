@@ -2,7 +2,7 @@
 title: "El mito de 'saber hacer webs'"
 date: 2025-09-15
 excerpt: '"Mi sobrino sabe hacer webs." Es la frase que mejor resume el problema de percepción que tiene este oficio. El sobrino probablemente sí ha hecho una web. Ha cogido una plantilla, la ha instalado, ha cambiado las fotos. Igual que calentar un precocinado es cocinar en el sentido más literal.'
-tags: [oficio, opinión]
+tags: [ideas, oficio]
 image: el-mito-de-saber-hacer-webs.png
 image_alt: "Vista submarina de un iceberg, con la pequeña punta visible sobre la superficie y la enorme masa helada hundiéndose en el agua oscura."
 ---

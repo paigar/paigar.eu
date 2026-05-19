@@ -1,12 +1,12 @@
 ---
 title: Privacidad
 section_mark: Información legal
-subtitle: paigar.eu no recoge datos personales activamente. Esto explica cómo y por qué.
-description: Política de privacidad del sitio paigar.eu. Sin formularios, sin newsletter, sin tratamiento activo de datos personales.
+subtitle: Aquí se explica qué datos recoge paigar.eu y para qué.
+description: Política de privacidad del sitio paigar.eu. Sin newsletter, sin comentarios, sin analítica.
 url: /legal/privacidad/
 ---
 
-paigar.eu es un sitio personal sin formularios, sin newsletter, sin sistema de comentarios y sin analítica. Esto significa que el sitio no recoge ni trata datos personales de quien lo visita, salvo lo estrictamente técnico que cualquier servidor web registra para poder funcionar.
+paigar.eu es un sitio personal sin newsletter, sin sistema de comentarios y sin analítica. Dispone de un formulario de contacto para que quien visita el sitio pueda ponerse en contacto directamente. Más allá de ese canal, el sitio no recoge ni trata datos personales salvo lo estrictamente técnico que cualquier servidor web registra para poder funcionar.
 
 A pesar de ello, en cumplimiento del Reglamento (UE) 2016/679 General de Protección de Datos (RGPD) y de la Ley Orgánica 3/2018 de Protección de Datos Personales y garantía de los derechos digitales (LOPDGDD), procede dejar por escrito lo siguiente.
 
@@ -20,7 +20,9 @@ A pesar de ello, en cumplimiento del Reglamento (UE) 2016/679 General de Protecc
 
 ## 2. Qué datos se tratan
 
-paigar.eu **no dispone de formularios**, **no envía newsletter**, **no permite registro de usuarios** y **no permite comentarios**. En consecuencia, el sitio no recoge datos personales de manera activa.
+paigar.eu **no envía newsletter**, **no permite registro de usuarios** y **no permite comentarios**.
+
+Dispone de un **formulario de contacto** en `/contacto/`. Cuando alguien lo rellena, los datos introducidos (nombre, dirección de correo electrónico y mensaje) se transmiten a través del servicio ideforms y se entregan al responsable del sitio por correo electrónico. Estos datos se utilizan exclusivamente para responder a la consulta y no se ceden a terceros ni se incorporan a ninguna base de datos comercial. El servicio de envío de correo utilizado es Lettermint (Idenautas SLU), con infraestructura en la Unión Europea.
 
 El servidor donde se aloja paigar.eu registra información técnica básica de cada visita —dirección IP, agente de usuario, página solicitada, código de respuesta— exclusivamente para fines de seguridad y diagnóstico operativo. Estos registros se conservan durante un máximo de treinta días y se eliminan automáticamente. No se cruzan con ninguna otra fuente de datos ni se utilizan para perfilado.
 
@@ -70,4 +72,4 @@ Esta política puede modificarse en el futuro. La fecha de última revisión se 
 
 ---
 
-Última revisión: abril de 2026.
+Última revisión: mayo de 2026.

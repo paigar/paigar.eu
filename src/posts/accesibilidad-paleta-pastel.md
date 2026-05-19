@@ -2,14 +2,7 @@
 title: "Cuando el gusto personal choca con la accesibilidad web"
 date: 2026-05-06
 excerpt: "Una paleta de colores preciosa, una normativa de accesibilidad implacable y la conversación incómoda que tarde o temprano hay que tener con el cliente."
-tags:
-  [
-    "accesibilidad",
-    "diseño",
-    "desarrollo web",
-    "oficio",
-    "opinión",
-  ]
+tags: [ideas, oficio, desarrollo-web]
 image: accesibilidad-paleta-pastel.jpg
 image_alt: Conjunto de lápices en tonos pastel tierra y verde sobre superficie blanca
 ---

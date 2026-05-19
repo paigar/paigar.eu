@@ -2,7 +2,7 @@
 title: "Leyendecker: un genio escondido a plena vista"
 date: 2026-05-05
 excerpt: "Hace poco descubrí a Joseph Christian Leyendecker. Hizo más portadas del Saturday Evening Post que Norman Rockwell, inventó el bebé de Año Nuevo y el Arrow Collar Man. Y su nombre lleva décadas enterrado."
-tags: ["arte", "ilustración", "lgtbiq", "cultura-pop"]
+tags: [ilustración, lgtbiq, cultura-pop]
 image: leyendecker-00.jpg
 image_alt: "Ilustración elegante al estilo de J.C. Leyendecker: figura masculina con postura escultórica, ropa de época, trazos seguros y paleta cálida"
 ---

@@ -109,5 +109,9 @@
 
   {{ include "partials/colophon.vto" }}
 
+  {{ if content.includes("data-ideforms-form") }}
+  <script src="https://ideforms.com/js/ideforms.js" defer></script>
+  {{ /if }}
+
 </body>
 </html>

@@ -2,7 +2,7 @@
 title: "Un sistema de layout con CSS Grid y columnas nombradas"
 date: 2026-02-13
 excerpt: "El problema clásico: el texto va a 65 caracteres, pero las imágenes quieren ancho completo y las citas se quedan más estrechas. La solución habitual acumula divs wrapper sin semántica. Con un grid de columnas nombradas basta con una clase en el elemento hijo para que decida su propio ancho — sin wrappers, sin media queries, sin max-width repetidos por todo el CSS."
-tags: [css, layout, técnicas]
+tags: [técnicas, desarrollo-web]
 image: css-grid-columnas-nombradas.png
 image_alt: "Mesa de trabajo con papel cuadriculado, guías de layout dibujadas a mano y una regla metálica cruzando el encuadre."
 ---

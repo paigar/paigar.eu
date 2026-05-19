@@ -1,8 +1,8 @@
 ---
 title: "Lo que Metro Bilbao no ha pensado sobre la dependencia"
-date: 2026-03-05
+date: 2026-02-26
 excerpt: "El agente de seguridad del metro tenía razón: debería haber pagado dos billetes. El problema es que el sistema de cancelación no permite hacerlo físicamente. Y eso no era culpa mía."
-tags: [ideas, accesibilidad, bilbao, dependencia]
+tags: [ideas, bilbao, dependencia]
 image: metro-bilbao-dependencia.png
 image_alt: "Dos personas vistas de espaldas, una de ellas mayor, caminando agarradas del brazo por un pasillo de metro, luz cálida al fondo del túnel contrastando con la luz fría de la estación, tornos desenfocados al fondo"
 ---

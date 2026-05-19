@@ -2,7 +2,7 @@
 title: "Un experimento: mi primer relato de ciencia ficción"
 date: 2026-05-13
 excerpt: "Llevo tiempo dándole vueltas a una idea que no encajaba en ningún sitio. Al final decidí escribirla como lo que era: un relato corto. Aquí está."
-tags: ["relato", "ciencia ficción", "escritura"]
+tags: [relato, ciencia-ficción]
 image: el-hombre-que-movia-montanas.jpg
 image_alt: "Un hombre de mediana edad sentado solo en una terraza del Casco Viejo de Bilbao, con un periódico desplegado sobre la mesa. La imagen tiene una calidad ligeramente onírica, como si el reflejo en el cristal del bar no terminara de coincidir con la realidad."
 ---

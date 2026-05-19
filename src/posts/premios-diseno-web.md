@@ -2,7 +2,7 @@
 title: "La insignia que se compra"
 date: 2026-05-09
 excerpt: "Awwwards y similares venden reconocimiento. El problema no es que cobren por participar. El problema es lo que el cliente entiende cuando ve la insignia en el footer de una agencia."
-tags: [ideas, diseño, opinión, oficio]
+tags: [ideas, oficio, desarrollo-web]
 image: premios-diseno-web.png
 image_alt: "Vitrina llena de filas de insignias doradas idénticas con la etiqueta Site of the Day, dispuestas como mercancía de lujo en una tienda de alta gama, iluminación clínica blanca, reflejos de cristal"
 ---

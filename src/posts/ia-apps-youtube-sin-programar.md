@@ -2,7 +2,7 @@
 title: "Construí una app con IA sin saber programar y gano 10.000 dólares al mes (y tú también puedes)"
 date: 2026-02-28
 excerpt: "YouTube está lleno de vídeos donde alguien construye una app sin saber programar, usando IA, y la vende por miles de dólares. ¿Es verdad? ¿Y si lo es, por qué lo cuentan?"
-tags: ["ideas", "opinión", "tecnología", "ia"]
+tags: [ideas, ia]
 image: "ia-apps-youtube.jpg"
 image_alt: "Una persona mirando una pantalla de ordenador con gráficas de ingresos disparadas, rodeada de billetes flotando y notificaciones de YouTube"
 ---

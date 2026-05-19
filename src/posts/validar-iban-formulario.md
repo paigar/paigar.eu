@@ -2,7 +2,7 @@
 title: "Cómo validar un código IBAN en un formulario web"
 date: 2026-04-14
 excerpt: "El IBAN tiene un algoritmo de validación elegante, una longitud que varía según el país y un problema con números enormes que tiene solución. Aquí va todo lo que necesitas para no rechazar cuentas bancarias válidas."
-tags: [apuntes, javascript, desarrollo web]
+tags: [apuntes, javascript, desarrollo-web]
 image: validar-iban-formulario.png
 image_alt: "Teclado numérico bancario en primer plano con pantalla de formulario digital desenfocada al fondo, iluminación de oficina neutral"
 prototype: iban

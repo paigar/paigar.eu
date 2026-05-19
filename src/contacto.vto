@@ -1,0 +1,91 @@
+---
+layout: layouts/base.vto
+title: Contacto
+url: /contacto/
+description: Escríbeme cuando quieras. Aquí tienes el correo, la dirección y el teléfono de Idenautas, y un formulario si prefieres empezar por ahí.
+type: page
+image: que-es-esto.png
+image_alt: "Retrato ilustrado de perfil sobre fondo oscuro con textura de cuaderno, líneas de código y elementos de diseño retrofuturista"
+excerpt: Si tienes algo que contarme, una pregunta o simplemente quieres saludar, aquí estoy. Escríbeme cuando quieras. Aquí tienes el correo, la dirección y el teléfono de Idenautas, y un formulario si prefieres empezar por ahí.
+---
+
+<article class="page contact-page">
+
+  <div class="container">
+    <header class="page-header">
+      <div class="page-eyebrow">¿Hablamos?</div>
+      <h1 class="page-title">Contacto</h1>
+      <p class="page-subtitle">Si tienes algo que contarme, alguna pregunta que plentear o simplemente quieres saludar, aquí estoy.</p>
+    </header>
+  </div>
+
+  <div class="post-cover">
+    {{ img(image, image_alt, "hero", "eager") }}
+  </div>
+
+  <div class="container">
+    <div class="contact-grid">
+
+      <div class="contact-info-block">
+        <div class="contact-info-item">
+          <span class="contact-info-label">Email</span>
+          <a href="mailto:juanjo@paigar.es">juanjo@paigar.es</a>
+        </div>
+        <div class="contact-info-item">
+          <span class="contact-info-label">Dirección</span>
+          <address>
+            Idenautas<br>
+            Avenida Maurice Ravel 16<br>
+            48007 Bilbao (Bizkaia)
+          </address>
+        </div>
+        <div class="contact-info-item">
+          <span class="contact-info-label">Teléfono</span>
+          <a href="tel:+34944130535">944 130 535</a>
+        </div>
+      </div>
+
+      <div class="contact-form-block">
+        <form class="contact-form"
+              data-ideforms-form="contacto"
+              data-ideforms-endpoint="https://ideforms.com/user/paigar.php"
+              data-ideforms-redirect="/contacto/gracias/"
+              novalidate>
+
+          <p class="visually-hidden" aria-hidden="true">
+            <label>No rellenar si eres humano <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+          </p>
+
+          <div class="contact-form-row">
+            <div class="contact-form-field">
+              <label for="contacto-nombre">Nombre</label>
+              <input type="text" id="contacto-nombre" name="nombre" placeholder="Tu nombre" required>
+            </div>
+            <div class="contact-form-field">
+              <label for="contacto-email">Correo electrónico</label>
+              <input type="email" id="contacto-email" name="email" placeholder="tu@correo.com" required>
+            </div>
+          </div>
+
+          <div class="contact-form-field">
+            <label for="contacto-mensaje">Mensaje</label>
+            <textarea id="contacto-mensaje" name="mensaje" placeholder="Cuéntame..." rows="6" required></textarea>
+          </div>
+
+          <div class="contact-form-footer">
+            <label class="contact-form-privacy">
+              <input type="checkbox" name="privacy" required data-ideforms-ignore>
+              <span>He leído y acepto la <a href="/legal/privacidad/" target="_blank">política de privacidad</a></span>
+            </label>
+            <button type="submit" class="contact-form-submit">
+              Enviar mensaje <span class="arrow" aria-hidden="true">→</span>
+            </button>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+</article>

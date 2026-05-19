@@ -1,0 +1,358 @@
+---
+slug: picas-fijas
+name: "Picas y Fijas"
+tagline: Descifra el número secreto de cinco cifras. Diez intentos, pura lógica.
+cover: picas-fijas-md.png
+articleUrl: /juego-picas-fijas-tutorial/
+---
+
+<div id="pf-prototipo">
+  <h3 class="pf-titulo">Picas y Fijas</h3>
+  <div class="pf-marcadores">
+    <div class="pf-marcador">
+      <div class="pf-etiqueta">Intentos</div>
+      <div class="pf-valor" id="pf-intentos">0 / 10</div>
+    </div>
+    <div class="pf-marcador">
+      <div class="pf-etiqueta">Récord</div>
+      <div class="pf-valor" id="pf-record">—</div>
+    </div>
+  </div>
+
+  <div id="pf-tablero" class="pf-tablero"></div>
+
+  <div id="pf-zona-entrada" class="pf-zona-entrada">
+    <input type="text" id="pf-input" class="pf-input" maxlength="5" inputmode="numeric" autocomplete="off" spellcheck="false" />
+    <button id="pf-enviar" class="pf-boton">Probar</button>
+  </div>
+
+  <p id="pf-mensaje" class="pf-mensaje"></p>
+
+  <div class="pf-leyenda">
+    <span class="pf-leyenda-fija">■ Fija</span>
+    <span class="pf-leyenda-pica">■ Pica</span>
+    <span class="pf-leyenda-miss">■ Fallo</span>
+  </div>
+
+  <button id="pf-nuevo" class="pf-boton pf-boton-nuevo">Nueva partida</button>
+
+  <p class="pf-ayuda">Escribe 5 cifras y pulsa Enter o "Probar".<br>
+  <strong>Fija</strong>: cifra en su posición exacta <br> <strong>Pica</strong>: cifra correcta, posición equivocada.<br>
+  Las cifras pueden repetirse.</p>
+</div>
+
+<style>
+#pf-prototipo {
+  font-family: 'Courier New', monospace;
+  background: #1a1d2e;
+  color: #e8e8e8;
+  padding: 1.5rem 1rem;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.pf-titulo {
+  color: #fff;
+  font-size: 1.6rem;
+  margin: 0 0 1rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.pf-marcadores {
+  display: flex;
+  justify-content: center;
+  gap: 2.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.pf-etiqueta {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #ddd;
+}
+
+.pf-valor {
+  font-size: 1.15rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+.pf-tablero {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 1.25rem;
+  min-height: 3rem;
+}
+
+.pf-fila {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.pf-celda {
+  width: 46px;
+  height: 46px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+.pf-celda.fija  { background: #538d4e; }
+.pf-celda.pica  { background: #b59f3b; }
+.pf-celda.miss  { background: #3a3a4a; }
+
+.pf-resumen {
+  margin-left: 0.6rem;
+  font-size: 0.85rem;
+  color: #ddd;
+  min-width: 3em;
+  text-align: left;
+}
+
+.pf-zona-entrada {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 0.6rem;
+}
+
+.pf-input {
+  width: 140px;
+  padding: 0.45rem 0.25rem;
+  font-size: 1.4rem;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 0.2em;
+  text-align: center;
+  background: #2a2d3e;
+  border: 2px solid #444;
+  border-radius: 4px;
+  color: #fff;
+  outline: none;
+}
+
+.pf-input:focus { border-color: #777; }
+
+.pf-input:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pf-boton {
+  padding: 0.45rem 0.9rem;
+  background: #538d4e;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-family: 'Courier New', monospace;
+}
+
+.pf-boton:hover { background: #67a861; }
+
+.pf-boton:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pf-mensaje {
+  min-height: 1.2rem;
+  font-size: 1rem;
+  color: #eee;
+  margin: 0.4rem 0 0.6rem;
+}
+
+.pf-leyenda {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  font-size: 0.85rem;
+  margin-bottom: 0.75rem;
+}
+
+.pf-leyenda-fija { color: #538d4e; }
+.pf-leyenda-pica { color: #b59f3b; }
+.pf-leyenda-miss { color: #ccc; }
+
+.pf-boton-nuevo {
+  background: #333546;
+  display: block;
+  margin: 0 auto 1rem;
+}
+
+.pf-boton-nuevo:hover { background: #4a4d62; }
+
+.pf-ayuda {
+  font-size: 0.85rem;
+  color: #ccc;
+  margin: 0;
+  line-height: 1.6;
+}
+
+@media (max-width: 400px) {
+  .pf-celda {
+    width: 38px;
+    height: 38px;
+    font-size: 1.1rem;
+  }
+
+  .pf-input {
+    width: 115px;
+    font-size: 1.2rem;
+  }
+}
+</style>
+
+<script>
+(() => {
+  const prototipo = document.getElementById('pf-prototipo');
+  if (!prototipo) return;
+
+  const tablero    = document.getElementById('pf-tablero');
+  const inputEl    = document.getElementById('pf-input');
+  const enviarBtn  = document.getElementById('pf-enviar');
+  const nuevoBtn   = document.getElementById('pf-nuevo');
+  const mensajeEl  = document.getElementById('pf-mensaje');
+  const intentosEl = document.getElementById('pf-intentos');
+  const recordEl   = document.getElementById('pf-record');
+
+  const MAX = 10;
+  let secreto, intentos, terminado, record;
+
+  function generarSecreto() {
+    let s = '';
+    for (let i = 0; i < 5; i++) s += Math.floor(Math.random() * 10);
+    return s;
+  }
+
+  function evaluar(intento) {
+    const resultado = Array(5).fill('miss');
+    const sobrantes = [];
+
+    // Paso 1: fijas (posición y cifra correctas)
+    for (let i = 0; i < 5; i++) {
+      if (intento[i] === secreto[i]) {
+        resultado[i] = 'fija';
+      } else {
+        sobrantes.push(secreto[i]);
+      }
+    }
+
+    // Paso 2: picas (cifra correcta en otra posición)
+    for (let i = 0; i < 5; i++) {
+      if (resultado[i] === 'fija') continue;
+      const idx = sobrantes.indexOf(intento[i]);
+      if (idx !== -1) {
+        resultado[i] = 'pica';
+        sobrantes.splice(idx, 1);
+      }
+    }
+
+    return resultado;
+  }
+
+  function renderFila(intento, resultado) {
+    const fijas = resultado.filter(r => r === 'fija').length;
+    const picas = resultado.filter(r => r === 'pica').length;
+
+    const fila = document.createElement('div');
+    fila.className = 'pf-fila';
+
+    for (let i = 0; i < 5; i++) {
+      const celda = document.createElement('div');
+      celda.className = `pf-celda ${resultado[i]}`;
+      celda.textContent = intento[i];
+      fila.appendChild(celda);
+    }
+
+    const resumen = document.createElement('div');
+    resumen.className = 'pf-resumen';
+    resumen.textContent = `${fijas}F ${picas}P`;
+    fila.appendChild(resumen);
+
+    tablero.appendChild(fila);
+  }
+
+  function actualizarMarcadores() {
+    intentosEl.textContent = `${intentos} / ${MAX}`;
+    recordEl.textContent   = record !== null ? record : '—';
+  }
+
+  function jugar() {
+    if (terminado) return;
+
+    const valor = inputEl.value.trim();
+    if (!/^\d{5}$/.test(valor)) {
+      mensajeEl.textContent = 'Escribe exactamente 5 cifras.';
+      return;
+    }
+
+    intentos++;
+    const resultado = evaluar(valor);
+    renderFila(valor, resultado);
+    actualizarMarcadores();
+
+    const fijas = resultado.filter(r => r === 'fija').length;
+
+    if (fijas === 5) {
+      mensajeEl.textContent = `¡Resuelto en ${intentos} intento${intentos !== 1 ? 's' : ''}!`;
+      if (record === null || intentos < record) {
+        record = intentos;
+      }
+      terminado = true;
+      inputEl.disabled   = true;
+      enviarBtn.disabled = true;
+    } else if (intentos >= MAX) {
+      mensajeEl.textContent = `Agotados los intentos. El número era ${secreto}.`;
+      terminado = true;
+      inputEl.disabled   = true;
+      enviarBtn.disabled = true;
+    } else {
+      mensajeEl.textContent = '';
+      inputEl.value = '';
+      inputEl.focus();
+    }
+
+    actualizarMarcadores();
+  }
+
+  function reiniciar() {
+    secreto    = generarSecreto();
+    intentos   = 0;
+    terminado  = false;
+    tablero.innerHTML      = '';
+    mensajeEl.textContent  = '';
+    inputEl.value          = '';
+    inputEl.disabled       = false;
+    enviarBtn.disabled     = false;
+    actualizarMarcadores();
+    inputEl.focus();
+  }
+
+  enviarBtn.addEventListener('click', jugar);
+  nuevoBtn.addEventListener('click', reiniciar);
+
+  inputEl.addEventListener('keydown', e => {
+    if (e.key === 'Enter') jugar();
+  });
+
+  inputEl.addEventListener('input', () => {
+    inputEl.value = inputEl.value.replace(/\D/g, '');
+  });
+
+  record = null;
+  reiniciar();
+})();
+</script>

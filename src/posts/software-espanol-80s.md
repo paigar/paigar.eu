@@ -2,7 +2,7 @@
 title: "La España que exportaba videojuegos"
 date: 2026-04-07
 excerpt: "A mediados de los ochenta, un puñado de chavales en Madrid estaban programando juegos que se vendían en el Reino Unido y aparecían reseñados en la prensa especializada británica. Se llamaban Dinamic, Opera Soft, Topo Soft. Casi nadie los recuerda."
-tags: [retrofuturismo, juegos, oficio, años-80]
+tags: [retrofuturismo, juegos, oficio]
 image: software-espanol-80s.png
 image_alt: "Cassettes y carátulas de videojuegos españoles de los años 80 sobre una superficie desgastada, con colores vibrantes y tipografías de la época"
 ---

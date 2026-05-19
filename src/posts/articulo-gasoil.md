@@ -2,7 +2,7 @@
 title: "Mi primer juego, treinta y cinco años después"
 date: 2025-11-10
 excerpt: "En 1989 mandé un programa en BASIC al concurso de MSX-Club. Tenía dieciséis años. Lo publicaron. Esta semana lo he vuelto a ver correr en pantalla."
-tags: [retrofuturismo, msx, basic, programación]
+tags: [retrofuturismo, javascript]
 image: gasoil-header.png
 image_alt: "Plano cenital de un Toshiba MSX antiguo sobre una mesa de madera, con una cinta cassette etiquetada a mano, fotografía iluminada con luz cálida de tarde a través de una ventana"
 ---

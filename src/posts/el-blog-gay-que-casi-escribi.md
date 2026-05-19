@@ -2,7 +2,7 @@
 title: "El blog gay que casi escribí"
 date: 2025-09-08
 excerpt: "Antes de que existiera paigar.eu pensé en montar un blog desde mi identidad gay: tres candidatos, los tres viables. No los hice porque ser gay es fundamental en mi vida, sí, pero no es definitorio. Esa distinción es la que terminó dándole forma a este cuaderno."
-tags: [ideas, presentación, lgtbiq]
+tags: [ideas, lgtbiq]
 image: el-blog-gay-que-casi-escribi.png
 image_alt: "Cuaderno de tapa de cuero abierto sobre una mesa de madera; una página recién pasada conserva la curva del pliegue, la nueva está limpia y lista para escribir. Al fondo, desenfocadas, la silueta de una ventana y la de una taza de café."
 ---

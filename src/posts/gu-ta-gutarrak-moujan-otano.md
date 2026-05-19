@@ -2,7 +2,7 @@
 title: "Gu Ta Gutarrak, un cuento sobre el origen de los baskos"
 date: 2025-10-13
 excerpt: "Un relato de Magdalena Mouján Otaño publicado en 1968 que la censura franquista cortó a tijeretazos, donde una familia basca construye una máquina del tiempo para averiguar de dónde venimos y descubre algo que cualquier basko, en el fondo, ya sospechaba."
-tags: [ideas, lecturas, ciencia ficción]
+tags: [ideas, lecturas, ciencia-ficción]
 image: gu-ta-gutarrak-moujan-otano.png
 image_alt: "Familia basca de varias generaciones caminando juntos por un sendero entre montañas verdes hacia el Cantábrico, niños y adultos con boinas y ropas atemporales que podrían pertenecer a cualquier siglo, cielo plateado y luz suave"
 ---

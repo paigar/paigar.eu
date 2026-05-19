@@ -808,6 +808,9 @@ code {
 	font-weight: 500;
 	text-align: center;
 }
+.home-grid-cards.minimal .post-card-eyebrow {
+	display: none;
+}
 
 /* ---- FEATURED A: split horizontal (texto izquierda · imagen derecha) ----
    Patrón apetogentleman: 50/50 split contenido en gray bg + cover. Distinto
@@ -2980,7 +2983,7 @@ ol.archive-list .archive-item:hover .archive-item-title {
    con tag pages y con "Más del archivo" de la home. */
 
 /* =========================================================
-   CTA "Probar a pantalla completa" — dentro de cada artículo
+   CTA "Abrir en página propia" — dentro de cada artículo
    con prototype, justo encima del embed.
    ========================================================= */
 .prototype-fullscreen-cta {
@@ -3010,4 +3013,216 @@ ol.archive-list .archive-item:hover .archive-item-title {
 }
 .prototype-fullscreen-link:hover .arrow {
 	transform: translateX(4px);
+}
+
+/* =========================================================
+   QUÉ ES ESTO
+   ========================================================= */
+.que-es-intro {
+	max-width: var(--container-reading);
+	font-family: var(--font-body);
+	font-size: clamp(18px, 1.5vw, 22px);
+	font-style: italic;
+	line-height: 1.65;
+	color: var(--ink-soft);
+	margin: 48px 0 56px;
+	text-wrap: pretty;
+}
+
+/* =========================================================
+   PÁGINA DE CONTACTO
+   ========================================================= */
+.contact-grid {
+	display: grid;
+	grid-template-columns: 280px minmax(0, 1fr);
+	gap: 64px;
+	margin-top: 48px;
+	margin-bottom: 80px;
+	align-items: start;
+}
+@media (max-width: 760px) {
+	.contact-grid {
+		grid-template-columns: 1fr;
+		gap: 40px;
+	}
+}
+
+.contact-info-block {
+	display: flex;
+	flex-direction: column;
+	gap: 36px;
+}
+.contact-info-item {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+.contact-info-label {
+	font-family: var(--font-mono);
+	font-size: 10px;
+	font-weight: 700;
+	letter-spacing: 0.22em;
+	text-transform: uppercase;
+	color: var(--ink-faint);
+}
+.contact-info-item a,
+.contact-info-item address {
+	font-family: var(--font-body);
+	font-size: 16px;
+	color: var(--ink);
+	font-style: normal;
+	line-height: 1.6;
+}
+.contact-info-item a {
+	color: var(--accent);
+	border-bottom: 1px solid currentColor;
+	transition: color 0.2s ease;
+}
+.contact-info-item a:hover {
+	color: var(--accent-deep);
+}
+
+/* Formulario */
+.contact-form {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+.contact-form-row {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 16px;
+}
+@media (max-width: 560px) {
+	.contact-form-row {
+		grid-template-columns: 1fr;
+	}
+}
+.contact-form-field {
+	display: flex;
+	flex-direction: column;
+}
+.contact-form-field label {
+	display: block;
+	font-family: var(--font-mono);
+	font-size: 10px;
+	font-weight: 700;
+	letter-spacing: 0.2em;
+	text-transform: uppercase;
+	color: var(--ink-soft);
+	margin-bottom: 6px;
+}
+.contact-form input:not([type="checkbox"]):not([type="submit"]),
+.contact-form textarea {
+	width: 100%;
+	background-color: #fff;
+	border: 1px solid var(--rule);
+	border-radius: 2px;
+	padding: 12px 14px;
+	font-family: var(--font-body);
+	font-size: 16px;
+	color: var(--ink);
+	transition: border-color 0.2s ease;
+}
+.contact-form input:not([type="checkbox"]):not([type="submit"])::placeholder,
+.contact-form textarea::placeholder {
+	color: var(--ink-faint);
+}
+.contact-form input:not([type="checkbox"]):not([type="submit"]):focus,
+.contact-form textarea:focus {
+	outline: none;
+	border-color: var(--accent);
+}
+.contact-form textarea {
+	resize: vertical;
+	min-height: 140px;
+}
+.contact-form-footer {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 20px;
+	flex-wrap: wrap;
+	margin-top: 4px;
+}
+.contact-form-privacy {
+	display: flex;
+	align-items: flex-start;
+	gap: 10px;
+	font-family: var(--font-mono);
+	font-size: 11px;
+	color: var(--ink-soft);
+	cursor: pointer;
+	line-height: 1.5;
+	max-width: 320px;
+}
+.contact-form-privacy input[type="checkbox"] {
+	flex-shrink: 0;
+	margin-top: 1px;
+	accent-color: var(--accent);
+}
+.contact-form-privacy a {
+	color: var(--accent);
+	border-bottom: 1px solid currentColor;
+}
+.contact-form-submit {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	font-family: var(--font-mono);
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.22em;
+	text-transform: uppercase;
+	color: var(--bg);
+	background: var(--ink);
+	border: none;
+	padding: 14px 24px;
+	cursor: pointer;
+	transition:
+		background 0.2s ease,
+		color 0.2s ease;
+	white-space: nowrap;
+}
+.contact-form-submit .arrow {
+	transition: transform 0.2s ease;
+}
+.contact-form-submit:hover {
+	background: var(--accent);
+}
+.contact-form-submit:hover .arrow {
+	transform: translateX(4px);
+}
+
+/* Mensajes de estado de ideforms */
+.ideforms-error {
+	font-family: var(--font-mono);
+	font-size: 12px;
+	color: var(--accent);
+	margin-top: 8px;
+}
+.ideforms-success {
+	font-family: var(--font-mono);
+	font-size: 12px;
+	color: var(--ink-soft);
+	margin-top: 8px;
+}
+
+/* Página de gracias */
+.contact-thanks {
+	margin: 48px 0 80px;
+	max-width: var(--container-reading);
+}
+.contact-thanks a {
+	font-family: var(--font-mono);
+	font-size: 12px;
+	font-weight: 700;
+	letter-spacing: 0.22em;
+	text-transform: uppercase;
+	color: var(--accent);
+	border-bottom: 1px solid currentColor;
+	transition: color 0.2s;
+}
+.contact-thanks a:hover {
+	color: var(--accent-deep);
 }

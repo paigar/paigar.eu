@@ -2,7 +2,7 @@
 title: "La baldosa de Bilbao: sesenta millones de flores bajo los pies"
 date: 2026-02-05
 excerpt: "Bilbao tiene su propia baldosa, como toda ciudad que se respete. Pero la nuestra, además de bonita, tiene un truco: algunas se comen el CO2 que pisas."
-tags: [ideas, bilbao, diseño, cultura-pop]
+tags: [ideas, bilbao, cultura-pop]
 image: baldosa-bilbao.png
 image-alt: "Detalle de las baldosas geométricas características de Bilbao"
 ---

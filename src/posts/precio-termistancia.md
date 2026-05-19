@@ -2,7 +2,7 @@
 title: "Reflexionando sobre el valor de una termistancia"
 date: 2025-10-06
 excerpt: "Por una pieza diminuta de mi caldera pagué casi lo que cuesta un ordenador completo y la cifra me sigue dando vueltas. Una reflexión sobre cómo aceptamos sin parpadear el precio de lo que se puede tocar y discutimos hasta el último céntimo el de lo que vive en un servidor."
-tags: [ideas, oficio, economía digital]
+tags: [ideas, oficio, economía]
 image: terminstancia.png
 image_alt: "Pequeño componente electrónico negro sobre una balanza de latón antigua, con varias monedas de euro en el platillo opuesto"
 ---

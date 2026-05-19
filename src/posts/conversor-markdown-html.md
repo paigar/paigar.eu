@@ -2,7 +2,7 @@
 title: "Cómo construir un conversor de Markdown a HTML que funcione en el navegador"
 date: 2026-05-14
 excerpt: "Markdown es el formato de escritura más útil que existe, pero convertirlo a HTML sin depender de un servidor ni de servicios externos tiene su miga. Aquí va cómo funciona la herramienta y por qué la hice."
-tags: [apuntes, javascript, desarrollo web]
+tags: [apuntes, javascript, desarrollo-web]
 image: conversor-markdown-html.png
 image_alt: "Cuaderno de notas abierto junto a un teclado mecánico, con código HTML visible en la pantalla al fondo, luz natural de escritorio"
 prototype: markdown-html

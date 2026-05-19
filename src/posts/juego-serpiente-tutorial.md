@@ -2,7 +2,7 @@
 title: "Cómo programar el juego de la serpiente desde cero"
 date: 2026-03-17
 excerpt: "Un tutorial paso a paso para construir el clásico Snake en una sola página web, sin frameworks, sin dependencias y sin más de doscientas líneas de código. Al final del artículo te dejo el prototipo funcional para que juegues."
-tags: [apuntes, juegos, javascript, canvas]
+tags: [apuntes, juegos, javascript, técnicas]
 image: juego-serpiente.png
 image_alt: "Pantalla de un viejo monitor mostrando una versión sencilla del juego de la serpiente con una serpiente verde sobre fondo oscuro y una manzana roja en una esquina"
 prototype: serpiente

@@ -2,7 +2,7 @@
 title: "Diseñador web y desarrollador web no son lo mismo"
 date: 2025-07-07
 excerpt: "En ofertas de trabajo, en conversaciones con clientes, incluso entre profesionales del sector, los términos diseñador web y desarrollador web se intercambian como si fueran sinónimos. No lo son. Y la confusión perjudica a ambas profesiones, al cliente que no sabe qué está contratando, y al proyecto que no recibe ni buen diseño ni buen desarrollo."
-tags: [ideas, oficio, desarrollo web, diseño]
+tags: [ideas, oficio, desarrollo-web]
 image: diseno-y-desarrollo.png
 image_alt: "Mesa de trabajo de un diseñador / desarrollador web"
 ---

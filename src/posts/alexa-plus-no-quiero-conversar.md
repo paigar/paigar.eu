@@ -2,7 +2,7 @@
 title: "Alexa, para. Solo quiero que me apagues la luz."
 date: 2026-05-17
 excerpt: "Alexa Plus tiene conversación natural, responde mejor y puede encadenar órdenes. También discute, se pone borde y cambia de acento sin avisar. Puede que no sean la misma ventaja."
-tags: ["ideas", "opinión", "tecnología", "ia"]
+tags: [ideas, ia]
 image: "alexa-plus.jpg"
 image_alt: "Altavoz inteligente Amazon Echo sobre una mesa, pantalla encendida mostrando un reloj digital, luz ambiental cálida"
 ---

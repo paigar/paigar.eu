@@ -2,7 +2,7 @@
 title: "Imágenes Open Graph automáticas con Lume"
 date: 2026-03-03
 excerpt: "Cuando compartes un enlace en redes sociales, lo primero que ves es una imagen. Crear esas imágenes a mano para cada post es tedioso, y conectar un servicio externo es sobredimensionar el problema. La solución está en el propio build: un generador TypeScript produce un SVG por post, y resvg-wasm los convierte a PNG durante la compilación. Sin servicios externos, sin imágenes que mantener a mano."
-tags: [lume, técnicas]
+tags: [técnicas, desarrollo-web]
 image: imagenes-og-lume.png
 image_alt: "Mesa de trabajo con tarjetas de vista previa de redes sociales dispersas, portátil al fondo mostrando código."
 templateEngine: md

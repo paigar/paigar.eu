@@ -2,7 +2,7 @@
 title: "Por qué la web de 2005 era más tuya que la de hoy"
 date: 2026-05-10
 excerpt: "Antes de los algoritmos, antes de los feeds infinitos, antes de que te convirtieran en audiencia, internet era un sitio donde la gente hacía cosas porque quería hacerlas. Y eso se notaba."
-tags: ["ideas", "desarrollo web", "indieweb"]
+tags: [ideas, desarrollo-web]
 image: "web-2005-era-tuya.jpg"
 image_alt: "Pantalla de ordenador antiguo mostrando una página web personal de principios de los 2000"
 ---

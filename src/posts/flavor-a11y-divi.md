@@ -2,7 +2,7 @@
 title: "Lo que aprendí construyendo un plugin de accesibilidad para Divi"
 date: 2026-01-25
 excerpt: "Crónica honesta de cómo monté flavor-a11y para parchear lo que Divi no quiere arreglar en los sitios de marca blanca que llevo para terceros, con las trampas, los aciertos y todo lo que la WCAG no te cuenta hasta que tienes ochenta dominios en producción."
-tags: ["ideas", "wordpress", "desarrollo web", "accesibilidad"]
+tags: [ideas, desarrollo-web]
 image: flavor-a11y-divi.jpg
 image_alt: "Mesa de taller con calibres, escuadras y herramientas de precisión junto a un portátil con código, iluminación cálida de ventana"
 ---

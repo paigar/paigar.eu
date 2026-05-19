@@ -2,7 +2,7 @@
 title: "Cómo programar el juego de Tetris desde cero"
 date: 2026-04-30
 excerpt: "Un tutorial paso a paso para construir el clásico Tetris en una sola página web. Es la pieza más completa de la serie hasta ahora: rotación de matrices, gravedad por turnos, y la lógica de eliminación de líneas, que es el corazón del juego y sigue siendo, cuarenta años después, una de las invenciones más limpias de la historia de los videojuegos."
-tags: [apuntes, juegos, javascript, canvas]
+tags: [apuntes, juegos, javascript, técnicas]
 image: juego-tetromino.png
 image_alt: "Pantalla vertical de juego retro con bloques de colores apilados en la parte inferior, una pieza descendiendo hacia ellos en la parte superior, sobre fondo oscuro y rejilla de cuadrícula tenue al fondo"
 prototype: bloques

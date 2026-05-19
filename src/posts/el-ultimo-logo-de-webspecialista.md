@@ -2,7 +2,7 @@
 title: "El último logo de Webspecialista"
 date: 2025-12-08
 excerpt: "En 2020 trabajé con David —MorphineArt cuando firma para terceros— en el rediseño completo de la identidad de Webspecialista. El logo nunca llegó a producción: las consecuencias del COVID, una separación de socios y una refundación de marca después, lleva cinco años durmiendo en un PDF que nadie abre. Le toca algo de luz."
-tags: [garabatos, diseño]
+tags: [garabatos]
 image: webspecialista-diseno.png
 image_alt: "Imagotipo de Webspecialista: una W estilizada compuesta por una W grande exterior y una W pequeña interior, formada por trazos rectos en gradient de espectro arcoíris."
 ---
