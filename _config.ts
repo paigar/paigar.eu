@@ -138,10 +138,12 @@ if (!isServe) {
       if (!match) return false;
       const fm = parseYaml(match[1]) as Record<string, unknown>;
       if (!fm.date) return false;
-      // Parsear como fecha local (no UTC) para evitar desfase de zona horaria.
-      // new Date("YYYY-MM-DD") interpreta como UTC; el constructor multi-arg usa hora local.
-      const [y, m, d] = String(fm.date).slice(0, 10).split("-").map(Number);
-      return new Date(y, m - 1, d) > today;
+      // @std/yaml parsea fechas como Date objects, no como strings.
+      // Normalizamos a medianoche local con el constructor multi-arg para
+      // evitar el desfase UTC que produce new Date("YYYY-MM-DD").
+      const raw = fm.date instanceof Date ? fm.date : new Date(fm.date as string);
+      const postMidnight = new Date(raw.getFullYear(), raw.getMonth(), raw.getDate());
+      return postMidnight > today;
     } catch {
       return false;
     }
