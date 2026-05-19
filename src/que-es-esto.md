@@ -1,6 +1,7 @@
 ---
 layout: layouts/base.vto
 templateEngine: vto
+extraStyles: ["pages.css"]
 title: Qué es esto
 url: /que-es-esto/
 type: page
