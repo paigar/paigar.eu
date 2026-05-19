@@ -138,7 +138,10 @@ if (!isServe) {
       if (!match) return false;
       const fm = parseYaml(match[1]) as Record<string, unknown>;
       if (!fm.date) return false;
-      return new Date(fm.date as string) > today;
+      // Parsear como fecha local (no UTC) para evitar desfase de zona horaria.
+      // new Date("YYYY-MM-DD") interpreta como UTC; el constructor multi-arg usa hora local.
+      const [y, m, d] = String(fm.date).slice(0, 10).split("-").map(Number);
+      return new Date(y, m - 1, d) > today;
     } catch {
       return false;
     }
