@@ -79,7 +79,7 @@ const isServe = Deno.args.some((a: string) => a === "--serve" || a === "-s");
 
 const site = lume({
   src: "./src",
-  location: new URL("https://paigar.eu"),
+  location: new URL("https://www.paigar.eu"),
   server: {
     port: 3000,
   },
