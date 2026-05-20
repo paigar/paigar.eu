@@ -101,6 +101,7 @@ site.addEventListener("afterBuild", async () => {
 });
 
 site.copy("static", ".");
+site.copy("static/_headers", "_headers");
 site.add("styles"); // Por la pipeline para que lightningcss procese los .css.
 
 site.use(date({ locales: { es } }));
